@@ -1,6 +1,7 @@
 package be.alexandre01.dreamnetwork.connection.client;
 
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientPipeline;
+import be.alexandre01.dreamnetwork.spigot.DNSpigot;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -18,12 +19,12 @@ public class BasicClient {
     ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     public int trying = 0;
     public static void main(String[] args) throws Exception {
-        new BasicClient().init();
+       new DNSpigot().onEnable();
     }
 
     public void init(){
 
-        String host = "localhost";
+        String host = "138.201.24.2";
         int port = 8080;
         System.out.println("Attempt to connect to "+ host+":"+port +"#TRY_"+ trying);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -34,7 +35,6 @@ public class BasicClient {
             b.channel(NioSocketChannel.class); // (3)
             b.option(ChannelOption.SO_KEEPALIVE, true); // (4)
             b.handler(new BasicClientPipeline(this));
-
 
             // Start the client.
             ChannelFuture f = b.connect(host, port).sync(); // (5)

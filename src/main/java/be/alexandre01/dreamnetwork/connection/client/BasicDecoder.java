@@ -12,7 +12,6 @@ public class BasicDecoder extends ByteToMessageDecoder {
         if (in.readableBytes() < Character.BYTES) {
             return; // (3)
         }
-        //final ByteBuf text = ctx.alloc().buffer(4);
         out.add(in.readBytes(in.readableBytes())); // (4)
     }
 }
