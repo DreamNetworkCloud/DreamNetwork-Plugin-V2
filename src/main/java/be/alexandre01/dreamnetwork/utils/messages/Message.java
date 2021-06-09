@@ -1,4 +1,5 @@
 package be.alexandre01.dreamnetwork.utils.messages;
+import be.alexandre01.dreamnetwork.api.request.RequestType;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
@@ -19,7 +20,7 @@ public class Message extends LinkedHashMap<String, Object> {
         super(new LinkedHashMap<>());
     }
     public Message set(String id,Object value){
-        put("DN-"+id,value);
+        put("DN-"+id,value.toString());
         return this;
     }
     public boolean contains(String key){
@@ -35,15 +36,34 @@ public class Message extends LinkedHashMap<String, Object> {
     }
 
     public Message setChannel(String channel){
-        return set("channel",channel);
+        put("channel",channel);
+        return this;
     }
 
+    public String getChannel(){
+        return (String) get("channel");
+    }
     public Message setHeader(String header){
-        return set("header",header);
+        put("header",header);
+        return this;
     }
 
     public String getHeader(){
-        return getString("header");
+
+        return (String) get("header");
+    }
+
+    public Message setRequestType(RequestType requestType){
+        put("requestType",String.valueOf(requestType.getId()));
+        return this;
+    }
+
+    public int getRequest(){
+        return (int) Integer.parseInt((String) get("requestType"));
+    }
+
+    public boolean hasRequest(){
+        return containsKey("requestType");
     }
 
     public JsonObject toJsonObject() {
@@ -55,19 +75,23 @@ public class Message extends LinkedHashMap<String, Object> {
     }
 
     public int getInt(String key){
-        return (int) Math.round((double) get("DN-"+key));
+        return (int) Integer.parseInt(getString(key));
     }
 
     public float getFloat(String key){
-        return (float) get("DN-"+key);
+        return (float) Float.parseFloat(getString(key));
+    }
+
+    public long getLong(String key){
+        return (long) Long.parseLong(getString(key));
     }
 
     public boolean getBoolean(String key){
-        return (boolean) get("DN-"+key);
+        return (boolean) Boolean.parseBoolean(getString(key));
     }
 
     public boolean hasChannel(){
-        return contains("channel");
+        return containsKey("channel");
     }
 
     public static Message createFromJsonString(String json) {
@@ -84,21 +108,15 @@ public class Message extends LinkedHashMap<String, Object> {
         }
     }
 
-
+    @Override
     public String toString() {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        // gsonBuilder.setLongSerializationPolicy(LongSerializationPolicy.STRING);
-        gsonBuilder.registerTypeAdapter(Double.class,  new JsonSerializer<Double>() {
-            @Override
-            public JsonElement serialize(final Double src, final Type typeOfSrc, final JsonSerializationContext context) {
-                BigDecimal value = BigDecimal.valueOf(src);
+        gsonBuilder.setLongSerializationPolicy(LongSerializationPolicy.STRING);
 
-                return new JsonPrimitive(value);
-            }
-        });
 
-        String json = gsonBuilder.create().toJson(this);
+        String json = new Gson().toJson(this,Message.class);
         return json;
     }
+
 
 }

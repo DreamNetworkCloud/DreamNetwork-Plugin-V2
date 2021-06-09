@@ -32,24 +32,25 @@ public class DNSpigot extends JavaPlugin{
         instance = this;
         port = 25565;
 
-        port = getServer().getPort();
+     //   port = getServer().getPort();
 
         type = "Spigot";
 
-        String a = getServer().getClass().getPackage().getName();
-        version = a.substring(a.lastIndexOf('.') + 1);
-
+        //String a = getServer().getClass().getPackage().getName();
+       // version = a.substring(a.lastIndexOf('.') + 1);
+        version = "1.8";
 
         ASCII.sendDNText();
 
         System.out.println("\n");
 
-        DNSpigotAPI.builder().build();
+        DNSpigotAPI dnSpigotAPI = new DNSpigotAPI(this);
 
         this.requestManager = new RequestManager();
       //  getLogger().log(Level.INFO,"Enabling the Network Connection on the port "+port+"...");
         basicClient = new BasicClient();
-        basicClient.init();
+        Thread thread = new Thread(basicClient);
+        basicClient.start();
     }
 
 

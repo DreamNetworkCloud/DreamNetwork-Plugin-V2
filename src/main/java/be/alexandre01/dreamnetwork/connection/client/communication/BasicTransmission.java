@@ -1,6 +1,7 @@
 package be.alexandre01.dreamnetwork.connection.client.communication;
 
 import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
+import be.alexandre01.dreamnetwork.api.request.RequestType;
 import be.alexandre01.dreamnetwork.spigot.DNSpigot;
 import be.alexandre01.dreamnetwork.utils.messages.Message;
 import io.netty.buffer.ByteBuf;
@@ -25,6 +26,15 @@ public class BasicTransmission extends ClientResponse {
                 msg.set("Bonjour","Boule de gomme");
                 msg.set("ms",new Date().getTime());
                 NetworkBaseAPI.getInstance().getBasicClientHandler().writeAndFlush(msg);
+        }
+
+        if(message.hasRequest()){
+            RequestType requestType = RequestType.getByID(message.getRequest());
+            switch (requestType){
+                case SPIGOT_HANDSHAKE_SUCCESS:
+                    System.out.println("YES JE ME SUIS CONNECTE");
+                    break;
+            }
         }
     }
 }

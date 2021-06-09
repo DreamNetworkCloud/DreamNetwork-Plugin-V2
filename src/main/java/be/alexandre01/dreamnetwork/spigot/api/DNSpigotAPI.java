@@ -4,13 +4,13 @@ import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.api.request.RequestManager;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
 import be.alexandre01.dreamnetwork.spigot.DNSpigot;
+import com.mysql.jdbc.log.Log;
 import lombok.*;
 
 import java.util.logging.Logger;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
 public class DNSpigotAPI extends NetworkBaseAPI{
     BasicClientHandler basicClientHandler;
     DNSpigot dnSpigot;
@@ -35,7 +35,7 @@ public class DNSpigotAPI extends NetworkBaseAPI{
 
     @Override
     public Logger getLogger() {
-        return dnSpigot.getLogger();
+        return Logger.getGlobal();//dnSpigot.getLogger();
     }
 
     @Override

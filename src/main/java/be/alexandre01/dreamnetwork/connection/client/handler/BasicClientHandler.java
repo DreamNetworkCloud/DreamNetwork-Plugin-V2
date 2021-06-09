@@ -1,6 +1,8 @@
 package be.alexandre01.dreamnetwork.connection.client.handler;
 
 import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
+import be.alexandre01.dreamnetwork.api.request.RequestManager;
+import be.alexandre01.dreamnetwork.api.request.RequestType;
 import be.alexandre01.dreamnetwork.connection.client.BasicClient;
 import be.alexandre01.dreamnetwork.connection.client.communication.ClientResponse;
 import be.alexandre01.dreamnetwork.connection.client.communication.BasicTransmission;
@@ -16,6 +18,7 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.server.v1_8_R3.Tuple;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -43,6 +46,8 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter {
             taskQueue();
         }
         basicClient.trying = 0;
+
+        NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_HANDSHAKE,true);
     }
 
     private void taskQueue(){
@@ -61,7 +66,6 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter {
         if(queue.get(msg) != null){
             future.addListener(queue.get(msg));
         }
-
     }
 
     @Override
@@ -122,6 +126,7 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter {
             channel.writeAndFlush(buf);
             return;
         }
+        System.out.println(msg.toString());
         channel.writeAndFlush(buf).addListener(listener);
     }
 }

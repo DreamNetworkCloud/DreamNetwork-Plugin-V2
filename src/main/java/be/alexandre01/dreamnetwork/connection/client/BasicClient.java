@@ -15,16 +15,17 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class BasicClient {
+public class BasicClient extends Thread{
     ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     public int trying = 0;
     public static void main(String[] args) throws Exception {
        new DNSpigot().onEnable();
     }
 
-    public void init(){
+    @Override
+    public void run(){
 
-        String host = "138.201.24.2";
+        String host = "localhost";
         int port = 8080;
         System.out.println("Attempt to connect to "+ host+":"+port +"#TRY_"+ trying);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -48,7 +49,8 @@ public class BasicClient {
 
             System.out.println("Retrying to connect...");
             executorService.scheduleAtFixedRate(() -> {
-                init();
+                super.stop();
+                super.start();
                 executorService.shutdown();
             },5,5, TimeUnit.SECONDS);
             trying ++;

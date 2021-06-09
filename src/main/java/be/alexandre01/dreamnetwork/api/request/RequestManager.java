@@ -15,7 +15,7 @@ public class RequestManager {
         requestBuilder.addRequestBuilder(new DefaultGeneratedRequest());
     }
 
-    public void sendRequest(RequestType requestType, GenericFutureListener<? extends Future<? super Void>> listener, String... args){
+    public void sendRequest(RequestType requestType,Message message, GenericFutureListener<? extends Future<? super Void>> listener, String... args){
          if(!requestBuilder.requestData.containsKey(requestType)){
              try {
                  throw new RequestNotFoundException();
@@ -25,21 +25,34 @@ public class RequestManager {
          }
 
          RequestBuilder.RequestData requestData = requestBuilder.requestData.get(requestType);
-
-         NetworkBaseAPI.getInstance().getBasicClientHandler().writeAndFlush(requestData.write(new Message().setHeader("RequestType"),args),listener);
+         message.setHeader("RequestType");
+         message.setRequestType(requestType);
+         NetworkBaseAPI.getInstance().getBasicClientHandler().writeAndFlush(requestData.write(message,args),listener);
     }
 
     public void sendRequest(RequestType requestType, String... args){
-        this.sendRequest(requestType,null,args);
+        this.sendRequest(requestType,new Message(),null,args);
+    }
+    public void sendRequest(RequestType requestType,Message message, String... args){
+        this.sendRequest(requestType,message,null,args);
     }
     public void sendRequest(RequestType requestType,boolean notifiedWhenSent, String... args){
         if(notifiedWhenSent){
-            this.sendRequest(requestType,future -> {
+            this.sendRequest(requestType,new Message(),future -> {
+                System.out.println("Request "+ requestType.name()+" sended with success!");
+            },args);
+            return;
+        }
+        this.sendRequest(requestType,new Message(),null,args);
+    }
+
+    public void sendRequest(RequestType requestType,Message message,boolean notifiedWhenSent, String... args){
+        if(notifiedWhenSent){
+            this.sendRequest(requestType,message,future -> {
                 System.out.println("Request"+ requestType.name()+" sended with success!");
             },args);
             return;
         }
-        this.sendRequest(requestType,null,args);
+        this.sendRequest(requestType,message,null,args);
     }
-
 }
