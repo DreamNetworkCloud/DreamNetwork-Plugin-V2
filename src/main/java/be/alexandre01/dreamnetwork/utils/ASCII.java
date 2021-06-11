@@ -2,7 +2,7 @@ package be.alexandre01.dreamnetwork.utils;
 
 public class ASCII {
     public static void sendDNText(){
-        System.out.print("______                               _   _        _                          _    \n" +
+        System.out.print("\n______                               _   _        _                          _    \n" +
                 "|  _  \\                             | \\ | |      | |                        | |   \n" +
                 "| | | | _ __  ___   __ _  _ __ ___  |  \\| |  ___ | |_ __      __ ___   _ __ | | __\n" +
                 "| | | || '__|/ _ \\ / _` || '_ ` _ \\ | . ` | / _ \\| __|\\ \\ /\\ / // _ \\ | '__|| |/ /\n" +

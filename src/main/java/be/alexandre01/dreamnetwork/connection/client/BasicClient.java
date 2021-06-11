@@ -26,7 +26,7 @@ public class BasicClient extends Thread{
     public void run(){
 
         String host = "localhost";
-        int port = 8080;
+        int port = 14520;
         System.out.println("Attempt to connect to "+ host+":"+port +"#TRY_"+ trying);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 

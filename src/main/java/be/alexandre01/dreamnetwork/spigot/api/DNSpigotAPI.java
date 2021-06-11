@@ -25,7 +25,7 @@ public class DNSpigotAPI extends NetworkBaseAPI{
 
     @Override
     public String getInfo() {
-        return "Spigot-"+dnSpigot.getVersion();
+        return "SPIGOT-"+dnSpigot.getVersion();
     }
 
     @Override

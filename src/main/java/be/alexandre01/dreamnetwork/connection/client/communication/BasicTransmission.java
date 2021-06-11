@@ -16,23 +16,15 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class BasicTransmission extends ClientResponse {
-    ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     @Override
     public void onResponse(Message message, ChannelHandlerContext ctx) throws Exception {
-        if(message.contains("Hello")){
-                Message msg = new Message();
-                System.out.println("Send");
-                msg.set("Bonjour","Boule de gomme");
-                msg.set("ms",new Date().getTime());
-                NetworkBaseAPI.getInstance().getBasicClientHandler().writeAndFlush(msg);
-        }
-
+        System.out.println(message);
         if(message.hasRequest()){
             RequestType requestType = RequestType.getByID(message.getRequest());
             switch (requestType){
                 case SPIGOT_HANDSHAKE_SUCCESS:
-                    System.out.println("YES JE ME SUIS CONNECTE");
+                    System.out.println("The connection has been established on the remote address: "+ ctx.channel().remoteAddress());
                     break;
             }
         }

@@ -34,7 +34,7 @@ public class DNSpigot extends JavaPlugin{
 
      //   port = getServer().getPort();
 
-        type = "Spigot";
+        type = "SPIGOT";
 
         //String a = getServer().getClass().getPackage().getName();
        // version = a.substring(a.lastIndexOf('.') + 1);
@@ -51,6 +51,7 @@ public class DNSpigot extends JavaPlugin{
         basicClient = new BasicClient();
         Thread thread = new Thread(basicClient);
         basicClient.start();
+
     }
 
 
