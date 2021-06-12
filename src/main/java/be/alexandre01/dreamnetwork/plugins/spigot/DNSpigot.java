@@ -1,21 +1,13 @@
-package be.alexandre01.dreamnetwork.spigot;
+package be.alexandre01.dreamnetwork.plugins.spigot;
 
-import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.api.request.RequestManager;
-import be.alexandre01.dreamnetwork.api.request.RequestType;
 import be.alexandre01.dreamnetwork.connection.client.BasicClient;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
-import be.alexandre01.dreamnetwork.spigot.api.DNSpigotAPI;
+import be.alexandre01.dreamnetwork.plugins.spigot.api.DNSpigotAPI;
 import be.alexandre01.dreamnetwork.utils.ASCII;
-import io.netty.util.NettyRuntime;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class DNSpigot extends JavaPlugin{
@@ -32,19 +24,20 @@ public class DNSpigot extends JavaPlugin{
         instance = this;
         port = 25565;
 
-     //   port = getServer().getPort();
+        port = getServer().getPort();
 
         type = "SPIGOT";
 
-        //String a = getServer().getClass().getPackage().getName();
-       // version = a.substring(a.lastIndexOf('.') + 1);
-        version = "1.8";
+        String a = getServer().getClass().getPackage().getName();
+        version = a.substring(a.lastIndexOf('.') + 1);
+        //version = "1.8";
 
         ASCII.sendDNText();
 
         System.out.println("\n");
 
         DNSpigotAPI dnSpigotAPI = new DNSpigotAPI(this);
+
 
         this.requestManager = new RequestManager();
       //  getLogger().log(Level.INFO,"Enabling the Network Connection on the port "+port+"...");

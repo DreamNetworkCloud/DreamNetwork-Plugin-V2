@@ -1,3 +1,4 @@
-name: DreamNetwork
-main: be.alexandre01.dreamnetwork.spigot.DNSpigot
+name: DreamNetwork-Core
+author: Alexandre01
+main: be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot
 version: 1.0

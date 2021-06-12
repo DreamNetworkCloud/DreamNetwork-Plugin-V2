@@ -1,14 +1,11 @@
 package be.alexandre01.dreamnetwork.connection.client;
 
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientPipeline;
-import be.alexandre01.dreamnetwork.spigot.DNSpigot;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 import java.util.concurrent.Executors;
@@ -18,9 +15,6 @@ import java.util.concurrent.TimeUnit;
 public class BasicClient extends Thread{
     ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     public int trying = 0;
-    public static void main(String[] args) throws Exception {
-       new DNSpigot().onEnable();
-    }
 
     @Override
     public void run(){
@@ -57,7 +51,6 @@ public class BasicClient extends Thread{
 
             workerGroup.shutdownGracefully();
             if(trying > 3){
-
                 return;
             }
 

@@ -1,11 +1,8 @@
 package be.alexandre01.dreamnetwork.api.request.exception;
 
 import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
-import be.alexandre01.dreamnetwork.spigot.DNSpigot;
 import be.alexandre01.dreamnetwork.utils.colors.Colors;
 import org.fusesource.jansi.Ansi;
-
-import java.util.logging.Level;
 
 public class RequestNotFoundException extends Exception{
     public RequestNotFoundException(){

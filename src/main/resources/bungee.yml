@@ -1,0 +1,4 @@
+main: be.alexandre01.dreamnetwork.plugins.bungeecord.DNBungee
+author: Alexandre01
+name: DreamNetwork-Core
+version: 1.0

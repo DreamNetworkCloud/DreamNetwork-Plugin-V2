@@ -1,4 +1,4 @@
-package be.alexandre01.dreamnetwork.spigot.communication;
+package be.alexandre01.dreamnetwork.plugins.spigot.communication;
 
 import be.alexandre01.dreamnetwork.connection.client.communication.ClientResponse;
 import be.alexandre01.dreamnetwork.utils.messages.Message;

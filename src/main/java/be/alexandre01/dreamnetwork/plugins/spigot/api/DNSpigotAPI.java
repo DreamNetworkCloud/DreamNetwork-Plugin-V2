@@ -1,10 +1,9 @@
-package be.alexandre01.dreamnetwork.spigot.api;
+package be.alexandre01.dreamnetwork.plugins.spigot.api;
 
 import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.api.request.RequestManager;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
-import be.alexandre01.dreamnetwork.spigot.DNSpigot;
-import com.mysql.jdbc.log.Log;
+import be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot;
 import lombok.*;
 
 import java.util.logging.Logger;

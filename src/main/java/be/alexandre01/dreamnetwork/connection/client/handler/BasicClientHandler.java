@@ -1,13 +1,10 @@
 package be.alexandre01.dreamnetwork.connection.client.handler;
 
 import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
-import be.alexandre01.dreamnetwork.api.request.RequestManager;
 import be.alexandre01.dreamnetwork.api.request.RequestType;
 import be.alexandre01.dreamnetwork.connection.client.BasicClient;
 import be.alexandre01.dreamnetwork.connection.client.communication.ClientResponse;
 import be.alexandre01.dreamnetwork.connection.client.communication.BasicTransmission;
-import be.alexandre01.dreamnetwork.spigot.DNSpigot;
-import be.alexandre01.dreamnetwork.spigot.api.DNSpigotAPI;
 import be.alexandre01.dreamnetwork.utils.messages.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -18,7 +15,6 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.server.v1_8_R3.Tuple;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;

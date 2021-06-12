@@ -4,7 +4,7 @@ import be.alexandre01.dreamnetwork.api.request.RequestManager;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
 import lombok.Getter;
 import lombok.Setter;
-import org.omg.CORBA.PUBLIC_MEMBER;
+
 
 import java.util.logging.Logger;
 
