@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BasicClientHandler extends ChannelInboundHandlerAdapter {
-    private ArrayList<ClientResponse> responses = new ArrayList<>();
+    @Getter private ArrayList<ClientResponse> responses = new ArrayList<>();
     private HashMap<Message, GenericFutureListener<? extends Future<? super Void>>> queue = new HashMap<>();
     private BasicClient basicClient;
     @Getter @Setter private Channel channel;
@@ -31,6 +31,7 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter {
         responses.add(new BasicTransmission());
 
         NetworkBaseAPI.getInstance().setBasicClientHandler(this);
+
     }
 
     @Override

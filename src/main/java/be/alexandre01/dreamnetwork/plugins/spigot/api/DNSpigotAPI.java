@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 public class DNSpigotAPI extends NetworkBaseAPI{
     BasicClientHandler basicClientHandler;
     DNSpigot dnSpigot;
+    String processName = null;
 
     public DNSpigotAPI(DNSpigot dnSpigot){
         this.dnSpigot = dnSpigot;
@@ -25,6 +26,16 @@ public class DNSpigotAPI extends NetworkBaseAPI{
     @Override
     public String getInfo() {
         return "SPIGOT-"+dnSpigot.getVersion();
+    }
+
+    @Override
+    public String getProcessName() {
+        return processName;
+    }
+
+    @Override
+    public void setProcessName(String processName) {
+        this.processName = processName;
     }
 
     @Override
@@ -50,5 +61,6 @@ public class DNSpigotAPI extends NetworkBaseAPI{
     @Override
     public void setBasicClientHandler(BasicClientHandler basicClientHandler) {
         this.basicClientHandler = basicClientHandler;
+        getRequestManager().setBasicClientHandler(basicClientHandler);
     }
 }

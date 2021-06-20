@@ -4,10 +4,8 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Message extends LinkedHashMap<String, Object> {
@@ -22,6 +20,10 @@ public class Message extends LinkedHashMap<String, Object> {
     public Message set(String id,Object value){
         put("DN-"+id,value.toString());
         return this;
+    }
+
+    public Message setInRoot(String id,Object value){
+        return null;
     }
     public boolean contains(String key){
         return containsKey("DN-"+key);
@@ -47,9 +49,17 @@ public class Message extends LinkedHashMap<String, Object> {
         put("header",header);
         return this;
     }
+    public void setProvider(String provider){
+        put("provider",provider);
+    }
 
+    public String getProvider(){
+        return (String) get("provider");
+    }
+    public boolean hasProvider(){
+        return containsKey("provider");
+    }
     public String getHeader(){
-
         return (String) get("header");
     }
 
@@ -58,8 +68,8 @@ public class Message extends LinkedHashMap<String, Object> {
         return this;
     }
 
-    public int getRequest(){
-        return (int) Integer.parseInt((String) get("requestType"));
+    public RequestType getRequest(){
+        return (RequestType) RequestType.getByID((int)Integer.parseInt((String) get("requestType")));
     }
 
     public boolean hasRequest(){

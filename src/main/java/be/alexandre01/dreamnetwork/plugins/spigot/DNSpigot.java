@@ -7,7 +7,12 @@ import be.alexandre01.dreamnetwork.plugins.spigot.api.DNSpigotAPI;
 import be.alexandre01.dreamnetwork.utils.ASCII;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.lang.reflect.Field;
 
 
 public class DNSpigot extends JavaPlugin{
@@ -43,9 +48,21 @@ public class DNSpigot extends JavaPlugin{
       //  getLogger().log(Level.INFO,"Enabling the Network Connection on the port "+port+"...");
         basicClient = new BasicClient();
         Thread thread = new Thread(basicClient);
-        basicClient.start();
+        thread.start();
 
     }
 
+    public void registerCommand(String commandName, Command commandClass){
+        try{
+            final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
 
+            bukkitCommandMap.setAccessible(true);
+            CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+
+            commandMap.register(commandName, commandClass);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+    }
 }

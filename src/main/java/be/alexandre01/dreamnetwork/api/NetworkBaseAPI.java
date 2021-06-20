@@ -22,6 +22,10 @@ public abstract class NetworkBaseAPI {
 
     public abstract String getInfo();
 
+    public abstract String getProcessName();
+
+    public abstract void setProcessName(String processName);
+
     public abstract int getPort();
 
     public abstract Logger getLogger();
@@ -33,4 +37,6 @@ public abstract class NetworkBaseAPI {
     public abstract BasicClientHandler getBasicClientHandler();
 
     public abstract void setBasicClientHandler(BasicClientHandler basicClientHandler);
+
+
 }

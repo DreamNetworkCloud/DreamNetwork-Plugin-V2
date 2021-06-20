@@ -4,6 +4,8 @@ import be.alexandre01.dreamnetwork.api.request.RequestManager;
 import be.alexandre01.dreamnetwork.connection.client.BasicClient;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.api.DNBungeeAPI;
+import be.alexandre01.dreamnetwork.plugins.bungeecord.communication.BungeeRequestReponse;
+import be.alexandre01.dreamnetwork.plugins.bungeecord.listeners.RedirectConnection;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.DNSpigotAPI;
 import be.alexandre01.dreamnetwork.utils.ASCII;
 import lombok.Getter;
@@ -20,7 +22,7 @@ public class DNBungee extends Plugin {
     @Getter private String version;
     @Getter private String type;
     @Getter private int port;
-    @Getter private RequestManager requestManager;
+    @Getter @Setter private RequestManager requestManager;
 
 
     @Override
@@ -33,6 +35,7 @@ public class DNBungee extends Plugin {
             port = listenerInfo.getHost().getPort();
         }
 
+        getProxy().getPluginManager().registerListener(this,new RedirectConnection());
         type = "BUNGEE";
 
         version = getProxy().getVersion();
@@ -46,10 +49,16 @@ public class DNBungee extends Plugin {
         DNBungeeAPI dnBungeeAPI = new DNBungeeAPI(this);
 
         this.requestManager = new RequestManager();
+
         //  getLogger().log(Level.INFO,"Enabling the Network Connection on the port "+port+"...");
         basicClient = new BasicClient();
+
+
         Thread thread = new Thread(basicClient);
-        basicClient.start();
+        thread.start();
+
+        System.out.println(getBasicClientHandler());
+        System.out.println(getBasicClientHandler().getResponses());
 
     }
 }

@@ -1,14 +1,38 @@
 package be.alexandre01.dreamnetwork.plugins.bungeecord.communication;
 
 import be.alexandre01.dreamnetwork.connection.client.communication.ClientResponse;
+import be.alexandre01.dreamnetwork.plugins.bungeecord.api.DNBungeeAPI;
 import be.alexandre01.dreamnetwork.utils.messages.Message;
 import io.netty.channel.ChannelHandlerContext;
 
+import java.util.logging.Level;
+
 public class BungeeRequestReponse extends ClientResponse {
+
+    public DNBungeeAPI dnBungeeAPI;
+
+    public BungeeRequestReponse(){
+        this.dnBungeeAPI = (DNBungeeAPI) DNBungeeAPI.getInstance();
+    }
     @Override
     public void onResponse(Message message, ChannelHandlerContext ctx) throws Exception {
-        if (message.getHeader().contains("RequestType")) {
-
+        System.out.println("RESPONSES");
+        if (message.hasRequest()) {
+            switch (message.getRequest()){
+                case BUNGEECORD_REGISTER_SERVER:
+                    System.out.println(message);
+                    dnBungeeAPI.getDnBungeeServersManager().registerServer(message.getString("PROCESSNAME"),message.getString("REMOTEIP"),message.getInt("PORT"));
+                    break;
+                case BUNGEECORD_UNREGISTER_SERVER:
+                    dnBungeeAPI.getDnBungeeServersManager().unregisterServer(message.getString("PROCESSNAME"));
+                    break;
+                case BUNGEECORD_LOG_MESSAGE:
+                   dnBungeeAPI.getLogger().info(message.getString("LOG"));
+                case BUNGEECORD_WARNING_MESSAGE:
+                    dnBungeeAPI.getLogger().warning(message.getString("LOG"));
+                case BUNGEECORD_ERROR_MESSAGE:
+                    dnBungeeAPI.getLogger().severe(message.getString("LOG"));
+            }
         }
     }
 }
