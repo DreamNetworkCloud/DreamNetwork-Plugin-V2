@@ -1,6 +1,9 @@
 package be.alexandre01.dreamnetwork.plugins.spigot.command;
 
+import be.alexandre01.dreamnetwork.api.request.Request;
+import be.alexandre01.dreamnetwork.api.request.RequestType;
 import be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot;
+import be.alexandre01.dreamnetwork.plugins.spigot.api.DNSpigotAPI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -18,17 +21,55 @@ public class NetworkCommand extends Command {
     }
     @Override
     public boolean execute(CommandSender sender, String msg, String[] args) {
+        if(!sender.hasPermission("network.use")){
+            sender.sendMessage("§cVous n'avez pas la permission d'accèder à l'infrastructure.");
+            return false;
+        }
         if(args.length == 0){
             sendHelp(sender);
             return false;
         }
         List<String> l = Arrays.stream(SubCommand.values()).map(Enum::name).collect(Collectors.toList());
-        if(!l.contains(args[0])){
+        if(!l.contains(args[0].toUpperCase())){
             sendHelp(sender);
             return false;
         }
-        switch (SubCommand.valueOf(args[0])){
+        switch (SubCommand.valueOf(args[0].toUpperCase())){
             case CMD:
+                if(args.length < 3){
+                    sender.sendMessage("§e - §9/network §lCMD§9 [SERVER] [COMMANDS]");
+                    return false;
+                }
+                StringBuilder cmd = new StringBuilder();
+                for (int i = 2; i < args.length; i++) {
+                    cmd.append(args[i]);
+                    if(i != args.length-1)
+                        cmd.append(" ");
+                }
+                Request executecmd = DNSpigotAPI.getInstance().getRequestManager().sendRequest(RequestType.SPIGOT_EXECUTE_COMMAND,args[1],cmd.toString());
+
+                executecmd.setRequestFutureResponse(message -> {
+                    System.out.println(message);
+                });
+                break;
+            case STOP:
+                break;
+            case START:
+                if(args.length < 2){
+                    sender.sendMessage("§e - §9/network §lSTART§9 [SERVER] (DYNAMIC/STATIC) (XMS) (XMX) (PORT)");
+                    return false;
+                }
+
+                switch (args.length){
+                    case 2:
+                        Request start = DNSpigotAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_START_SERVER,args[1]);
+                        sender.sendMessage("§aLa requête pour allumer le serveur §l"+args[1]+"§a a bien été envoyé. Veuillez attendre.");
+                        start.setRequestFutureResponse(message -> {
+                            System.out.println(message);
+                        });
+                        break;
+                }
+
                 break;
         }
 
@@ -37,10 +78,14 @@ public class NetworkCommand extends Command {
 
     @Override
     public List<String> tabComplete(CommandSender sender, String msg, String[] args) throws IllegalArgumentException {
-        if(args.length == 0){
+        /*sender.sendMessage(args.length+"");
+        sender.sendMessage(msg);
+        sender.sendMessage(String.valueOf(Arrays.asList(args)));*/
+        if(args.length == 1){
             List<String> optionsType = new ArrayList<>();
             for(SubCommand s : SubCommand.values()){
-                optionsType.add(s.name());
+                if(s.name().startsWith(args[0]))
+                    optionsType.add(s.name());
             }
             return optionsType;
         }

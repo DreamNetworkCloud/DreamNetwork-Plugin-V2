@@ -61,4 +61,9 @@ public class DNBungee extends Plugin {
         System.out.println(getBasicClientHandler().getResponses());
 
     }
+
+    @Override
+    public void onDisable(){
+        DNSpigotAPI.getInstance().getBasicClientHandler().getChannel().close();
+    }
 }

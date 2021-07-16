@@ -40,5 +40,15 @@ public class DefaultGeneratedRequest extends RequestBuilder {
             message.set("LOG-TYPE","ERROR");
             return message;
         });
+
+        requestData.put(RequestType.CORE_START_SERVER,(message, args) -> {
+            message.set("SERVERNAME",args[0]);
+            return message;
+        });
+        requestData.put(RequestType.SPIGOT_EXECUTE_COMMAND,(message, args) -> {
+            message.set("SERVERNAME",args[0]);
+            message.set("CMD",args[1]);
+            return message;
+        });
     }
 }

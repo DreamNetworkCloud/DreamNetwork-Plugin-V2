@@ -4,6 +4,7 @@ import be.alexandre01.dreamnetwork.api.request.RequestManager;
 import be.alexandre01.dreamnetwork.connection.client.BasicClient;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.DNSpigotAPI;
+import be.alexandre01.dreamnetwork.plugins.spigot.command.NetworkCommand;
 import be.alexandre01.dreamnetwork.utils.ASCII;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,6 +51,7 @@ public class DNSpigot extends JavaPlugin{
         Thread thread = new Thread(basicClient);
         thread.start();
 
+        registerCommand("network",new NetworkCommand("network"));
     }
 
     public void registerCommand(String commandName, Command commandClass){
@@ -64,5 +66,10 @@ public class DNSpigot extends JavaPlugin{
             ex.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void onDisable(){
+        DNSpigotAPI.getInstance().getBasicClientHandler().getChannel().close();
     }
 }
