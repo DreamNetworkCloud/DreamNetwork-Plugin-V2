@@ -6,7 +6,7 @@ import net.md_5.bungee.api.plugin.Command;
 
 public class Slot extends Command {
     public Slot(String name) {
-        super(name);
+        super(name,"slot.use");
     }
 
     @Override
@@ -27,15 +27,14 @@ public class Slot extends Command {
 
         dnBungee.configuration.set("network.slot",i);
         dnBungee.saveConfig();
+
+        sender.sendMessage("§aVous venez de changer le nombre de slot à "+ i);
     }
 
     public void sendHelp(CommandSender sender){
-        sender.sendMessage("§6Maintenance System:");
+        sender.sendMessage("§6Slot System:");
         sender.sendMessage("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*");
-        sender.sendMessage("§e - §9/maintenance §lON/OFF§9");
-        sender.sendMessage("§e - §9/maintenance §lADD§9 [Player]");
-        sender.sendMessage("§e - §9/maintenance §lREMOVE§9 [Player]");
-        sender.sendMessage("§e - §9/maintenance §lLIST§9");
+        sender.sendMessage("§e - §9/slot [Nombre]");
         sender.sendMessage("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*");
     }
 }

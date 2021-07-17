@@ -39,7 +39,7 @@ public class TablistCustomizer {
         if(i == 0){
             header.addExtra("   §5▰▰▰▰▰▰▰▰▰▰▰ §9§lShirome §5▰▰▰▰▰▰▰▰▰▰▰");
         }else {
-            header.addExtra("   §d▰▰▰▰▰▰▰▰▰▰▰ §9§lShirome §d▰▰▰▰▰▰▰▰▰▰▰");
+            header.addExtra("   §d▰▰▰▰▰▰▰▰▰▰▰ §3§lShirome §d▰▰▰▰▰▰▰▰▰▰▰");
         }
 
         header.addExtra("\n\n");
@@ -48,8 +48,8 @@ public class TablistCustomizer {
         footer.addExtra("\n");
         footer.addExtra("§2Ping : §a"+ player.getPing());
         footer.addExtra("\n\n");
-        footer.addExtra("§7Site: §ewww.inazumauhc.fr\n");
-        footer.addExtra("§7Discord: §ediscord.inazumauhc.fr");
+        footer.addExtra("§7Site: §dwww§5.§dshirome§5.§deu\n");
+        footer.addExtra("§7Discord: §ddiscord§5.§dshirome§5.§dfr");
         player.setTabHeader(header,footer);
     }
 }

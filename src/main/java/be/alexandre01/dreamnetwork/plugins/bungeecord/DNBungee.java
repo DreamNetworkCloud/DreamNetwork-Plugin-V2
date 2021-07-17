@@ -7,6 +7,7 @@ import be.alexandre01.dreamnetwork.plugins.bungeecord.api.DNBungeeAPI;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.components.commands.Maintenance;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.components.TablistCustomizer;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.components.commands.Slot;
+import be.alexandre01.dreamnetwork.plugins.bungeecord.components.listeners.MOTD;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.listeners.RedirectConnection;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.DNSpigotAPI;
 import be.alexandre01.dreamnetwork.utils.ASCII;
@@ -14,6 +15,7 @@ import lombok.Data;
 import lombok.Getter;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ListenerInfo;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -43,22 +45,23 @@ public class DNBungee extends Plugin {
     public String lobby;
     public boolean logoStatus;
     public boolean connexionOnLobby;
+    public TablistCustomizer tablistCustomizer;
 
     @Override
     public void onEnable(){
         instance = this;
         port = 25565;
         loadConfig();
-
+        allowedPlayer = new ArrayList<>();
         if(!getProxy().getConfig().getListeners().isEmpty()){
             ListenerInfo listenerInfo = getProxy().getConfig().getListeners().stream().findFirst().get();
             port = listenerInfo.getHost().getPort();
         }
 
-        getProxy().getPluginManager().registerListener(this,new RedirectConnection());
+
         type = "BUNGEE";
 
-        TablistCustomizer tablistCustomizer = new TablistCustomizer(configuration);
+         tablistCustomizer = new TablistCustomizer(configuration);
 
 
         if(!configuration.contains("network.lobby")){
@@ -107,8 +110,6 @@ public class DNBungee extends Plugin {
 
         version = getProxy().getVersion();
 
-        ProxyServer.getInstance().getPluginManager().registerCommand(this, new Maintenance("maintenance"));
-        ProxyServer.getInstance().getPluginManager().registerCommand(this, new Slot("maintenance"));
 
         ASCII.sendDNText();
 
@@ -120,6 +121,13 @@ public class DNBungee extends Plugin {
 
         DNBungeeAPI dnBungeeAPI = new DNBungeeAPI(this);
 
+
+        getProxy().getPluginManager().registerListener(this,new RedirectConnection());
+        getProxy().getPluginManager().registerListener(this,new MOTD());
+
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new Maintenance("maintenance"));
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new Slot("slot"));
+
         this.requestManager = new RequestManager();
 
         //  getLogger().log(Level.INFO,"Enabling the Network Connection on the port "+port+"...");
@@ -130,7 +138,6 @@ public class DNBungee extends Plugin {
         thread.start();
 
         System.out.println(getBasicClientHandler());
-        System.out.println(getBasicClientHandler().getResponses());
 
     }
 
@@ -169,4 +176,6 @@ public class DNBungee extends Plugin {
             e.printStackTrace();
         }
     }
+
+
 }

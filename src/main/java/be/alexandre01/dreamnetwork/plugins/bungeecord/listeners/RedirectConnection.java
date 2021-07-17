@@ -2,10 +2,12 @@ package be.alexandre01.dreamnetwork.plugins.bungeecord.listeners;
 
 import be.alexandre01.dreamnetwork.plugins.bungeecord.DNBungee;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.api.DNBungeeAPI;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.event.ServerConnectEvent;
+import net.md_5.bungee.api.event.ServerKickEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -16,6 +18,14 @@ import java.util.UUID;
 public class RedirectConnection implements Listener {
     public boolean connexionOnLobby = true;
     private Set<UUID> pending = new HashSet<>();
+    private DNBungee dnBungee;
+    private DNBungeeAPI dnBungeeAPI;
+
+    public RedirectConnection(){
+    dnBungee = DNBungee.getInstance();
+    dnBungeeAPI = (DNBungeeAPI) DNBungeeAPI.getInstance();
+    }
+
 
     @EventHandler
     public void onPlayerConnect(PostLoginEvent event) {
@@ -33,9 +43,19 @@ public class RedirectConnection implements Listener {
                 return;
             }
             ProxiedPlayer player = event.getPlayer();
-            ServerInfo info = getDefaultServer();
+            ServerInfo info;
+            if(dnBungee.connexionOnLobby){
+                 info = getServer(dnBungee.lobby);
+            }else {
+                info = getDefaultServer();
+            }
             System.out.println(info);
             if (info == null) {
+                System.out.println(dnBungeeAPI.getDnBungeeServersManager());
+                System.out.println(dnBungeeAPI.getDnBungeeServersManager().servers);
+                event.getPlayer().disconnect( new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*\n§cAucuns lobbies disponible !"),
+                        new TextComponent("\n\n§eVeuillez réessayer plus tard\n"),
+                        new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*§9\n?????????????\nNetwork System by Alexandre01"));
                 return;
             }
             event.setTarget(info);
@@ -47,21 +67,51 @@ public class RedirectConnection implements Listener {
     }
 
     private ServerInfo getDefaultServer(){
-        DNBungeeAPI dnBungeeAPI = (DNBungeeAPI) DNBungeeAPI.getInstance();
+
         System.out.println("GET DEFAULT SERV");
         System.out.println(dnBungeeAPI.getDnBungeeServersManager().servers);
         if(dnBungeeAPI.getDnBungeeServersManager().servers.isEmpty()){
             return null;
         }else{
-            for (String s : dnBungeeAPI.getDnBungeeServersManager().servers){
+            for (String s :dnBungeeAPI.getDnBungeeServersManager().servers){
                 System.out.println("API"+s);
             }
-            for (String s :  DNBungee.getInstance().getProxy().getServers().keySet()){
+            for (String s :  dnBungee.getProxy().getServers().keySet()){
                 System.out.println("BungeeSide"+ s);
             }
 
-            ServerInfo serverInfo = DNBungee.getInstance().getProxy().getServerInfo(dnBungeeAPI.getDnBungeeServersManager().servers.get(0));
+            ServerInfo serverInfo = dnBungee.getProxy().getServerInfo(dnBungeeAPI.getDnBungeeServersManager().servers.get(0));
             return serverInfo;
         }
+    }
+
+    @EventHandler
+    public void onServerKick(ServerKickEvent event) {
+        if(dnBungee.cancelKick){
+            System.out.println("Kick cancelled "+ getServer(dnBungee.kickServerRedirection));
+            event.setCancelled(true);
+            event.setCancelServer(getServer(dnBungee.kickServerRedirection));
+        }
+    }
+
+
+    public ServerInfo getServer(String server){
+        int i = 0;
+        int max = 50;
+        String word = null;
+        boolean isFound = false;
+        for (String str :dnBungeeAPI.getDnBungeeServersManager().servers){
+            System.out.println(str);
+            if(str.startsWith(dnBungee.lobby)){
+                i = Integer.parseInt(str.split("-")[1]);
+                word = str.split("-")[0];
+                ServerInfo serverInfo = dnBungee.getProxy().getServerInfo(str);
+                if(serverInfo.getPlayers().size() < 15){
+                    return serverInfo;
+                }
+
+            }
+        }
+        return null;
     }
 }
