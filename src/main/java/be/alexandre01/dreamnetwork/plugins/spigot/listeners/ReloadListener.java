@@ -12,7 +12,7 @@ public class ReloadListener implements Listener {
     public void onReload(PlayerCommandPreprocessEvent event){
         String cmd = event.getMessage();
 
-        if(cmd.equalsIgnoreCase("/plugin") || cmd.equalsIgnoreCase("/pl") || cmd.equalsIgnoreCase("/plugins") ){
+        if(cmd.equalsIgnoreCase("/reload") || cmd.equalsIgnoreCase("/rl") || cmd.equalsIgnoreCase("/reloads") ){
             event.setCancelled(true);
             DNSpigot.getInstance().isReloading = true;
             event.getPlayer().sendMessage("§e>> DreamNetwork: §cLa commande /reload n'est pas conseillé, elle peut rentrer en conflit avec d'autres plugins et causer des fuites de mémoire! A utiliser avec précaution");

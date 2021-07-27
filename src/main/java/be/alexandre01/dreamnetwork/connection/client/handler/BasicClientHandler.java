@@ -99,7 +99,10 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
         System.out.println("Channel unregister");
+        NetworkBaseAPI.getInstance().shutdownProcess();
     }
+
+
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {

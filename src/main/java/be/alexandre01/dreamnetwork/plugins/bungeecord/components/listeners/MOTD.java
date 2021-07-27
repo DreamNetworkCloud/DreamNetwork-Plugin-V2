@@ -39,7 +39,7 @@ public class MOTD implements Listener {
                     event.setCancelled(true);
                 }
             }
-            dnBungee.tablistCustomizer.updateTab(event.getPlayer(),1);
+            dnBungee.tablistCustomizer.updateTab(event.getPlayer(),1,1);
         }else {
             if(dnBungee.isMaintenance){
                 if(!dnBungee.allowedPlayer.contains(event.getPlayer().getName().toLowerCase()) && !event.getPlayer().hasPermission("network.maintenance.bypass")){
@@ -47,7 +47,7 @@ public class MOTD implements Listener {
                     event.setCancelled(true);
                 }
             }
-            dnBungee.tablistCustomizer.updateTab(event.getPlayer(),1);
+            dnBungee.tablistCustomizer.updateTab(event.getPlayer(),1,1);
         }
 }
     @EventHandler(priority = EventPriority.LOWEST)
