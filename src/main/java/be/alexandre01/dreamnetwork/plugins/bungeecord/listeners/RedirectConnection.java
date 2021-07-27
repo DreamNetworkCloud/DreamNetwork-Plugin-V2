@@ -26,6 +26,39 @@ public class RedirectConnection implements Listener {
     dnBungeeAPI = (DNBungeeAPI) DNBungeeAPI.getInstance();
     }
 
+    @EventHandler
+    public void onJoin(ServerConnectEvent event){
+        if(dnBungee.slot != -2){
+            if(dnBungee.getProxy().getPlayers().size()-1>= dnBungee.slot){
+                if(!event.getPlayer().hasPermission("network.slot.bypass")){
+                    event.getPlayer().disconnect(
+                            new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*\n§cServeur plein !"),
+                            new TextComponent("\n\n§eVeuillez réessayer plus tard\n"),
+                            new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*§9\nplay.inazumauhc.fr\nNetwork System by Alexandre01"));
+
+                    event.setCancelled(true);
+                }
+            }
+            if(dnBungee.isMaintenance){
+                if(!dnBungee.allowedPlayer.contains(event.getPlayer().getName().toLowerCase()) && !event.getPlayer().hasPermission("network.maintenance.bypass")){
+                    event.getPlayer().disconnect(
+                            new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*\n§cServeur en maintenance!"),
+                            new TextComponent("\n\n§eVeuillez réessayer plus tard\n"),
+                            new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*§9\n?????????????\nNetwork System by Alexandre01"));
+                    event.setCancelled(true);
+                }
+            }
+            dnBungee.tablistCustomizer.updateTab(event.getPlayer(),1,1);
+        }else {
+            if(dnBungee.isMaintenance){
+                if(!dnBungee.allowedPlayer.contains(event.getPlayer().getName().toLowerCase()) && !event.getPlayer().hasPermission("network.maintenance.bypass")){
+                    event.getPlayer().disconnect(new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*\n§cServeur en maintenance!"),new TextComponent("\n\n§eVeuillez réessayer plus tard\n"),new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*§9\n?????????????\nNetwork System by Alexandre01"));
+                    event.setCancelled(true);
+                }
+            }
+            dnBungee.tablistCustomizer.updateTab(event.getPlayer(),1,1);
+        }
+    }
 
     @EventHandler
     public void onPlayerConnect(PostLoginEvent event) {
