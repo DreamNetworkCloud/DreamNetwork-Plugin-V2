@@ -38,5 +38,7 @@ public abstract class NetworkBaseAPI {
 
     public abstract void setBasicClientHandler(BasicClientHandler basicClientHandler);
 
+    public abstract void shutdownProcess();
+
 
 }

@@ -69,4 +69,9 @@ public class DNBungeeAPI extends NetworkBaseAPI{
         getRequestManager().setBasicClientHandler(basicClientHandler);
         basicClientHandler.getResponses().add(new BungeeRequestReponse());
     }
+
+    @Override
+    public void shutdownProcess() {
+        dnBungee.getProxy().stop();
+    }
 }

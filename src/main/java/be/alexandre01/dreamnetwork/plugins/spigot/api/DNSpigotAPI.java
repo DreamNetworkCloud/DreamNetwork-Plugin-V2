@@ -7,6 +7,7 @@ import be.alexandre01.dreamnetwork.plugins.bungeecord.communication.BungeeReques
 import be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot;
 import be.alexandre01.dreamnetwork.plugins.spigot.communication.SpigotRequestReponse;
 import lombok.*;
+import org.bukkit.Bukkit;
 
 import java.util.logging.Logger;
 
@@ -65,5 +66,10 @@ public class DNSpigotAPI extends NetworkBaseAPI{
         this.basicClientHandler = basicClientHandler;
         getRequestManager().setBasicClientHandler(basicClientHandler);
         basicClientHandler.getResponses().add(new SpigotRequestReponse());
+    }
+
+    @Override
+    public void shutdownProcess() {
+        Bukkit.shutdown();
     }
 }

@@ -61,7 +61,7 @@ public class DNBungee extends Plugin {
 
         type = "BUNGEE";
 
-         tablistCustomizer = new TablistCustomizer(configuration);
+         tablistCustomizer = new TablistCustomizer();
 
 
         if(!configuration.contains("network.lobby")){

@@ -1,6 +1,8 @@
 package be.alexandre01.dreamnetwork.connection.client;
 
+import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientPipeline;
+import be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -18,7 +20,10 @@ public class BasicClient extends Thread{
 
     @Override
     public void run(){
+        connect();
+    }
 
+    public void connect(){
         String host = "localhost";
         int port = 14520;
         System.out.println("Attempt to connect to "+ host+":"+port +"#TRY_"+ trying);
@@ -43,14 +48,15 @@ public class BasicClient extends Thread{
 
             System.out.println("Retrying to connect...");
             executorService.scheduleAtFixedRate(() -> {
-                super.stop();
-                super.start();
+                System.out.println("Try");
+                connect();
                 executorService.shutdown();
             },5,5, TimeUnit.SECONDS);
             trying ++;
 
             workerGroup.shutdownGracefully();
-            if(trying > 3){
+            if(trying > 6){
+                NetworkBaseAPI.getInstance().shutdownProcess();
                 return;
             }
 
