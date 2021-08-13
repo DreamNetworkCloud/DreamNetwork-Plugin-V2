@@ -189,9 +189,6 @@ public class TablistCustomizer {
 
             lines_by_ticks.forEach((key, value) -> {
                 BaseComponentBuilder baseComponentBuilder;
-                System.out.println("nmbre "+ key);
-                System.out.println("Holy fuck");
-                System.out.println("Holy fuck "+ value);
                 value.forEach((integer, s) -> {
                     System.out.println("tick: "+ key);
                     System.out.println("int > "+ integer +"| String > "+ s);
@@ -249,7 +246,6 @@ public class TablistCustomizer {
                 } catch (IOException e) {
                     System.out.println("no input configuration for tablist.yml");
                     e.printStackTrace();
-                    // An error occurred copying the resource
                 }
             }
         }catch (IOException e){

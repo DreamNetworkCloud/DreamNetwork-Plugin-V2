@@ -24,7 +24,7 @@ public class BasicTransmission extends ClientResponse {
             RequestType requestType = message.getRequest();
             switch (requestType){
                 case SPIGOT_HANDSHAKE_SUCCESS:
-                    DNSpigotAPI.getInstance().setProcessName("s-"+message.getString("PROCESSNAME"));
+                    NetworkBaseAPI.getInstance().setProcessName("s-"+message.getString("PROCESSNAME"));
                     System.out.println("The connection has been established on the remote address: "+ ctx.channel().remoteAddress());
                     break;
                 case BUNGEECORD_HANDSHAKE_SUCCESS:
