@@ -2,6 +2,7 @@ package be.alexandre01.dreamnetwork.plugins.sponge.api;
 
 import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.api.request.RequestManager;
+import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
 import be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot;
 import be.alexandre01.dreamnetwork.plugins.spigot.communication.SpigotRequestReponse;
@@ -46,6 +47,11 @@ public class DNSpongeAPI extends NetworkBaseAPI {
     @Override
     public RequestManager getRequestManager() {
         return dnSponge.getRequestManager();
+    }
+
+    @Override
+    public DNChannelManager getChannelManager() {
+        return dnSponge.getDnChannelManager();
     }
 
     @Override

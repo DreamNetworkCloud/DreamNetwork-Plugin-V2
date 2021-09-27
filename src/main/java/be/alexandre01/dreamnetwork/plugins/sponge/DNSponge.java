@@ -1,6 +1,7 @@
 package be.alexandre01.dreamnetwork.plugins.sponge;
 
 import be.alexandre01.dreamnetwork.api.request.RequestManager;
+import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
 import be.alexandre01.dreamnetwork.connection.client.BasicClient;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
 import be.alexandre01.dreamnetwork.plugins.sponge.api.DNSpongeAPI;
@@ -19,6 +20,8 @@ public class DNSponge {
     private static DNSponge instance;
     @Getter @Setter
     private BasicClientHandler basicClientHandler;
+    @Getter
+    private DNChannelManager dnChannelManager;
     @Getter private BasicClient basicClient;
     @Getter private String version;
     @Getter private String type;
@@ -46,7 +49,7 @@ public class DNSponge {
 
         DNSpongeAPI dnSpongeAPI = new DNSpongeAPI(this);
 
-
+        this.dnChannelManager = new DNChannelManager();
         this.requestManager = new RequestManager();
         //  getLogger().log(Level.INFO,"Enabling the Network Connection on the port "+port+"...");
         basicClient = new BasicClient();

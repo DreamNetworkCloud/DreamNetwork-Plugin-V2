@@ -1,8 +1,7 @@
 package be.alexandre01.dreamnetwork.plugins.spigot.command;
 
-import be.alexandre01.dreamnetwork.api.request.Request;
+import be.alexandre01.dreamnetwork.api.request.RequestPacket;
 import be.alexandre01.dreamnetwork.api.request.RequestType;
-import be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.DNSpigotAPI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -46,7 +45,7 @@ public class NetworkCommand extends Command {
                     if(i != args.length-1)
                         cmd.append(" ");
                 }
-                Request executecmd = DNSpigotAPI.getInstance().getRequestManager().sendRequest(RequestType.SPIGOT_EXECUTE_COMMAND,args[1],cmd.toString());
+                RequestPacket executecmd = DNSpigotAPI.getInstance().getRequestManager().sendRequest(RequestType.SPIGOT_EXECUTE_COMMAND,args[1],cmd.toString());
 
                 executecmd.setRequestFutureResponse(message -> {
                     System.out.println(message);
@@ -62,7 +61,7 @@ public class NetworkCommand extends Command {
 
                 switch (args.length){
                     case 2:
-                        Request start = DNSpigotAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_START_SERVER,args[1]);
+                        RequestPacket start = DNSpigotAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_START_SERVER,args[1]);
                         sender.sendMessage("§aLa requête pour allumer le serveur §l"+args[1]+"§a a bien été envoyé. Veuillez attendre.");
                         start.setRequestFutureResponse(message -> {
                             System.out.println(message);
@@ -84,7 +83,7 @@ public class NetworkCommand extends Command {
         if(args.length == 1){
             List<String> optionsType = new ArrayList<>();
             for(SubCommand s : SubCommand.values()){
-                if(s.name().startsWith(args[0]))
+                if(s.name().startsWith(args[0].toUpperCase()))
                     optionsType.add(s.name());
             }
             return optionsType;

@@ -1,6 +1,7 @@
 package be.alexandre01.dreamnetwork.plugins.bungeecord;
 
 import be.alexandre01.dreamnetwork.api.request.RequestManager;
+import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
 import be.alexandre01.dreamnetwork.connection.client.BasicClient;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.api.DNBungeeAPI;
@@ -30,6 +31,7 @@ import java.util.List;
 public class DNBungee extends Plugin {
     @Getter private static DNBungee instance;
     private BasicClientHandler basicClientHandler;
+    private DNChannelManager dnChannelManager;
     private BasicClient basicClient;
     private String version;
     private String type;
@@ -122,12 +124,13 @@ public class DNBungee extends Plugin {
         DNBungeeAPI dnBungeeAPI = new DNBungeeAPI(this);
 
 
+
         getProxy().getPluginManager().registerListener(this,new RedirectConnection());
         getProxy().getPluginManager().registerListener(this,new MOTD());
 
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Maintenance("maintenance"));
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Slot("slot"));
-
+        this.dnChannelManager = new DNChannelManager();
         this.requestManager = new RequestManager();
 
         //  getLogger().log(Level.INFO,"Enabling the Network Connection on the port "+port+"...");

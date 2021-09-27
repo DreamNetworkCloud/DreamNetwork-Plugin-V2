@@ -4,9 +4,7 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Message extends LinkedHashMap<String, Object> {
     private static final Type HASH_MAP_TYPE = new TypeToken<Map<String, Object>>() {
@@ -43,7 +41,7 @@ public class Message extends LinkedHashMap<String, Object> {
     }
 
     public String getChannel(){
-        return (String) get("channel");
+        return containsKey("channel") ? (String) get("channel") : "core";
     }
     public Message setHeader(String header){
         put("header",header);
@@ -52,9 +50,14 @@ public class Message extends LinkedHashMap<String, Object> {
     public void setProvider(String provider){
         put("provider",provider);
     }
-
+    public void setSender(String provider){
+        put("sender",provider);
+    }
     public String getProvider(){
         return (String) get("provider");
+    }
+    public String getSender(){
+        return (String) get("sender");
     }
     public boolean hasProvider(){
         return containsKey("provider");
@@ -95,7 +98,9 @@ public class Message extends LinkedHashMap<String, Object> {
     public long getLong(String key){
         return (long) Long.parseLong(getString(key));
     }
-
+    public List<?> getList(String key) {
+        return new ArrayList<>(Arrays.asList(getString(key).split(",")));
+    }
     public boolean getBoolean(String key){
         return (boolean) Boolean.parseBoolean(getString(key));
     }

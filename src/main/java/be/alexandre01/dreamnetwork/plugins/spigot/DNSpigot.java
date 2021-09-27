@@ -1,6 +1,7 @@
 package be.alexandre01.dreamnetwork.plugins.spigot;
 
 import be.alexandre01.dreamnetwork.api.request.RequestManager;
+import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
 import be.alexandre01.dreamnetwork.connection.client.BasicClient;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.DNSpigotAPI;
@@ -20,13 +21,14 @@ import java.lang.reflect.Field;
 
 public class DNSpigot extends JavaPlugin{
 
-   @Getter private static DNSpigot instance;
-   @Getter @Setter private BasicClientHandler basicClientHandler;
-   @Getter private BasicClient basicClient;
-   @Getter private String version;
+    @Getter private static DNSpigot instance;
+    @Getter @Setter private BasicClientHandler basicClientHandler;
+    @Getter private BasicClient basicClient;
+    @Getter private String version;
     @Getter private String type;
     @Getter private int port;
     @Getter private RequestManager requestManager;
+    @Getter private DNChannelManager dnChannelManager;
     public boolean isReloading = false;
     @Override
     public void onEnable(){
@@ -49,6 +51,7 @@ public class DNSpigot extends JavaPlugin{
 
 
         this.requestManager = new RequestManager();
+        this.dnChannelManager = new DNChannelManager();
       //  getLogger().log(Level.INFO,"Enabling the Network Connection on the port "+port+"...");
         basicClient = new BasicClient();
         Thread thread = new Thread(basicClient);

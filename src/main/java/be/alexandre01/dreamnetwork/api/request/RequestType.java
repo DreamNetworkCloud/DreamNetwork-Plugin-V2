@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum RequestType {
+    CUSTOM(0),
     /**
      * CORE REQUEST
      */
@@ -31,11 +32,12 @@ public enum RequestType {
     SPIGOT_AUTH(31),
     SPIGOT_HANDSHAKE(32),
     SPIGOT_HANDSHAKE_SUCCESS(33),
-    SPIGOT_GET_SERVERS(34),
-    SPIGOT_EXECUTE_COMMAND(35),
-    SPIGOT_LOG_MESSAGE(36),
-    SPIGOT_WARNING_MESSAGE(37),
-    SPIGOT_ERROR_MESSAGE(38),
+    SPIGOT_NEW_SERVERS(34),
+    SPIGOT_REMOVE_SERVERS(35),
+    SPIGOT_EXECUTE_COMMAND(36),
+    SPIGOT_LOG_MESSAGE(37),
+    SPIGOT_WARNING_MESSAGE(38),
+    SPIGOT_ERROR_MESSAGE(39),
     /**
      * SPIGOT REQUEST
      */
@@ -50,6 +52,7 @@ public enum RequestType {
     BUNGEECORD_LOG_MESSAGE(69),
     BUNGEECORD_WARNING_MESSAGE(70),
     BUNGEECORD_ERROR_MESSAGE(71);
+
 
     @Getter private int id;
     private static final Map<Integer, RequestType> byId = new HashMap<Integer, RequestType>();

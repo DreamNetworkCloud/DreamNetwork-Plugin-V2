@@ -16,7 +16,7 @@ public class DefaultGeneratedRequest extends RequestBuilder {
 
         requestData.put(RequestType.CORE_RETRANSMISSION,(message,args) ->{
             if(args.length != 0)
-                message.set("RETRANSMISSION", args);
+                message.set("RETRANS", args[0]);
             return message;
         });
 

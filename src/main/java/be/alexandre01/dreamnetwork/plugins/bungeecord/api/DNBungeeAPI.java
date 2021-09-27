@@ -2,6 +2,7 @@ package be.alexandre01.dreamnetwork.plugins.bungeecord.api;
 
 import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.api.request.RequestManager;
+import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.DNBungee;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.communication.BungeeRequestReponse;
@@ -54,6 +55,11 @@ public class DNBungeeAPI extends NetworkBaseAPI{
     @Override
     public RequestManager getRequestManager() {
         return dnBungee.getRequestManager();
+    }
+
+    @Override
+    public DNChannelManager getChannelManager() {
+        return dnBungee.getDnChannelManager();
     }
 
     @Override

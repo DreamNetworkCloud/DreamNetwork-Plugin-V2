@@ -1,14 +1,19 @@
 package be.alexandre01.dreamnetwork.api;
 
 import be.alexandre01.dreamnetwork.api.request.RequestManager;
+import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public abstract class NetworkBaseAPI {
+    @Getter @Setter private ArrayList<String> servers = new ArrayList<>();
+
     private static NetworkBaseAPI instance;
 
     public static NetworkBaseAPI getInstance() {
@@ -31,6 +36,8 @@ public abstract class NetworkBaseAPI {
     public abstract Logger getLogger();
 
     public abstract RequestManager getRequestManager();
+
+    public abstract DNChannelManager getChannelManager();
 
     public abstract void setRequestManager(RequestManager requestManager);
 

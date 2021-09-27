@@ -4,6 +4,7 @@ import be.alexandre01.dreamnetwork.connection.client.communication.ClientRespons
 import be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot;
 import be.alexandre01.dreamnetwork.utils.messages.Message;
 import io.netty.channel.ChannelHandlerContext;
+import org.bukkit.Bukkit;
 import org.spongepowered.api.Sponge;
 
 public class SpongeRequestReponse extends ClientResponse {
@@ -14,6 +15,8 @@ public class SpongeRequestReponse extends ClientResponse {
                 case SPIGOT_EXECUTE_COMMAND:
                         Sponge.getCommandManager().process(Sponge.getServer().getConsole(), message.getString("CMD"));
                     break;
+                case CORE_STOP_SERVER:
+                    Sponge.getServer().shutdown();
             }
         }
     }
