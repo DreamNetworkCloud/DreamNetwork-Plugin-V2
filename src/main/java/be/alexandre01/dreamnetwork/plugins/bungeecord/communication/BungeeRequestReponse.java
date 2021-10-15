@@ -1,13 +1,10 @@
 package be.alexandre01.dreamnetwork.plugins.bungeecord.communication;
 
-import be.alexandre01.dreamnetwork.connection.client.communication.ClientResponse;
+import be.alexandre01.dreamnetwork.api.request.communication.ClientResponse;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.DNBungee;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.api.DNBungeeAPI;
 import be.alexandre01.dreamnetwork.utils.messages.Message;
 import io.netty.channel.ChannelHandlerContext;
-import org.bukkit.Bukkit;
-
-import java.util.logging.Level;
 
 public class BungeeRequestReponse extends ClientResponse {
 

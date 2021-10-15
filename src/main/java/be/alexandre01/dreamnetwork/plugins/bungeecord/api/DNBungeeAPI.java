@@ -8,15 +8,15 @@ import be.alexandre01.dreamnetwork.plugins.bungeecord.DNBungee;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.communication.BungeeRequestReponse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import java.util.logging.Logger;
 
 @EqualsAndHashCode(callSuper = true)
-@Data
 public class DNBungeeAPI extends NetworkBaseAPI{
     BasicClientHandler basicClientHandler;
     DNBungee dnBungee;
-    DNBungeeServersManager dnBungeeServersManager;
+    @Getter DNBungeeServersManager dnBungeeServersManager;
     String processName = null;
     public DNBungeeAPI(DNBungee dnBungee){
         this.dnBungee = dnBungee;

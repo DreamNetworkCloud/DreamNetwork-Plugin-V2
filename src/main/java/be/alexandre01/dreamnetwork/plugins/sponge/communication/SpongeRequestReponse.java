@@ -1,10 +1,8 @@
 package be.alexandre01.dreamnetwork.plugins.sponge.communication;
 
-import be.alexandre01.dreamnetwork.connection.client.communication.ClientResponse;
-import be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot;
+import be.alexandre01.dreamnetwork.api.request.communication.ClientResponse;
 import be.alexandre01.dreamnetwork.utils.messages.Message;
 import io.netty.channel.ChannelHandlerContext;
-import org.bukkit.Bukkit;
 import org.spongepowered.api.Sponge;
 
 public class SpongeRequestReponse extends ClientResponse {

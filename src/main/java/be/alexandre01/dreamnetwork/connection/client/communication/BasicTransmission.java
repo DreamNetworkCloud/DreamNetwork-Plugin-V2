@@ -5,6 +5,7 @@ import be.alexandre01.dreamnetwork.api.request.ReceivedPacket;
 import be.alexandre01.dreamnetwork.api.request.RequestPacket;
 import be.alexandre01.dreamnetwork.api.request.RequestType;
 import be.alexandre01.dreamnetwork.api.request.channels.DNChannel;
+import be.alexandre01.dreamnetwork.api.request.communication.ClientResponse;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.api.DNBungeeAPI;
 import be.alexandre01.dreamnetwork.utils.messages.Message;
 import io.netty.channel.ChannelHandlerContext;

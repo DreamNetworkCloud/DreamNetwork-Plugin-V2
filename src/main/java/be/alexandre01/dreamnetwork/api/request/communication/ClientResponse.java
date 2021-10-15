@@ -1,4 +1,4 @@
-package be.alexandre01.dreamnetwork.connection.client.communication;
+package be.alexandre01.dreamnetwork.api.request.communication;
 
 import be.alexandre01.dreamnetwork.utils.messages.Message;
 import io.netty.channel.ChannelHandler;

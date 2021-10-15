@@ -13,7 +13,6 @@ import org.bukkit.Bukkit;
 import java.util.logging.Logger;
 
 @EqualsAndHashCode(callSuper = true)
-@Data
 public class DNSpigotAPI extends NetworkBaseAPI{
     BasicClientHandler basicClientHandler;
     DNSpigot dnSpigot;

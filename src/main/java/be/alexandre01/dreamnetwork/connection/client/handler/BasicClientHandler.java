@@ -3,7 +3,7 @@ package be.alexandre01.dreamnetwork.connection.client.handler;
 import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.api.request.RequestType;
 import be.alexandre01.dreamnetwork.connection.client.BasicClient;
-import be.alexandre01.dreamnetwork.connection.client.communication.ClientResponse;
+import be.alexandre01.dreamnetwork.api.request.communication.ClientResponse;
 import be.alexandre01.dreamnetwork.connection.client.communication.BasicTransmission;
 import be.alexandre01.dreamnetwork.utils.messages.Message;
 import io.netty.buffer.ByteBuf;
