@@ -93,6 +93,11 @@
                                     <![CDATA[<methods>]]>;
                                     }
                                 </option>
+                                <option>-keep class be.alexandre01.dreamnetwork.utils.messages.**</option>
+                                <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.utils.messages.**{
+                                    <![CDATA[<methods>]]>;
+                                    }
+                                </option>
                                 <option>
                                     -keepclassmembers class * extends java.lang.Enum {
                                     <![CDATA[<fields>]]>;
