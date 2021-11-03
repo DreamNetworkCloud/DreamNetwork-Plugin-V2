@@ -23,9 +23,14 @@ public class SpigotRequestReponse extends ClientResponse {
                     Bukkit.shutdown();
                     break;
                 case SPIGOT_NEW_SERVERS:
+                    List<String> nServers = (List<String>) message.getList("SERVERS");
+                    NetworkBaseAPI.getInstance().getServers().addAll(nServers);
+                    System.out.println("New servers : "+ nServers);
+                    break;
+                case SPIGOT_REMOVE_SERVERS:
                     List<String> servers = (List<String>) message.getList("SERVERS");
-                    NetworkBaseAPI.getInstance().getServers().addAll(servers);
-                    System.out.println("New servers : "+ servers);
+                    NetworkBaseAPI.getInstance().getServers().remove(servers);
+                    System.out.println("Remove servers : "+ servers);
             }
         }
     }

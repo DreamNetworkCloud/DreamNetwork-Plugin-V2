@@ -10,6 +10,8 @@ public class BasicDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         System.out.println("Decode");
+
+        System.out.println(in.readableBytes());
         while (in.readableBytes() > 0) {
             in.markReaderIndex();
             if (in.readableBytes() < 4) return;
@@ -18,6 +20,7 @@ public class BasicDecoder extends ByteToMessageDecoder {
                 in.resetReaderIndex();
                 return;
             }
+
             out.add(in.copy(in.readerIndex(), length));
             in.skipBytes(length);
         }

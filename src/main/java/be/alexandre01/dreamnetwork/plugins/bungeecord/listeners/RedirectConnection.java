@@ -121,9 +121,12 @@ public class RedirectConnection implements Listener {
     @EventHandler
     public void onServerKick(ServerKickEvent event) {
         if(dnBungee.cancelKick){
-            System.out.println("Kick cancelled "+ getServer(dnBungee.kickServerRedirection));
+            ServerInfo s = getServer(dnBungee.kickServerRedirection);
+            if(s == null || s == event.getCancelServer()){
+                return;
+            }
             event.setCancelled(true);
-            event.setCancelServer(getServer(dnBungee.kickServerRedirection));
+            event.setCancelServer(s);
         }
     }
 

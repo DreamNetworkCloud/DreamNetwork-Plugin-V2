@@ -25,6 +25,9 @@ public class BungeeRequestReponse extends ClientResponse {
                 case BUNGEECORD_UNREGISTER_SERVER:
                     dnBungeeAPI.getDnBungeeServersManager().unregisterServer(message.getString("PROCESSNAME"));
                     break;
+                case BUNGEECORD_EXECUTE_COMMAND:
+                    DNBungee.getInstance().getProxy().getPluginManager().dispatchCommand(DNBungee.getInstance().getProxy().getConsole(),message.getString("CMD"));
+                    break;
                 case BUNGEECORD_LOG_MESSAGE:
                    dnBungeeAPI.getLogger().info(message.getString("LOG"));
                 case BUNGEECORD_WARNING_MESSAGE:

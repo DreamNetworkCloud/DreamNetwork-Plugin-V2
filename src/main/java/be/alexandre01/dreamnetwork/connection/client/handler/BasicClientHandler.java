@@ -15,6 +15,7 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.server.v1_8_R3.PacketPlayOutResourcePackSend;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter {
         if(queue.get(msg) != null){
             future.addListener(queue.get(msg));
         }
+
     }
 
     @Override
@@ -70,10 +72,15 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter {
         ByteBuf m = (ByteBuf) msg; // (1)
         String s_to_decode = m.toString(StandardCharsets.UTF_8);
 
+        System.out.println(s_to_decode);
+
         //TO DECODE STRING IF ENCODED AS AES
 
         if(!Message.isJSONValid(s_to_decode))
             return;
+
+
+        System.out.println("TO message");
 
         try {
             Message message = Message.createFromJsonString(s_to_decode);
