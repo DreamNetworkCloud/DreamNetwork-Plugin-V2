@@ -6,6 +6,7 @@ import be.alexandre01.dreamnetwork.utils.messages.Message;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Getter;
+import org.spongepowered.api.util.Tuple;
 import sun.nio.ch.Net;
 
 @Getter
@@ -28,7 +29,7 @@ public class ReceivedPacket {
             this.requestType = message.getRequest();
         this.listener = null;
         if(message.containsKey("RID")){
-            this.RID = Integer.parseInt((String) message.get("RID"));
+            this.RID = message.getRequestID();
         }
         this.provider = message.getProvider();
         this.channel = message.getChannel();
@@ -49,7 +50,7 @@ public class ReceivedPacket {
 
         message = requestData.write(message,this.provider);
 
-        message.put("RID",""+RID);
+        message.put("RID",RID);
         basicClientHandler.writeAndFlush(message,listener);
     }
 }

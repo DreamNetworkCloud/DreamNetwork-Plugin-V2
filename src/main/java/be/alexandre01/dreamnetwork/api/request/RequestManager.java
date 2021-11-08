@@ -29,7 +29,7 @@ public class RequestManager {
         RequestBuilder.RequestData requestData = requestBuilder.requestData.get(request.getRequestType());
         request.setMessage(requestData.write(request.getMessage(),args));
         basicClientHandler.writeAndFlush(request.getMessage(),request.getListener());
-        requests.put(request.getRID(),request);
+        requests.put(request.getRequestID(),request);
         return request;
     }
 
@@ -51,7 +51,7 @@ public class RequestManager {
          request.setBasicClientHandler(basicClientHandler);
         System.out.println(basicClientHandler);
          basicClientHandler.writeAndFlush(request.getMessage(),listener);
-        requests.put(request.getRID(),request);
+        requests.put(request.getRequestID(),request);
          return request;
         // NetworkBaseAPI.getInstance().getBasicClientHandler().writeAndFlush(requestData.write(message,args),listener);
     }

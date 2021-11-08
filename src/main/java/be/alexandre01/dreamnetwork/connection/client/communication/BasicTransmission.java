@@ -14,7 +14,6 @@ public class BasicTransmission extends ClientResponse {
 
     @Override
     public void onResponse(Message message, ChannelHandlerContext ctx) throws Exception {
-        System.out.println(message);
         ReceivedPacket receivedPacket = new ReceivedPacket(message);
         DNChannel dnChannel = NetworkBaseAPI.getInstance().getChannelManager().getChannel(message.getChannel());
         if(dnChannel != null){
@@ -22,7 +21,7 @@ public class BasicTransmission extends ClientResponse {
         }
         if(message.hasProvider()){
             if(message.getProvider().equals(NetworkBaseAPI.getInstance().getProcessName())){
-                RequestPacket request = NetworkBaseAPI.getInstance().getRequestManager().getRequest(Integer.parseInt((String) message.get("RID")));
+                RequestPacket request = NetworkBaseAPI.getInstance().getRequestManager().getRequest(message.getRequestID());
                 if(request != null)
                     request.getRequestFutureResponse().onReceived(receivedPacket);
             }

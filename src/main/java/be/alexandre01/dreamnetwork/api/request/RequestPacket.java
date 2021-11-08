@@ -13,7 +13,7 @@ public class RequestPacket {
 
     private final RequestType requestType;
     private final GenericFutureListener<? extends Future<? super Void>> listener;
-    private final int RID;
+    private final int RequestID;
     private Message message;
     private String provider;
     private RequestFutureResponse requestFutureResponse;
@@ -23,31 +23,31 @@ public class RequestPacket {
     public RequestPacket(RequestType requestType, Message message, GenericFutureListener<? extends Future<? super Void>> listener) {
         this.requestType = requestType;
         this.listener = listener;
-        this.RID = currentId;
+        this.RequestID = currentId;
         this.message = message;
         this.provider = NetworkBaseAPI.getInstance().getProcessName();
         message.setProvider(provider);
-        message.put("RID",""+RID);
+        message.put("RID",RequestID);
         currentId++;
     }
     public RequestPacket(Message message, GenericFutureListener<? extends Future<? super Void>> listener) {
         this.requestType = RequestType.CUSTOM;
         this.listener = listener;
-        this.RID = currentId;
+        this.RequestID = currentId;
         this.message = message;
         this.provider = NetworkBaseAPI.getInstance().getProcessName();
         message.setProvider(provider);
-        message.put("RID",""+RID);
+        message.put("RID",RequestID);
         currentId++;
     }
     public RequestPacket(Message message) {
         this.requestType = RequestType.CUSTOM;
         this.listener = null;
-        this.RID = currentId;
+        this.RequestID = currentId;
         this.message = message;
         this.provider = NetworkBaseAPI.getInstance().getProcessName();
         message.setProvider(provider);
-        message.put("RID",""+RID);
+        message.put("RID",RequestID);
         currentId++;
     }
 
