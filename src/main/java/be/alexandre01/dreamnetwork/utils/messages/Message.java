@@ -95,12 +95,12 @@ public class Message extends LinkedHashMap<String, Object> {
     }
 
     public int getInt(String key){
-        return (int) get(key);
+        return ((Double) get(key)).intValue();
         //  return (int) Integer.parseInt(getString(key));
     }
 
     public float getFloat(String key){
-        return (float) get(key);
+        return ((Double) get(key)).floatValue();
         //return (float) Float.parseFloat(getString(key));
     }
 

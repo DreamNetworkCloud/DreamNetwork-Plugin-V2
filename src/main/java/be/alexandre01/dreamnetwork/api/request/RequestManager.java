@@ -25,7 +25,7 @@ public class RequestManager {
         System.out.println(basicClientHandler);
       
     }
-    public RequestPacket sendRequest(RequestPacket request, String... args){
+    public RequestPacket sendRequest(RequestPacket request, Object... args){
         RequestBuilder.RequestData requestData = requestBuilder.requestData.get(request.getRequestType());
         request.setMessage(requestData.write(request.getMessage(),args));
         basicClientHandler.writeAndFlush(request.getMessage(),request.getListener());
@@ -33,7 +33,7 @@ public class RequestManager {
         return request;
     }
 
-    public RequestPacket sendRequest(RequestType requestType, Message message, GenericFutureListener<? extends Future<? super Void>> listener, String... args){
+    public RequestPacket sendRequest(RequestType requestType, Message message, GenericFutureListener<? extends Future<? super Void>> listener, Object... args){
          if(!requestBuilder.requestData.containsKey(requestType)){
              try {
                  throw new RequestNotFoundException();
@@ -56,13 +56,13 @@ public class RequestManager {
         // NetworkBaseAPI.getInstance().getBasicClientHandler().writeAndFlush(requestData.write(message,args),listener);
     }
 
-    public RequestPacket sendRequest(RequestType requestType, String... args){
+    public RequestPacket sendRequest(RequestType requestType, Object... args){
         return this.sendRequest(requestType,new Message(),null,args);
     }
-    public RequestPacket sendRequest(RequestType requestType, Message message, String... args){
+    public RequestPacket sendRequest(RequestType requestType, Message message, Object... args){
         return this.sendRequest(requestType,message,null,args);
     }
-    public RequestPacket sendRequest(RequestType requestType, boolean notifiedWhenSent, String... args){
+    public RequestPacket sendRequest(RequestType requestType, boolean notifiedWhenSent, Object... args){
         if(notifiedWhenSent){
            return this.sendRequest(requestType,new Message(),future -> {
                 System.out.println("Request "+ requestType.name()+" sended with success!");
@@ -71,7 +71,7 @@ public class RequestManager {
         return this.sendRequest(requestType,new Message(),null,args);
     }
 
-    public RequestPacket sendRequest(RequestType requestType, Message message, boolean notifiedWhenSent, String... args){
+    public RequestPacket sendRequest(RequestType requestType, Message message, boolean notifiedWhenSent, Object... args){
         if(notifiedWhenSent){
            return this.sendRequest(requestType,message,future -> {
                 System.out.println("Request"+ requestType.name()+" sended with success!");

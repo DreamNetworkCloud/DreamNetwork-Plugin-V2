@@ -22,7 +22,7 @@ public class RequestBuilder {
 
 
     public interface RequestData{
-        public Message write(Message message,String... args);
+        public Message write(Message message,Object... args);
     }
 
 }

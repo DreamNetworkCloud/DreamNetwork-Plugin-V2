@@ -45,7 +45,7 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter {
         }
         basicClient.trying = 0;
 
-        NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_HANDSHAKE,true);
+        NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_HANDSHAKE);
     }
 
     private void taskQueue(){
