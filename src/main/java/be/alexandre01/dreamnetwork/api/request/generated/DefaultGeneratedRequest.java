@@ -50,5 +50,13 @@ public class DefaultGeneratedRequest extends RequestBuilder {
             message.set("CMD",args[1]);
             return message;
         });
+        requestData.put(RequestType.CORE_REGISTER_CHANNEL,(message, args) -> {
+            message.set("CHANNEL",args[0]);
+            return message;
+        });
+        requestData.put(RequestType.CORE_UNREGISTER_CHANNEL,(message, args) -> {
+            message.set("CHANNEL",args[0]);
+            return message;
+        });
     }
 }

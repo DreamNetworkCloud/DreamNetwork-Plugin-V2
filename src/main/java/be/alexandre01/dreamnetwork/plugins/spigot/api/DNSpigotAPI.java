@@ -6,6 +6,7 @@ import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.communication.BungeeRequestReponse;
 import be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot;
+import be.alexandre01.dreamnetwork.plugins.spigot.api.events.ServerAttachedEvent;
 import be.alexandre01.dreamnetwork.plugins.spigot.communication.SpigotRequestReponse;
 import lombok.*;
 import org.bukkit.Bukkit;

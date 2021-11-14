@@ -1,12 +1,15 @@
 package be.alexandre01.dreamnetwork.plugins.spigot;
 
+import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.api.request.RequestManager;
 import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
 import be.alexandre01.dreamnetwork.connection.client.BasicClient;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.DNSpigotAPI;
+import be.alexandre01.dreamnetwork.plugins.spigot.api.events.ServerAttachedEvent;
 import be.alexandre01.dreamnetwork.plugins.spigot.command.NetworkCommand;
 import be.alexandre01.dreamnetwork.plugins.spigot.listeners.ReloadListener;
+import be.alexandre01.dreamnetwork.plugins.spigot.listeners.TestChannelListener;
 import be.alexandre01.dreamnetwork.utils.ASCII;
 import lombok.Getter;
 import lombok.Setter;
@@ -59,6 +62,7 @@ public class DNSpigot extends JavaPlugin{
 
         registerCommand("network",new NetworkCommand("network"));
         getServer().getPluginManager().registerEvents(new ReloadListener(),this);
+        getServer().getPluginManager().registerEvents(new TestChannelListener(),this);
     }
 
     @Override
@@ -74,6 +78,10 @@ public class DNSpigot extends JavaPlugin{
 
     }
 
+    public void callServerAttachedEvent(){
+        ServerAttachedEvent serverAttachedEvent = new ServerAttachedEvent();
+        DNSpigot.getInstance().getServer().getPluginManager().callEvent(serverAttachedEvent);
+    }
     public void registerCommand(String commandName, Command commandClass){
         try{
             final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
@@ -87,6 +95,8 @@ public class DNSpigot extends JavaPlugin{
         }
 
     }
+
+
 
 
 }

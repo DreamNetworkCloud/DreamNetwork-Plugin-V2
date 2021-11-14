@@ -72,7 +72,7 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter {
         ByteBuf m = (ByteBuf) msg; // (1)
         String s_to_decode = m.toString(StandardCharsets.UTF_8);
 
-        System.out.println(s_to_decode);
+         System.out.println("To_Decode >> "+ s_to_decode);
 
         //TO DECODE STRING IF ENCODED AS AES
 
@@ -80,7 +80,7 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter {
             return;
 
 
-        System.out.println("TO message");
+        //System.out.println("TO message");
 
         try {
             Message message = Message.createFromJsonString(s_to_decode);

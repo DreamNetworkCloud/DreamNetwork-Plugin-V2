@@ -1,7 +1,7 @@
 package be.alexandre01.dreamnetwork.api.request;
 
-import be.alexandre01.dreamnetwork.utils.messages.Message;
+import be.alexandre01.dreamnetwork.api.request.channels.ChannelPacket;
 
 public interface RequestFutureResponse {
-    void onReceived(ReceivedPacket receivedPacket);
+    void onReceived(ChannelPacket receivedPacket);
 }
