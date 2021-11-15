@@ -1,5 +1,6 @@
 package be.alexandre01.dreamnetwork.api;
 
+import be.alexandre01.dreamnetwork.api.objects.RemoteService;
 import be.alexandre01.dreamnetwork.api.request.RequestManager;
 import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
@@ -9,10 +10,12 @@ import lombok.Setter;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 public abstract class NetworkBaseAPI {
     @Getter @Setter private ArrayList<String> servers = new ArrayList<>();
+    @Getter @Setter private HashMap<String,RemoteService> services = new HashMap<>();
 
     private static NetworkBaseAPI instance;
 
