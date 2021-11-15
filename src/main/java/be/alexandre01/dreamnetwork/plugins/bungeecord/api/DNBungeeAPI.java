@@ -6,6 +6,7 @@ import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.DNBungee;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.communication.BungeeRequestReponse;
+import be.alexandre01.dreamnetwork.plugins.bungeecord.communication.generated.BungeeGeneratedRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -74,6 +75,7 @@ public class DNBungeeAPI extends NetworkBaseAPI{
         this.basicClientHandler = basicClientHandler;
         getRequestManager().setBasicClientHandler(basicClientHandler);
         basicClientHandler.getResponses().add(new BungeeRequestReponse());
+        getRequestManager().getRequestBuilder().addRequestBuilder(new BungeeGeneratedRequest());
     }
 
     @Override

@@ -9,7 +9,9 @@ import be.alexandre01.dreamnetwork.plugins.bungeecord.components.commands.Mainte
 import be.alexandre01.dreamnetwork.plugins.bungeecord.components.TablistCustomizer;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.components.commands.Slot;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.components.listeners.MOTD;
+import be.alexandre01.dreamnetwork.plugins.bungeecord.listeners.PlayerServerListener;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.listeners.RedirectConnection;
+import be.alexandre01.dreamnetwork.plugins.bungeecord.objects.PlayerManagement;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.DNSpigotAPI;
 import be.alexandre01.dreamnetwork.utils.ASCII;
 import lombok.Data;
@@ -45,8 +47,10 @@ public class DNBungee extends Plugin {
     public List<String> allowedPlayer;
     public String lobby;
     public boolean logoStatus;
+    public boolean autoSendPlayer;
     public boolean connexionOnLobby;
     public TablistCustomizer tablistCustomizer;
+    @Getter private final PlayerManagement playerManagement = new PlayerManagement();
 
     @Override
     public void onEnable(){
@@ -94,7 +98,7 @@ public class DNBungee extends Plugin {
             kickServerRedirection = configuration.getString("network.kickRedirection.enabled");
         }
         if(!configuration.contains("network.status")){
-            configuration.set("network.status.logo",true);
+            configuration.set("network.status.logo",false);
             saveConfig();
         }
         logoStatus = configuration.getBoolean("network.status.logo");
@@ -103,6 +107,11 @@ public class DNBungee extends Plugin {
             configuration.set("network.allowed-players-maintenance",new ArrayList<>());
             saveConfig();
         }
+        if(!configuration.contains("network.players.autoSend")){
+            configuration.set("network.players.autoSend",false);
+            saveConfig();
+        }
+        autoSendPlayer = configuration.getBoolean("network.players.autoSend");
         for(String string : configuration.getStringList("network.allowed-players-maintenance")){
             allowedPlayer.add(string.toLowerCase());
         }
@@ -125,6 +134,8 @@ public class DNBungee extends Plugin {
 
 
         getProxy().getPluginManager().registerListener(this,new RedirectConnection());
+        if(autoSendPlayer)
+            getProxy().getPluginManager().registerListener(this,new PlayerServerListener());
         getProxy().getPluginManager().registerListener(this,new MOTD());
 
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Maintenance("maintenance"));

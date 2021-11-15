@@ -8,7 +8,7 @@ import java.util.Map;
 public enum RequestType {
     CUSTOM(0),
     /**
-     * CORE REQUEST
+     * CORE REQUESTS
      */
 
     CORE_HANDSHAKE(1),
@@ -28,11 +28,11 @@ public enum RequestType {
     CORE_REMOVE_PLAYER(14),
     CORE_REGISTER_CHANNEL(15),
     CORE_UNREGISTER_CHANNEL(16),
-
-
+    CORE_ASK_DATA(17),
     /**
-     * SPIGOT REQUEST
+     * SPIGOT REQUESTS
      */
+
     SPIGOT_AUTH(31),
     SPIGOT_HANDSHAKE(32),
     SPIGOT_HANDSHAKE_SUCCESS(33),
@@ -42,6 +42,8 @@ public enum RequestType {
     SPIGOT_LOG_MESSAGE(37),
     SPIGOT_WARNING_MESSAGE(38),
     SPIGOT_ERROR_MESSAGE(39),
+    SPIGOT_UPDATE_PLAYERS(40),
+    SPIGOT_UNREGISTER_PLAYERS(41),
     /**
      * SPIGOT REQUEST
      */
