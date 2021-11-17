@@ -4,6 +4,9 @@ import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.api.objects.RemoteService;
 import be.alexandre01.dreamnetwork.api.objects.server.DNServer;
 import be.alexandre01.dreamnetwork.api.request.RequestType;
+import be.alexandre01.dreamnetwork.plugins.spigot.api.events.server.ServerStartedEvent;
+import be.alexandre01.dreamnetwork.plugins.spigot.api.events.server.ServerStoppedEvent;
+import org.bukkit.Bukkit;
 
 public class BaseService extends RemoteService {
     public BaseService(String name) {
@@ -20,24 +23,29 @@ public class BaseService extends RemoteService {
         String[] numSearch = serverName.split("-");
         int i = Integer.parseInt(numSearch[numSearch.length-1]);
 
-        DNServer dnServer = new DNServer(numSearch[0],i);
+        DNServer dnServer = new DNServer(numSearch[0],i,this);
 
         dnServers.put(i,dnServer);
     }
     public void createServer(String serverName,int id){
-        DNServer dnServer = new DNServer(serverName,id);
+        DNServer dnServer = new DNServer(serverName,id,this);
 
         dnServers.put(id,dnServer);
+
+        ServerStartedEvent event = new ServerStartedEvent(dnServer);
+        Bukkit.getPluginManager().callEvent(event);
     }
     public void removeServer(String serverName){
         System.out.println(serverName);
         String[] numSearch = serverName.split("-");
-        int i = Integer.parseInt(numSearch[numSearch.length-1]);
-
-        dnServers.remove(i);
+        int id = Integer.parseInt(numSearch[numSearch.length-1]);
+        removeServer(id);
     }
 
     public void removeServer(int id){
+        DNServer dnServer = dnServers.get(id);
         dnServers.remove(id);
+        ServerStoppedEvent event = new ServerStoppedEvent(dnServer);
+        Bukkit.getPluginManager().callEvent(event);
     }
 }

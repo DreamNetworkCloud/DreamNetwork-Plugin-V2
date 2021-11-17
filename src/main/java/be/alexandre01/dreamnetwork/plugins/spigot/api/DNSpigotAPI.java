@@ -1,13 +1,13 @@
 package be.alexandre01.dreamnetwork.plugins.spigot.api;
 
 import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
+import be.alexandre01.dreamnetwork.api.objects.player.DNPlayerManager;
 import be.alexandre01.dreamnetwork.api.request.RequestManager;
 import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
-import be.alexandre01.dreamnetwork.plugins.bungeecord.communication.BungeeRequestReponse;
 import be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot;
-import be.alexandre01.dreamnetwork.plugins.spigot.api.events.ServerAttachedEvent;
 import be.alexandre01.dreamnetwork.plugins.spigot.communication.SpigotRequestReponse;
+import be.alexandre01.dreamnetwork.plugins.spigot.communication.generated.SpigotGeneratedRequest;
 import lombok.*;
 import org.bukkit.Bukkit;
 
@@ -18,6 +18,7 @@ public class DNSpigotAPI extends NetworkBaseAPI{
     BasicClientHandler basicClientHandler;
     DNSpigot dnSpigot;
     String processName = null;
+    @Getter private final DNPlayerManager dnPlayerManager = new DNPlayerManager();
 
     public DNSpigotAPI(DNSpigot dnSpigot){
         this.dnSpigot = dnSpigot;
@@ -72,6 +73,7 @@ public class DNSpigotAPI extends NetworkBaseAPI{
         this.basicClientHandler = basicClientHandler;
         getRequestManager().setBasicClientHandler(basicClientHandler);
         basicClientHandler.getResponses().add(new SpigotRequestReponse());
+        getRequestManager().getRequestBuilder().addRequestBuilder(new SpigotGeneratedRequest());
     }
 
     @Override

@@ -1,12 +1,11 @@
 package be.alexandre01.dreamnetwork.plugins.spigot;
 
-import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.api.request.RequestManager;
 import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
 import be.alexandre01.dreamnetwork.connection.client.BasicClient;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.DNSpigotAPI;
-import be.alexandre01.dreamnetwork.plugins.spigot.api.events.ServerAttachedEvent;
+import be.alexandre01.dreamnetwork.plugins.spigot.api.events.server.ServerAttachedEvent;
 import be.alexandre01.dreamnetwork.plugins.spigot.command.NetworkCommand;
 import be.alexandre01.dreamnetwork.plugins.spigot.listeners.ReloadListener;
 import be.alexandre01.dreamnetwork.plugins.spigot.listeners.TestChannelListener;

@@ -1,4 +1,4 @@
-package be.alexandre01.dreamnetwork.plugins.spigot.api.events;
+package be.alexandre01.dreamnetwork.plugins.spigot.api.events.server;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

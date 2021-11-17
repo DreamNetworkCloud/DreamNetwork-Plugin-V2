@@ -13,8 +13,8 @@ import java.util.List;
 
 @Getter @Setter
 public abstract class RemoteService {
-    public List<DNPlayer> dnPlayers = new ArrayList<>();
-    public HashMap<Integer, DNServer> dnServers = new HashMap<>();
+    protected List<DNPlayer> dnPlayers = new ArrayList<>();
+    protected HashMap<Integer, DNServer> dnServers = new HashMap<>();
     private String name;
 
     public RemoteService(String name){
