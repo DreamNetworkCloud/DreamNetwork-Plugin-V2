@@ -24,12 +24,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class SpigotRequestReponse extends ClientResponse {
+public class SpigotRequestResponse extends ClientResponse {
     final NetworkBaseAPI networkBaseAPI;
     final DNPlayerManager dnPlayerManager;
     final PluginManager pluginManager;
     final HashMap<String, RemoteService> remoteServices;
-    public SpigotRequestReponse(){
+    public SpigotRequestResponse(){
         networkBaseAPI = NetworkBaseAPI.getInstance();
         dnPlayerManager = ((DNSpigotAPI) DNSpigotAPI.getInstance()).getDnPlayerManager();
         remoteServices = NetworkBaseAPI.getInstance().getServices();
@@ -140,7 +140,7 @@ public class SpigotRequestReponse extends ClientResponse {
                         }
                     break;
                 case SPIGOT_UNREGISTER_PLAYERS:
-                    List<Integer> unPlayers =  (List<Integer>) message.getList("P");
+                    List<Integer> unPlayers =  (List<Integer>) message.getIntegersList("P");
                     for(Integer id : unPlayers){
                         DNPlayer dnPlayer = dnPlayerManager.getDnPlayers().get(id);
                         dnPlayer.getServer().getRemoteService().getDnPlayers().remove(dnPlayer);

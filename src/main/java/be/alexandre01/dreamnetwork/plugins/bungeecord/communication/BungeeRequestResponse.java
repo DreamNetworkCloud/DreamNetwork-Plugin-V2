@@ -6,11 +6,11 @@ import be.alexandre01.dreamnetwork.plugins.bungeecord.api.DNBungeeAPI;
 import be.alexandre01.dreamnetwork.utils.messages.Message;
 import io.netty.channel.ChannelHandlerContext;
 
-public class BungeeRequestReponse extends ClientResponse {
+public class BungeeRequestResponse extends ClientResponse {
 
     public DNBungeeAPI dnBungeeAPI;
 
-    public BungeeRequestReponse(){
+    public BungeeRequestResponse(){
         this.dnBungeeAPI = (DNBungeeAPI) DNBungeeAPI.getInstance();
     }
     @Override

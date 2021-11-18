@@ -117,6 +117,23 @@ public class Message extends LinkedHashMap<String, Object> {
         return (List<T>) get(key);
         // return new ArrayList<T>((Collection<? extends T>) Arrays.asList(getString(key).split(",")));
     }
+    public List<Integer> getIntegersList(String key){
+        List<Double> doubles = (List<Double>) get(key);
+        List<Integer> i = new ArrayList<>();
+        for(Double d : doubles){
+            i.add(d.intValue());
+        }
+        return i;
+    }
+
+    public List<Float> getFloatList(String key){
+        List<Double> doubles = (List<Double>) get(key);
+        List<Float> i = new ArrayList<>();
+        for(Double d : doubles){
+            i.add(d.floatValue());
+        }
+        return i;
+    }
 
 
     public boolean getBoolean(String key){

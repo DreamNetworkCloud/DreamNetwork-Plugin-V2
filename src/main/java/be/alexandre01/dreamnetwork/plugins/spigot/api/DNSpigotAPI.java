@@ -6,7 +6,7 @@ import be.alexandre01.dreamnetwork.api.request.RequestManager;
 import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
 import be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot;
-import be.alexandre01.dreamnetwork.plugins.spigot.communication.SpigotRequestReponse;
+import be.alexandre01.dreamnetwork.plugins.spigot.communication.SpigotRequestResponse;
 import be.alexandre01.dreamnetwork.plugins.spigot.communication.generated.SpigotGeneratedRequest;
 import lombok.*;
 import org.bukkit.Bukkit;
@@ -72,7 +72,7 @@ public class DNSpigotAPI extends NetworkBaseAPI{
     public void setBasicClientHandler(BasicClientHandler basicClientHandler) {
         this.basicClientHandler = basicClientHandler;
         getRequestManager().setBasicClientHandler(basicClientHandler);
-        basicClientHandler.getResponses().add(new SpigotRequestReponse());
+        basicClientHandler.getResponses().add(new SpigotRequestResponse());
         getRequestManager().getRequestBuilder().addRequestBuilder(new SpigotGeneratedRequest());
     }
 

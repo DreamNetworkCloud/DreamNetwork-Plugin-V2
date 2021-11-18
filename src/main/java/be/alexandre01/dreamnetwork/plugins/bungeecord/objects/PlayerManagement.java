@@ -38,9 +38,13 @@ public class PlayerManagement {
 
     public void removePlayer(ProxiedPlayer proxiedPlayer){
         int id = proxiedPlayers.get(proxiedPlayer);
+        System.out.println("Test ?");
         NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_REMOVE_PLAYER,new Message(),future -> {
+            System.out.println("Before Remove");
             removedIds.add(id);
+            System.out.println("After Remove");
         },id);
+        System.out.println("Crash ?");
         proxiedPlayers.remove(proxiedPlayer);
     }
 }

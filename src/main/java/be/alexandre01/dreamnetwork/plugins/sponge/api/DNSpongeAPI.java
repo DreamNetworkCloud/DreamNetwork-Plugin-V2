@@ -4,8 +4,6 @@ import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.api.request.RequestManager;
 import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
-import be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot;
-import be.alexandre01.dreamnetwork.plugins.spigot.communication.SpigotRequestReponse;
 import be.alexandre01.dreamnetwork.plugins.sponge.DNSponge;
 import be.alexandre01.dreamnetwork.plugins.sponge.communication.SpongeRequestReponse;
 import org.spongepowered.api.Sponge;
