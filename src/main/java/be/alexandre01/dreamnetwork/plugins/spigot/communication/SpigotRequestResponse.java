@@ -78,8 +78,9 @@ public class SpigotRequestResponse extends ClientResponse {
                     System.out.println("Remove servers : "+ rServers);
                     break;
                 case SPIGOT_UPDATE_PLAYERS:
+                    System.out.println("UPDATE PLAYERS ?");
                     List<String> upPlayers =  (List<String>) message.getList("P");
-                    
+                    System.out.println(upPlayers);
                     for(String p : upPlayers){
                         DNPlayer dnPlayer = null;
                         Integer id = null;
@@ -91,9 +92,12 @@ public class SpigotRequestResponse extends ClientResponse {
                         String[] split = p.split(";");
 
                         for (int i = 0; i < split.length; i++) {
+                            System.out.println(split[i]);
                               if(i== 0) {
                                   id = Integer.parseInt(split[i]);
+                                  System.out.println("ID => "+ id);
                                   if (dnPlayerManager.getDnPlayers().containsKey(id)) {
+                                      System.out.println("Je contiens deja");
                                       dnPlayer = dnPlayerManager.getDnPlayers().get(id);
                                   }
                               }
@@ -101,34 +105,46 @@ public class SpigotRequestResponse extends ClientResponse {
                                   String[] server = split[i].split("-");
                                   String serverName = server[0];
                                   int serverId = Integer.parseInt(server[1]);
-                                  if (remoteServices.containsKey(serverName)) {
+                                  if (!remoteServices.containsKey(serverName)) {
                                       continue;
                                   }
                                   service = remoteServices.get(serverName);
+                                  System.out.println("Service "+ service);
                                   if (service.getDnServers().containsKey(serverId)) {
                                       dnServer = service.getDnServers().get(serverId);
                                   } else {
                                       dnServer = new DNServer(serverName, serverId, service);
                                       service.getDnServers().put(serverId, dnServer);
+                                      System.out.println("Server "+ dnServer);
                                   }
                               }
                               if(i == 2) {
                                   playerName = split[i];
+                                  System.out.println("PlayerName "+playerName);
                               }
                               if(i == 3) {
                                   uuid = UUID.fromString(split[i]);
+                                  System.out.println("UUID "+ uuid);
                               }
                           }
 
                           if(dnPlayer == null){
+                              System.out.println("Je suis nul bouhouhou "+ playerName+"-"+dnServer);
+
                               if(playerName == null || dnServer == null)
                                   return;
+
+
                               dnPlayer = new DNPlayer(playerName,uuid,dnServer,id);
+                              System.out.println(dnPlayer);
                               dnServer.getDnPlayers().add(dnPlayer);
+                              dnPlayerManager.getDnPlayers().put(id, dnPlayer);
+                              System.out.println(dnServer);
                               NetworkJoinEvent event = new NetworkJoinEvent(dnPlayer.getServer(),dnPlayer);
                               pluginManager.callEvent(event);
                           }else {
                               if(dnServer != null){
+                                  System.out.println("Change Server Ouwa "+ dnServer.getName()+" to "+ dnPlayer.getServer().getName());
                                   dnPlayer.getServer().getRemoteService().getDnPlayers().remove(dnPlayer);
                                   dnPlayer.updateServer(dnServer);
                                   dnServer.getDnPlayers().add(dnPlayer);
@@ -143,6 +159,7 @@ public class SpigotRequestResponse extends ClientResponse {
                     List<Integer> unPlayers =  (List<Integer>) message.getIntegersList("P");
                     for(Integer id : unPlayers){
                         DNPlayer dnPlayer = dnPlayerManager.getDnPlayers().get(id);
+                        dnPlayerManager.getDnPlayers().remove(id);
                         dnPlayer.getServer().getRemoteService().getDnPlayers().remove(dnPlayer);
                         NetworkDisconnectEvent event = new NetworkDisconnectEvent(dnPlayer.getServer(),dnPlayer);
                         pluginManager.callEvent(event);
