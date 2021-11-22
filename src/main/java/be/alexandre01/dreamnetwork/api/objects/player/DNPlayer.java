@@ -35,16 +35,6 @@ public class DNPlayer extends RemoteHuman{
     public UUID getUniqueID(){
         return uuid;
     }
-    public void sendMessage(String message){
 
-    }
 
-    public void kick(String reason){
-    }
-
-    public void sendToServer(DNServer server){
-    }
-
-    public void executeCustomCode(){
-    }
 }

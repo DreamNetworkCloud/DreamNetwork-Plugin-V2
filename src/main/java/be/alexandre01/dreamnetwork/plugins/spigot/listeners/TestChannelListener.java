@@ -14,6 +14,7 @@ import be.alexandre01.dreamnetwork.plugins.spigot.api.events.server.ServerStarte
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.server.ServerStoppedEvent;
 import be.alexandre01.dreamnetwork.utils.messages.Message;
 import net.md_5.bungee.api.connection.Server;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -53,7 +54,7 @@ public class TestChannelListener implements Listener {
         dnChannel.sendMessage(message);
 
 
-        NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_ASK_DATA,"ALWAYS");
+        NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_ASK_DATA,"PLAYERS","ALWAYS");
 
     }
 
@@ -66,6 +67,7 @@ public class TestChannelListener implements Listener {
 
     @EventHandler
     public void onServerStop(ServerStoppedEvent event){
+
         System.out.println("STOP");
         System.out.println(event.getServer().getName());
         System.out.println(event.getServer().getId());
@@ -79,13 +81,13 @@ public class TestChannelListener implements Listener {
         System.out.println(event.getPlayer().getId());
     }
     @EventHandler
-    public void onPlayerJoin(NetworkSwitchServerEvent event){
+    public void onPlayerSwitch(NetworkSwitchServerEvent event){
         System.out.println("SWITCH");
         System.out.println(event.getPlayer().getName());
         System.out.println(event.getPlayer().getId());
     }
     @EventHandler
-    public void onPlayerJoin(NetworkDisconnectEvent event){
+    public void onPlayerQuit(NetworkDisconnectEvent event){
         System.out.println("DISCONNECT");
         System.out.println(event.getPlayer().getName());
         System.out.println(event.getPlayer().getId());
