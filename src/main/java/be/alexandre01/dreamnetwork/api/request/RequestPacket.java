@@ -27,7 +27,7 @@ public class RequestPacket {
         this.message = message;
         this.provider = NetworkBaseAPI.getInstance().getProcessName();
         message.setProvider(provider);
-        message.put("RID",RequestID);
+        message.setInRoot("RID",RequestID);
         currentId++;
     }
     public RequestPacket(Message message, GenericFutureListener<? extends Future<? super Void>> listener) {
@@ -37,7 +37,7 @@ public class RequestPacket {
         this.message = message;
         this.provider = NetworkBaseAPI.getInstance().getProcessName();
         message.setProvider(provider);
-        message.put("RID",RequestID);
+        message.setInRoot("RID",RequestID);
         currentId++;
     }
     public RequestPacket(Message message) {
@@ -47,7 +47,7 @@ public class RequestPacket {
         this.message = message;
         this.provider = NetworkBaseAPI.getInstance().getProcessName();
         message.setProvider(provider);
-        message.put("RID",RequestID);
+        message.setInRoot("RID",RequestID);
         currentId++;
     }
 

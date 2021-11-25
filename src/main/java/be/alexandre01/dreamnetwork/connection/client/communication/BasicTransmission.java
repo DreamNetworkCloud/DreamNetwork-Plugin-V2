@@ -5,6 +5,7 @@ import be.alexandre01.dreamnetwork.api.request.channels.ChannelPacket;
 import be.alexandre01.dreamnetwork.api.request.RequestPacket;
 import be.alexandre01.dreamnetwork.api.request.RequestType;
 import be.alexandre01.dreamnetwork.api.request.channels.DNChannel;
+import be.alexandre01.dreamnetwork.api.request.channels.DNChannelInterceptor;
 import be.alexandre01.dreamnetwork.api.request.communication.ClientResponse;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.api.DNBungeeAPI;
 import be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot;
@@ -20,7 +21,7 @@ public class BasicTransmission extends ClientResponse {
         DNChannel dnChannel = NetworkBaseAPI.getInstance().getChannelManager().getChannel(message.getChannel());
         if(dnChannel != null){
             if(!dnChannel.getDnChannelInterceptors().isEmpty()){
-                for (DNChannel.DNChannelInterceptor dnChannelInterceptor : dnChannel.getDnChannelInterceptors()){
+                for (DNChannelInterceptor dnChannelInterceptor : dnChannel.getDnChannelInterceptors()){
                     dnChannelInterceptor.received(receivedPacket);
                 }
             }

@@ -129,8 +129,6 @@ public class SpigotRequestResponse extends ClientResponse {
                           }
 
                           if(dnPlayer == null){
-                              System.out.println("Je suis nul bouhouhou "+ playerName+"-"+dnServer);
-
                               if(playerName == null || dnServer == null)
                                   return;
 

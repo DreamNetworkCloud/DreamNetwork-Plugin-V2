@@ -202,6 +202,204 @@
             </plugins>
             </build>
         </profile>
+        <profile>
+            <id>API</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <java.version>8</java.version>
+                <outputPath>${project.basedir}/target/</outputPath>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.wvengen</groupId>
+                        <artifactId>proguard-maven-plugin</artifactId>
+                        <version>2.0.13</version>
+                        <executions>
+                            <execution>
+                                <id>obfuscation-packaging</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>proguard</goal>
+                                </goals>
+                                <configuration>
+                                    <proguardVersion>7.1</proguardVersion>
+                                    <obfuscate>true</obfuscate>
+                                    <attach>true</attach>
+                                    <appendClassifier>false</appendClassifier>
+                                    <addMavenDescriptor>true</addMavenDescriptor>
+                                    <injar>${project.build.finalName}.jar</injar>
+                                    <outjar>${project.build.finalName}-small.jar</outjar>
+                                    <injarNotExistsSkip>true</injarNotExistsSkip>
+                                    <libs>
+                                        <lib>${java.home}/lib/rt.jar</lib>
+                                    </libs>
+
+                                    <options>
+                                        <option>-allowaccessmodification</option>
+                                        <option>-dontoptimize</option>
+                                        <option>-dontshrink</option>
+                                        <option>-dontnote</option>
+                                        <option>-dontwarn</option> <!-- added option to ignore com.sun missing classes -->
+                                        <option>-keepattributes Signature,SourceFile,LineNumberTable,*Annotations*,LocalVariable*Table</option>
+                                        <option>-keep class be.alexandre01.dreamnetwork.client.Launcher</option>
+                                        <option>-keep class be.alexandre01.dreamnetwork.**</option>
+                                        <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.client.Launcher {
+                                            <![CDATA[<methods>]]>;
+                                            }
+                                        </option>
+                                        <option>-keep class be.alexandre01.dreamnetwork.api.**</option>
+                                        <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.api.** {
+                                            <![CDATA[<methods>]]>;
+                                            }
+                                        </option>
+                                        <option>-keep class be.alexandre01.dreamnetwork.plugins.bungeecord.api.**</option>
+                                        <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.plugins.bungeecord.api.** {
+                                            <![CDATA[<methods>]]>;
+                                            }
+                                        </option>
+                                        <option>-keep class be.alexandre01.dreamnetwork.plugins.bungeecord.DNBungee</option>
+                                        <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.plugins.bungeecord.DNBungee {
+                                            <![CDATA[<methods>]]>;
+                                            }
+                                        </option>
+
+
+                                        <option>-keep class be.alexandre01.dreamnetwork.plugins.spigot.api.**</option>
+                                        <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.plugins.spigot.api.** {
+                                            <![CDATA[<methods>]]>;
+                                            }
+                                        </option>
+                                        <option>-keep class be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot</option>
+                                        <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot {
+                                            <![CDATA[<methods>]]>;
+                                            }
+                                        </option>
+                                        <option>-keep class be.alexandre01.dreamnetwork.plugins.sponge.api.**</option>
+                                        <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.plugins.sponge.api.**{
+                                            <![CDATA[<methods>]]>;
+                                            }
+                                        </option>
+                                        <option>-keep class be.alexandre01.dreamnetwork.plugins.sponge.DNSponge</option>
+                                        <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.plugins.sponge.DNSponge {
+                                            <![CDATA[<methods>]]>;
+                                            }
+                                        </option>
+                                        <option>-keep class be.alexandre01.dreamnetwork.utils.messages.**</option>
+                                        <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.utils.messages.**{
+                                            <![CDATA[<methods>]]>;
+                                            }
+                                        </option>
+                                        <option>
+                                            -keepclassmembers class * extends java.lang.Enum {
+                                            <![CDATA[<fields>]]>;
+                                            public static **[] values();
+                                            public static ** valueOf(java.lang.String);
+                                            }
+                                        </option>
+                                        <option>-keep public class javax.xml.*</option>
+                                    </options>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <dependencies>
+                            <dependency>
+                                <groupId>net.sf.proguard</groupId>
+                                <artifactId>proguard-base</artifactId>
+                                <version>6.2.2</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.2.4</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <outputFile>${project.basedir}/target/${project.artifactId}-api.jar</outputFile>
+                                    <minimizeJar>true</minimizeJar>
+                                    <filters>
+                                        <filter>
+                                            <artifact>be.alexandre01.dreamnetwork:DreamNetwork-Plugin</artifact>
+                                            <excludes>
+                                                <exclude>be/alexandre01/dreamnetwork/connection/**</exclude>
+                                            </excludes>
+                                        </filter>
+                                        <filter>
+                                            <artifact>be.alexandre01.dreamnetwork:DreamNetwork-Plugin</artifact>
+                                            <excludes>
+                                                <exclude>be/alexandre01/dreamnetwork/plugins/bungeecord/utils/**</exclude>
+                                            </excludes>
+                                        </filter>
+                                        <filter>
+                                            <artifact>be.alexandre01.dreamnetwork:DreamNetwork-Plugin</artifact>
+                                            <excludes>
+                                                <exclude>be/alexandre01/dreamnetwork/plugins/bungeecord/communication/**</exclude>
+                                            </excludes>
+                                        </filter>
+                                        <filter>
+                                            <artifact>be.alexandre01.dreamnetwork:DreamNetwork-Plugin</artifact>
+                                            <excludes>
+                                                <exclude>be/alexandre01/dreamnetwork/plugins/bungeecord/components/**</exclude>
+                                            </excludes>
+                                        </filter>
+                                        <filter>
+                                            <artifact>be.alexandre01.dreamnetwork:DreamNetwork-Plugin</artifact>
+                                            <excludes>
+                                                <exclude>be/alexandre01/dreamnetwork/plugins/bungeecord/listeners/**</exclude>
+                                            </excludes>
+                                        </filter>
+                                        <filter>
+                                            <artifact>be.alexandre01.dreamnetwork:DreamNetwork-Plugin</artifact>
+                                            <excludes>
+                                                <exclude>be/alexandre01/dreamnetwork/plugins/spigot/command/**</exclude>
+                                            </excludes>
+                                        </filter>
+                                        <filter>
+                                            <artifact>be.alexandre01.dreamnetwork:DreamNetwork-Plugin</artifact>
+                                            <excludes>
+                                                <exclude>be/alexandre01/dreamnetwork/plugins/spigot/communication/**</exclude>
+                                            </excludes>
+                                        </filter>
+                                        <filter>
+                                            <artifact>be.alexandre01.dreamnetwork:DreamNetwork-Plugin</artifact>
+                                            <excludes>
+                                                <exclude>be/alexandre01/dreamnetwork/plugins/spigot/listeners/**</exclude>
+                                            </excludes>
+                                        </filter>
+                                        <filter>
+                                            <artifact>be.alexandre01.dreamnetwork:DreamNetwork-Plugin</artifact>
+                                            <excludes>
+                                                <exclude>be/alexandre01/dreamnetwork/plugins/sponge/communication/**</exclude>
+                                            </excludes>
+                                        </filter>
+                                    </filters>
+                                    <relocations>
+                                        <relocation>
+                                            <pattern>io.netty</pattern>
+                                            <shadedPattern>be.alexandre01.dreamnetwork.netty</shadedPattern>
+                                        </relocation>
+                                        <relocation>
+                                            <pattern>com.google.gson</pattern>
+                                            <shadedPattern>be.alexandre01.dreamnetwork.gson</shadedPattern>
+                                        </relocation>
+                                    </relocations>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
     <dependencies>

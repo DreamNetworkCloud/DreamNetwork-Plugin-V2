@@ -28,7 +28,4 @@ public class DNChannel {
         return this;
     }
 
-    public interface DNChannelInterceptor{
-        public void received(ChannelPacket receivedPacket);
-    }
 }

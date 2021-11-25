@@ -3,6 +3,7 @@ package be.alexandre01.dreamnetwork.plugins.spigot.api;
 import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.api.objects.player.DNPlayerManager;
 import be.alexandre01.dreamnetwork.api.request.RequestManager;
+import be.alexandre01.dreamnetwork.api.request.RequestType;
 import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
 import be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot;
@@ -75,6 +76,17 @@ public class DNSpigotAPI extends NetworkBaseAPI{
         basicClientHandler.getResponses().add(new SpigotRequestResponse());
         getRequestManager().getRequestBuilder().addRequestBuilder(new SpigotGeneratedRequest());
     }
+
+
+    public void autoRefreshPlayers(){
+        getRequestManager().sendRequest(RequestType.CORE_ASK_DATA,"PLAYERS","ALWAYS");
+    }
+
+
+    public void autoRefreshPlayers(long time){
+        getRequestManager().sendRequest(RequestType.CORE_ASK_DATA,"PLAYERS","TIME",time);
+    }
+
 
     @Override
     public void shutdownProcess() {

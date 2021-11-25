@@ -19,7 +19,6 @@ public class ServerStoppedEvent extends Event {
     }
 
     public ServerStoppedEvent(DNServer dnServer){
-
         this.server = dnServer;
     }
 

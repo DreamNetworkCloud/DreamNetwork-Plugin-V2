@@ -16,6 +16,7 @@ import be.alexandre01.dreamnetwork.plugins.spigot.api.DNSpigotAPI;
 import be.alexandre01.dreamnetwork.utils.ASCII;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ListenerInfo;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -28,7 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter @Setter
 public class DNBungee extends Plugin {
     @Getter private static DNBungee instance;
     private BasicClientHandler basicClientHandler;

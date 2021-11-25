@@ -4,6 +4,7 @@ import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.api.objects.RemoteService;
 import be.alexandre01.dreamnetwork.api.objects.player.DNPlayer;
 import be.alexandre01.dreamnetwork.api.request.RequestType;
+import be.alexandre01.dreamnetwork.utils.messages.Message;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class DNServer {
     private final RemoteService remoteService;
     private final String name;
     private final int id;
+    private final NetworkBaseAPI networkBaseAPI = NetworkBaseAPI.getInstance();
 
     public DNServer(String name,int id,RemoteService remoteService){
         this.name = name;
@@ -23,7 +25,10 @@ public class DNServer {
         this.remoteService = remoteService;
     }
 
+    public void sendMessage(Message message){
+        networkBaseAPI.getRequestManager().sendRequest(RequestType.CORE_RETRANSMISSION,message,name+"-"+id);
+    }
     public void stop(){
-        NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_STOP_SERVER,name+"-"+id);
+        networkBaseAPI.getRequestManager().sendRequest(RequestType.CORE_STOP_SERVER,name+"-"+id);
     }
 }

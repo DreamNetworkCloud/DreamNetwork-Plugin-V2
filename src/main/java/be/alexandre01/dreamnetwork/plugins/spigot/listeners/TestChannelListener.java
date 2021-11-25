@@ -1,10 +1,10 @@
 package be.alexandre01.dreamnetwork.plugins.spigot.listeners;
 
 import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
-import be.alexandre01.dreamnetwork.api.objects.server.DNServer;
 import be.alexandre01.dreamnetwork.api.request.RequestType;
 import be.alexandre01.dreamnetwork.api.request.channels.ChannelPacket;
 import be.alexandre01.dreamnetwork.api.request.channels.DNChannel;
+import be.alexandre01.dreamnetwork.api.request.channels.DNChannelInterceptor;
 import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.player.NetworkDisconnectEvent;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.player.NetworkJoinEvent;
@@ -13,8 +13,6 @@ import be.alexandre01.dreamnetwork.plugins.spigot.api.events.server.ServerAttach
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.server.ServerStartedEvent;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.server.ServerStoppedEvent;
 import be.alexandre01.dreamnetwork.utils.messages.Message;
-import net.md_5.bungee.api.connection.Server;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -26,7 +24,7 @@ public class TestChannelListener implements Listener {
         DNChannel dnChannel = dnChannelManager.registerChannel(new DNChannel("test"));
 
         //EXEMPLE D'INTERCEPTOR
-        dnChannel.addInterceptor(new DNChannel.DNChannelInterceptor() {
+        dnChannel.addInterceptor(new DNChannelInterceptor() {
             @Override
             public void received(ChannelPacket receivedPacket) {
                 Message message = receivedPacket.getMessage();
