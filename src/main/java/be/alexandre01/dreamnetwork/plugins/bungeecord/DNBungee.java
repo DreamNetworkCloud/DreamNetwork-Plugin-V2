@@ -12,6 +12,7 @@ import be.alexandre01.dreamnetwork.plugins.bungeecord.components.listeners.MOTD;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.listeners.PlayerServerListener;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.listeners.RedirectConnection;
 import be.alexandre01.dreamnetwork.plugins.bungeecord.objects.PlayerManagement;
+import be.alexandre01.dreamnetwork.plugins.bungeecord.utils.BungeeText;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.DNSpigotAPI;
 import be.alexandre01.dreamnetwork.utils.ASCII;
 import lombok.Data;
@@ -52,10 +53,19 @@ public class DNBungee extends Plugin {
     public boolean connexionOnLobby;
     public TablistCustomizer tablistCustomizer;
     @Getter private final PlayerManagement playerManagement = new PlayerManagement();
+    private BungeeText bungeeText;
 
     @Override
     public void onEnable(){
         instance = this;
+        //INIT defaultBungeeText
+        new BungeeText(true).init();
+        bungeeText = new BungeeText(false);
+        bungeeText.init();
+        System.out.println(bungeeText.messages.values());
+        System.out.println(bungeeText.messages.keySet());
+        System.out.println(getMessage("connect.noLobby"));
+        System.out.println(getMessage("connect.test"));
         port = 25565;
         loadConfig();
         allowedPlayer = new ArrayList<>();
@@ -151,7 +161,6 @@ public class DNBungee extends Plugin {
         Thread thread = new Thread(basicClient);
         thread.start();
 
-        System.out.println(getBasicClientHandler());
 
     }
 
@@ -192,4 +201,11 @@ public class DNBungee extends Plugin {
     }
 
 
+    public String getMessage(String path) {
+        return bungeeText.getMessage(path);
+    }
+
+    public String getMessage(String path,Object... objects) {
+        return bungeeText.getMessage(path,objects);
+    }
 }

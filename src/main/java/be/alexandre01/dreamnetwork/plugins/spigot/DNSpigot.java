@@ -9,6 +9,7 @@ import be.alexandre01.dreamnetwork.plugins.spigot.api.events.server.ServerAttach
 import be.alexandre01.dreamnetwork.plugins.spigot.command.NetworkCommand;
 import be.alexandre01.dreamnetwork.plugins.spigot.listeners.ReloadListener;
 import be.alexandre01.dreamnetwork.plugins.spigot.listeners.TestChannelListener;
+import be.alexandre01.dreamnetwork.plugins.spigot.utils.SpigotText;
 import be.alexandre01.dreamnetwork.utils.ASCII;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,10 +32,16 @@ public class DNSpigot extends JavaPlugin{
     @Getter private int port;
     @Getter private RequestManager requestManager;
     @Getter private DNChannelManager dnChannelManager;
+    private SpigotText spigotText;
     public boolean isReloading = false;
     @Override
     public void onEnable(){
         instance = this;
+        new SpigotText(true).init();
+        spigotText = new SpigotText(false);
+        spigotText.init();
+        System.out.println(spigotText.messages.values());
+        System.out.println(getMessage("connect.noLobby"));
         port = 25565;
 
         port = getServer().getPort();
@@ -92,10 +99,13 @@ public class DNSpigot extends JavaPlugin{
         }catch (Exception ex){
             ex.printStackTrace();
         }
-
     }
 
+    public String getMessage(String path) {
+        return spigotText.getMessage(path);
+    }
 
-
-
+    public String getMessage(String path,Object... objects) {
+        return spigotText.getMessage(path,objects);
+    }
 }

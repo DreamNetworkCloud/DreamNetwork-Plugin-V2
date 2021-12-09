@@ -69,8 +69,6 @@ public class DNBungeeAPI extends NetworkBaseAPI{
 
     @Override
     public void setBasicClientHandler(BasicClientHandler basicClientHandler) {
-
-        System.out.println(basicClientHandler);
         this.basicClientHandler = basicClientHandler;
         getRequestManager().setBasicClientHandler(basicClientHandler);
         basicClientHandler.getResponses().add(new BungeeRequestResponse());

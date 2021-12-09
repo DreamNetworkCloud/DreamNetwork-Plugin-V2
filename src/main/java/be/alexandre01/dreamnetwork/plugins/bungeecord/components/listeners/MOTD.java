@@ -93,13 +93,11 @@ public class MOTD implements Listener {
             for(String key : configuration.getSection("motd.content").getKeys()){
 
                 if(key.toLowerCase().startsWith("line-") && Character.isDigit(key.charAt(key.length()-1))){
-                    System.out.println(key);
                     int line = Character.getNumericValue(key.charAt(key.length()-1));
                     content_lines.put(line,configuration.getString("motd.content."+key));
                 }
             }
             for(String key : configuration.getSection("motd.version-hover").getKeys()){
-                System.out.println(key);
                 if(key.toLowerCase().startsWith("line-") && Character.isDigit(key.charAt(key.length()-1))){
                     int line = Character.getNumericValue(key.charAt(key.length()-1));
                     hover_lines.put(line,configuration.getString("motd.version-hover."+key));
@@ -109,19 +107,15 @@ public class MOTD implements Listener {
             BaseComponentBuilder baseComponentBuilder = new BaseComponentBuilder();
 
             for (Integer line : content_lines.keySet()) {
-                System.out.println(content_lines.get(line));
                 baseComponentBuilder.setLine(line, content_lines.get(line));
             }
-            System.out.println("MOTD");
             content_final = baseComponentBuilder.toTextComponent();
-            System.out.println(content_final.getText());
 
 
             ArrayList<ServerPing.PlayerInfo> p = new ArrayList<>();
 
             for (Integer line : hover_lines.keySet()) {
 
-                System.out.println(hover_lines.get(line));
                 p.add(new ServerPing.PlayerInfo(hover_lines.get(line).replaceAll("&","§"),UUID.randomUUID()));
             }
             hover_final = new ServerPing.PlayerInfo[p.size()];

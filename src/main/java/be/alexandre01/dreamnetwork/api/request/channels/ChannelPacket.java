@@ -59,7 +59,6 @@ public class ChannelPacket {
         if(RID != null){
             message.setInRoot("RID",RID);
         }
-        System.out.println("HMM WRTITEANDFLUSH "+message);
         basicClientHandler.writeAndFlush(message,listener);
     }
 }

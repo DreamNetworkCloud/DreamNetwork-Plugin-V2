@@ -9,9 +9,6 @@ import java.util.ArrayList;
 public class DNBungeeServersManager {
     public ArrayList<String> servers = new ArrayList<>();
     public void registerServer(String processName, String ip, int port){
-        System.out.println(ip);
-        System.out.println(port);
-
         try {
             ServerInfo info = ProxyServer.getInstance().constructServerInfo(processName,new InetSocketAddress(ip,port) , "", false);
             ProxyServer.getInstance().getServers().put(processName, info);

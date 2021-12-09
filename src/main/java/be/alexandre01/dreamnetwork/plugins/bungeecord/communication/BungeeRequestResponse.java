@@ -15,11 +15,9 @@ public class BungeeRequestResponse extends ClientResponse {
     }
     @Override
     public void onResponse(Message message, ChannelHandlerContext ctx) throws Exception {
-        System.out.println("RESPONSES");
         if (message.hasRequest()) {
             switch (message.getRequest()){
                 case BUNGEECORD_REGISTER_SERVER:
-                    System.out.println(message);
                     dnBungeeAPI.getDnBungeeServersManager().registerServer(message.getString("PROCESSNAME"),message.getString("REMOTEIP"),message.getInt("PORT"));
                     break;
                 case BUNGEECORD_UNREGISTER_SERVER:

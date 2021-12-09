@@ -22,7 +22,6 @@ public class RequestManager {
         requestBuilder = new RequestBuilder();
         requestBuilder.addRequestBuilder(new DefaultGeneratedRequest());
         this.basicClientHandler = NetworkBaseAPI.getInstance().getBasicClientHandler();
-        System.out.println(basicClientHandler);
       
     }
     public RequestPacket sendRequest(RequestPacket request, Object... args){
@@ -49,7 +48,6 @@ public class RequestManager {
          RequestPacket request = new RequestPacket(requestType,requestData.write(message,args),listener);
 
          request.setBasicClientHandler(basicClientHandler);
-        System.out.println(basicClientHandler);
          basicClientHandler.writeAndFlush(request.getMessage(),listener);
         requests.put(request.getRequestID(),request);
          return request;

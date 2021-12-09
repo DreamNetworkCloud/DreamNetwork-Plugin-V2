@@ -143,22 +143,13 @@ public class TablistCustomizer {
                                 repeat.put(tick,configuration.getInt("tablist."+type+"-animation."+sections[0]+"."+sections[1]));
                                 continue;
                             }
-                            System.out.println(sections[0]);
-                            System.out.println(sections[0].charAt(0));
-                            System.out.println(type +" tiktak"+ tick);
                             HashMap<Integer, String> workingHM = new HashMap<>();
 
                             if(!distributeText(workingHM,sections,type)) continue;
 
-                            workingHM.forEach((integer, s) -> {
-                                System.out.println("HMint > "+ integer +"| String > "+ s);
-                            });
 
                             lines_by_ticks.put(tick,workingHM);
-                            lines_by_ticks.forEach((integer, integerStringHashMap) -> {
-                                System.out.println(type+ " tickinou "+ integer);
-                                System.out.println(integerStringHashMap);
-                            });
+
                         }
                     }
                 }catch (Exception ignored){
@@ -167,7 +158,6 @@ public class TablistCustomizer {
 
             }
             HashMap<Integer, BaseComponentBuilder> b = new HashMap<>();
-            System.out.println("SALE MERDE > "+lines_by_ticks);
 
             for(HashMap<Integer,String > f : lines_by_ticks.values());
             if(lines_by_ticks.isEmpty()){
@@ -189,10 +179,7 @@ public class TablistCustomizer {
 
             lines_by_ticks.forEach((key, value) -> {
                 BaseComponentBuilder baseComponentBuilder;
-                value.forEach((integer, s) -> {
-                    System.out.println("tick: "+ key);
-                    System.out.println("int > "+ integer +"| String > "+ s);
-                });
+
                 baseComponentBuilder = b.get(key);
                 for (Integer line : value.keySet()) {
                     baseComponentBuilder.setLine(line, value.get(line));
@@ -203,25 +190,19 @@ public class TablistCustomizer {
                 finalH.put(i, b.get(i).toTextComponent());
             }
 
-            System.out.println("La configuration de la TABLIST a bien été chargé !");
+            System.out.println("La configuration de la TABLIST-"+type+" a bien été chargé !");
             return true;
         }catch (Exception e){
-            System.out.println("La configuration a eu un problème.");
+            System.out.println("La configuration de la TABLIST-"+type+"a eu un problème.");
             e.printStackTrace();
             return false;
         }
     }
 
     public boolean distributeText(HashMap<Integer, String> h, String[] sections,String type){
-        System.out.println("tablist."+type+"-animation."+sections[0]+"."+sections[1]);
-        System.out.println(sections[1]);
-        System.out.println(sections[1].toLowerCase().startsWith("line-"));
-        System.out.println(Character.isDigit(sections[1].charAt(sections[1].length()-1)));
-        System.out.println(sections[1].charAt(sections[1].length()-1));
         if(sections[1].toLowerCase().startsWith("line-") && Character.isDigit(sections[1].charAt(sections[1].length()-1))){
             int line = Character.getNumericValue(sections[1].charAt(sections[1].length()-1));
             h.put(line,configuration.getString("tablist."+type+"-animation."+sections[0]+"."+sections[1]));
-            System.out.println(configuration.getString("tablist."+type+"-animation."+sections[0]+"."+sections[1]));
             return true;
         }
         return false;

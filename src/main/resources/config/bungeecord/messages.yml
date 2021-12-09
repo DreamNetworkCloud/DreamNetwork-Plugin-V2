@@ -1,0 +1,4 @@
+messages:
+  connect:
+    noLobby: "Lobby problem"
+    test: "OH FUCK"

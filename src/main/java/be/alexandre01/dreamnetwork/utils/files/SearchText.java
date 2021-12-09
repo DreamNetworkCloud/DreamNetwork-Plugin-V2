@@ -1,35 +1,85 @@
 package be.alexandre01.dreamnetwork.utils.files;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
+import org.apache.commons.io.IOUtils;
 import org.bukkit.configuration.Configuration;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public abstract class SearchText {
-    private HashMap<String, String> messages = new HashMap<>();
-    private boolean isProxy;
+    public HashMap<String, String> messages = new HashMap<>();
+    private ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     private Configuration configuration;
-    private final String path1 = "messages.";
+    private final String path1 = "messages";
+    @Setter private distributeText distributeText;
+    @Getter private static SearchText old;
+    @Getter private static SearchText instance;
+    private final boolean autoDelete;
 
-    public SearchText(boolean isProxy){
-        this.isProxy = isProxy;
+    public static String get(String path){
+        return instance.getMessage(path);
+    }
+    public static String get(String path,Object... objects){
+        return instance.getMessage(path,objects);
+    }
+    public SearchText(boolean autoDelete){
+        this.autoDelete = autoDelete;
+        if(instance != null) old = instance;
+        instance = this;
     }
     public void init(){
+        reloadConfig();
         recursiveSearch("");
+        if(autoDelete){
+          tryToDelete();
+        }
+    }
+    public void tryToDelete(){
+        executorService.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Files.delete(getFile().toPath());
+                } catch (IOException e) {
+                    executorService.shutdown();
+                    tryToDelete();
+                    System.out.println("Retrying to delete SRC Messages file");
+                    return;
+                }
+                executorService.shutdown();
+            }
+        },5, 5,TimeUnit.SECONDS);
+
     }
     public void reset(){
         messages.clear();
     }
     private boolean recursiveSearch(String currentPath){
+        System.out.println(currentPath);
+        System.out.println(path1+"."+currentPath);
+        String path = path1;
+        /*if(!currentPath.equals("")){
+            path = path+".";
+        }*/
+        if(!hasSubSection(path+currentPath)) return false;
 
-        if(!hasSubSection(path1+currentPath)) return false;
 
-        for (String s : getKeys(path1+currentPath,false)){
-            String totalPath = path1+currentPath+"."+s;
-
-            if(!recursiveSearch(totalPath)){
-                messages.put(currentPath,getString(currentPath+"."+s));
+        for (String s : getKeys(path+currentPath,false)){
+            System.out.println(currentPath);
+            String totalPath =path+currentPath+"."+s;
+            System.out.println(totalPath);
+            if(!recursiveSearch(currentPath+"."+s)){
+                messages.put(currentPath.substring(1)+"."+s,getString(totalPath));
             }
         }
         return true;
@@ -42,19 +92,26 @@ public abstract class SearchText {
     protected abstract String getString(String path);
 
     public String getMessage(String path){
-        return messages.get(path);
+        String message;
+        if(messages.containsKey(path)){
+            message = messages.get(path);
+        }else {
+            message = old.messages.get(path);
+        }
+        return message;
     }
 
     @SneakyThrows
     public String getMessage(String path, Object... objects){
-        String message = messages.get(path);
-        if(path.contains("%player%")){
-            if(isProxy){
-                distribute(returnObjects(Class.forName("net.md_5.bungee.api.connection.ProxiedPlayer"),objects),"%player%","getName",message);
-            }else {
-                distribute(returnObjects(Class.forName("org.bukkit.entity.Player"),objects),"%player%","getName",message);
-            }
+        String message;
+        if(messages.containsKey(path)){
+            message = messages.get(path);
+        }else {
+            message = old.messages.get(path);
         }
+
+        distributeText.exec(message,objects);
+
 
         if(path.contains("%time%"))
          distribute(returnObjects(Date.class,objects),"%time%","getTime",message);
@@ -63,14 +120,14 @@ public abstract class SearchText {
         return message;
     }
 
-    private <T> List<T> returnObjects(Class<T> c, Object... objects){
+    protected  <T> List<T> returnObjects(Class<T> c, Object... objects){
         return  Arrays.stream(objects).filter(c::isInstance)
                 .map(o -> (T) o)
                 .collect(Collectors.toList());
     }
 
     @SneakyThrows
-    private <T> String distribute(List<T> types,String regex, String method, String s){
+    protected  <T> String distribute(List<T> types,String regex, String method, String s){
         int i = 0;
         boolean hasStringFormat = false;
         if(types.isEmpty()) return s;
@@ -103,4 +160,9 @@ public abstract class SearchText {
         return s;
     }
 
+    public abstract void reloadConfig();
+    public abstract File getFile();
+    protected interface distributeText{
+        void exec(String message,Object... objects);
+    }
 }
