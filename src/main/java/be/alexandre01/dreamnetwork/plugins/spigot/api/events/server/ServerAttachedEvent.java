@@ -13,5 +13,4 @@ public class ServerAttachedEvent extends Event {
     public static HandlerList getHandlerList() {
         return HANDLERS;
     }
-
 }

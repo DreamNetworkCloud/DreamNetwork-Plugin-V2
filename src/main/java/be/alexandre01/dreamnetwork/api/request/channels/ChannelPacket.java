@@ -36,19 +36,31 @@ public class ChannelPacket {
         }
         this.provider = message.getProvider();
         this.channel = message.getChannel();
-        System.out.println(channel);
+        this.basicClientHandler = NetworkBaseAPI.getInstance().getBasicClientHandler();
+    }
+    public ChannelPacket(String channel,String provider){
+        this.message = null;
+        this.listener = null;
+        this.channel = channel;
+        this.provider = provider;
         this.basicClientHandler = NetworkBaseAPI.getInstance().getBasicClientHandler();
     }
 
-
     public void createResponse(Message message){
-        this.createResponse(message,null);
+        this.createResponse(message,null,"channel");
+    }
+    public void createResponse(Message message,String header){
+        this.createResponse(message,null,header);
     }
 
     public void createResponse(Message message,GenericFutureListener<? extends Future<? super Void>> listener){
+        this.createResponse(message,listener,"channel");
+    }
+
+    public void createResponse(Message message,GenericFutureListener<? extends Future<? super Void>> listener,String header){
         message.setProvider(provider);
         message.setSender(NetworkBaseAPI.getInstance().getInfo());
-        message.setHeader("channel");
+        message.setHeader(header);
         message.setChannel(channel);
         if(requestType != null){
             RequestBuilder.RequestData requestData = NetworkBaseAPI.getInstance().getRequestManager().getRequestBuilder().getRequestData().get(requestType);
@@ -59,6 +71,8 @@ public class ChannelPacket {
         if(RID != null){
             message.setInRoot("RID",RID);
         }
+
+        System.out.println("Write >>" + message.toString());
         basicClientHandler.writeAndFlush(message,listener);
     }
 }

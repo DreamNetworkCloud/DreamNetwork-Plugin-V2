@@ -48,6 +48,7 @@ public class RequestManager {
          RequestPacket request = new RequestPacket(requestType,requestData.write(message,args),listener);
 
          request.setBasicClientHandler(basicClientHandler);
+        System.out.println(request.getMessage());
          basicClientHandler.writeAndFlush(request.getMessage(),listener);
         requests.put(request.getRequestID(),request);
          return request;

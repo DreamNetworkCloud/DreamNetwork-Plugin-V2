@@ -51,7 +51,13 @@ public class DefaultGeneratedRequest extends RequestBuilder {
             return message;
         });
         requestData.put(RequestType.CORE_REGISTER_CHANNEL,(message, args) -> {
+            System.out.println("Registering channel");
             message.set("CHANNEL",args[0]);
+            if((boolean) args[1]){
+                message.set("RESEND",true);
+            }
+
+            System.out.println("Channel registered >> "+ message);
             return message;
         });
         requestData.put(RequestType.CORE_UNREGISTER_CHANNEL,(message, args) -> {

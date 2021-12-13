@@ -19,6 +19,7 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.InputStream;
 import java.lang.reflect.Field;
 
 
@@ -68,7 +69,7 @@ public class DNSpigot extends JavaPlugin{
 
         registerCommand("network",new NetworkCommand("network"));
         getServer().getPluginManager().registerEvents(new ReloadListener(),this);
-      //  getServer().getPluginManager().registerEvents(new TestChannelListener(),this);
+        getServer().getPluginManager().registerEvents(new TestChannelListener(),this);
     }
 
     @Override
@@ -85,6 +86,7 @@ public class DNSpigot extends JavaPlugin{
     }
 
     public void callServerAttachedEvent(){
+        System.out.println(DNSpigot.getInstance().getMessage("console.events.attached"));
         ServerAttachedEvent serverAttachedEvent = new ServerAttachedEvent();
         DNSpigot.getInstance().getServer().getPluginManager().callEvent(serverAttachedEvent);
     }
@@ -99,10 +101,6 @@ public class DNSpigot extends JavaPlugin{
         }catch (Exception ex){
             ex.printStackTrace();
         }
-    }
-
-    public String getMessage(String path) {
-        return spigotText.getMessage(path);
     }
 
     public String getMessage(String path,Object... objects) {

@@ -8,6 +8,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.event.ServerKickEvent;
+import net.md_5.bungee.api.event.ServerSwitchEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -17,13 +18,13 @@ import java.util.UUID;
 
 public class RedirectConnection implements Listener {
     public boolean connexionOnLobby = true;
-    private Set<UUID> pending = new HashSet<>();
-    private DNBungee dnBungee;
-    private DNBungeeAPI dnBungeeAPI;
+    private final Set<UUID> pending = new HashSet<>();
+    private final DNBungee dnBungee;
+    private final DNBungeeAPI dnBungeeAPI;
 
     public RedirectConnection(){
-    dnBungee = DNBungee.getInstance();
-    dnBungeeAPI = (DNBungeeAPI) DNBungeeAPI.getInstance();
+        dnBungee = DNBungee.getInstance();
+        dnBungeeAPI = (DNBungeeAPI) DNBungeeAPI.getInstance();
     }
 
     @EventHandler
@@ -32,19 +33,22 @@ public class RedirectConnection implements Listener {
             if(dnBungee.getProxy().getPlayers().size()-1>= dnBungee.slot){
                 if(!event.getPlayer().hasPermission("network.slot.bypass")){
                     event.getPlayer().disconnect(
-                            new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*\n§cServeur plein !"),
-                            new TextComponent("\n\n§eVeuillez réessayer plus tard\n"),
-                            new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*§9\nplay.inazumauhc.fr\nNetwork System by Alexandre01"));
-
+                            new TextComponent(dnBungee.getMessage("connect.slot-full.header",event.getPlayer())+"\n"),
+                            new TextComponent(dnBungee.getMessage("connect.slot-full.text-1",event.getPlayer())+  "\n"),
+                            new TextComponent("\n\n"+dnBungee.getMessage("connect.slot-full.text-2",event.getPlayer())+ "\n"),
+                            new TextComponent(dnBungee.getMessage("connect.slot-full.footer",event.getPlayer())+ "\n"),
+                            new TextComponent(dnBungee.getMessage("general.ip",event.getPlayer())));
                     event.setCancelled(true);
                 }
             }
             if(dnBungee.isMaintenance){
                 if(!dnBungee.allowedPlayer.contains(event.getPlayer().getName().toLowerCase()) && !event.getPlayer().hasPermission("network.maintenance.bypass")){
                     event.getPlayer().disconnect(
-                            new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*\n§cServeur en maintenance!"),
-                            new TextComponent("\n\n§eVeuillez réessayer plus tard\n"),
-                            new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*§9\n?????????????\nNetwork System by Alexandre01"));
+                            new TextComponent(dnBungee.getMessage("connect.maintenance.header",event.getPlayer())+"\n"),
+                            new TextComponent(dnBungee.getMessage("connect.maintenance.text-1",event.getPlayer())+  "\n"),
+                            new TextComponent("\n\n"+dnBungee.getMessage("connect.maintenance.text-2",event.getPlayer())+ "\n"),
+                            new TextComponent(dnBungee.getMessage("connect.maintenance.footer",event.getPlayer())+ "\n"),
+                            new TextComponent(dnBungee.getMessage("general.ip",event.getPlayer())));
                     event.setCancelled(true);
                 }
             }
@@ -52,7 +56,12 @@ public class RedirectConnection implements Listener {
         }else {
             if(dnBungee.isMaintenance){
                 if(!dnBungee.allowedPlayer.contains(event.getPlayer().getName().toLowerCase()) && !event.getPlayer().hasPermission("network.maintenance.bypass")){
-                    event.getPlayer().disconnect(new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*\n§cServeur en maintenance!"),new TextComponent("\n\n§eVeuillez réessayer plus tard\n"),new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*§9\n?????????????\nNetwork System by Alexandre01"));
+                    event.getPlayer().disconnect(
+                            new TextComponent(dnBungee.getMessage("connect.maintenance.header",event.getPlayer())+"\n"),
+                            new TextComponent(dnBungee.getMessage("connect.maintenance.text-1",event.getPlayer())+  "\n"),
+                            new TextComponent("\n\n"+dnBungee.getMessage("connect.maintenance.text-2",event.getPlayer())+ "\n"),
+                            new TextComponent(dnBungee.getMessage("connect.maintenance.footer",event.getPlayer())+ "\n"),
+                            new TextComponent(dnBungee.getMessage("general.ip",event.getPlayer())));
                     event.setCancelled(true);
                 }
             }
@@ -82,13 +91,15 @@ public class RedirectConnection implements Listener {
             }else {
                 info = getDefaultServer();
             }
-            System.out.println(info);
             if (info == null) {
                 System.out.println(dnBungeeAPI.getDnBungeeServersManager());
                 System.out.println(dnBungeeAPI.getDnBungeeServersManager().servers);
-                event.getPlayer().disconnect( new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*\n§cAucuns lobbies disponible !"),
-                        new TextComponent("\n\n§eVeuillez réessayer plus tard\n"),
-                        new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*§9\n?????????????\nNetwork System by Alexandre01"));
+                event.getPlayer().disconnect(
+                        new TextComponent(dnBungee.getMessage("connect.noLobby.header",event.getPlayer())+"\n"),
+                        new TextComponent(dnBungee.getMessage("connect.noLobby.text-1",event.getPlayer())+  "\n"),
+                        new TextComponent("\n\n"+dnBungee.getMessage("connect.noLobby.text-2",event.getPlayer())+ "\n"),
+                        new TextComponent(dnBungee.getMessage("connect.noLobby.footer",event.getPlayer())+ "\n"),
+                        new TextComponent(dnBungee.getMessage("general.ip",event.getPlayer())));
                 return;
             }
             event.setTarget(info);
@@ -101,18 +112,10 @@ public class RedirectConnection implements Listener {
 
     private ServerInfo getDefaultServer(){
 
-        System.out.println("GET DEFAULT SERV");
         System.out.println(dnBungeeAPI.getDnBungeeServersManager().servers);
         if(dnBungeeAPI.getDnBungeeServersManager().servers.isEmpty()){
             return null;
         }else{
-            for (String s :dnBungeeAPI.getDnBungeeServersManager().servers){
-                System.out.println("API"+s);
-            }
-            for (String s :  dnBungee.getProxy().getServers().keySet()){
-                System.out.println("BungeeSide"+ s);
-            }
-
             ServerInfo serverInfo = dnBungee.getProxy().getServerInfo(dnBungeeAPI.getDnBungeeServersManager().servers.get(0));
             return serverInfo;
         }
@@ -129,15 +132,12 @@ public class RedirectConnection implements Listener {
             event.setCancelServer(s);
         }
     }
-
-
     public ServerInfo getServer(String server){
         int i = 0;
         int max = 50;
         String word = null;
         boolean isFound = false;
         for (String str :dnBungeeAPI.getDnBungeeServersManager().servers){
-            System.out.println(str);
             if(str.startsWith(dnBungee.lobby)){
                 i = Integer.parseInt(str.split("-")[1]);
                 word = str.split("-")[0];
