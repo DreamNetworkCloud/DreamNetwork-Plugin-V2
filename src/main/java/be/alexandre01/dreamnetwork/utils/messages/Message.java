@@ -1,6 +1,7 @@
 package be.alexandre01.dreamnetwork.utils.messages;
 import be.alexandre01.dreamnetwork.api.request.RequestType;
 import com.google.gson.*;
+import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -35,8 +36,11 @@ public class Message extends LinkedHashMap<String, Object> {
     public HashMap<String, Object> getObjectData(){
         return this;
     }
+    public boolean hasRequestID(){
+        return super.containsKey("RID");
+    }
     public int getRequestID(){
-        return ((Double) super.get("RID")).intValue();
+        return (int) super.get("RID");
     }
     @Override
     public Object get(Object key) {
@@ -88,7 +92,7 @@ public class Message extends LinkedHashMap<String, Object> {
     }
 
     public RequestType getRequest(){
-        return (RequestType) RequestType.getByID(((Double) super.get("requestType")).intValue());
+        return (RequestType) RequestType.getByID((Integer) super.get("requestType"));
     }
 
     public boolean hasRequest(){
@@ -104,7 +108,7 @@ public class Message extends LinkedHashMap<String, Object> {
     }
 
     public int getInt(String key){
-        return ((Double) get(key)).intValue();
+        return (int) get(key);
         //  return (int) Integer.parseInt(getString(key));
     }
 
@@ -127,21 +131,25 @@ public class Message extends LinkedHashMap<String, Object> {
         // return new ArrayList<T>((Collection<? extends T>) Arrays.asList(getString(key).split(",")));
     }
     public List<Integer> getIntegersList(String key){
-        List<Double> doubles = (List<Double>) get(key);
+        /*List<Double> doubles = (List<Inte>) get(key);
         List<Integer> i = new ArrayList<>();
         for(Double d : doubles){
             i.add(d.intValue());
-        }
-        return i;
+        }*/
+
+        return (List<Integer>) get(key);
+      //  return i;
     }
 
     public List<Float> getFloatList(String key){
-        List<Double> doubles = (List<Double>) get(key);
+     /*   List<Double> doubles = (List<Double>) get(key);
         List<Float> i = new ArrayList<>();
         for(Double d : doubles){
             i.add(d.floatValue());
-        }
-        return i;
+        }*/
+
+        return (List<Float>) get(key);
+        //return i;
     }
 
 
@@ -155,7 +163,10 @@ public class Message extends LinkedHashMap<String, Object> {
     }
 
     public static Message createFromJsonString(String json) {
-        Message builder = new Message(new Gson().fromJson(json, HASH_MAP_TYPE));
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(new TypeToken<Map <String, Object>>(){}.getType(),  new MapDeserializerDoubleAsIntFix());
+        Gson gson = gsonBuilder.create();
+        Message builder = new Message(gson.fromJson(json, HASH_MAP_TYPE));
         return builder;
     }
 
@@ -171,9 +182,61 @@ public class Message extends LinkedHashMap<String, Object> {
     @Override
     public String toString() {
         GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(new TypeToken<Map <String, Object>>(){}.getType(),  new MapDeserializerDoubleAsIntFix());
         //gsonBuilder.setLongSerializationPolicy(LongSerializationPolicy.DEFAULT);
         String json = gsonBuilder.create().toJson(this,Message.class);
         return json;
+    }
+
+    public static class MapDeserializerDoubleAsIntFix implements JsonDeserializer<Map<String, Object>>{
+
+        @Override  @SuppressWarnings("unchecked")
+        public Map<String, Object> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            return (Map<String, Object>) read(json);
+        }
+
+        public Object read(JsonElement in) {
+
+            if(in.isJsonArray()){
+                List<Object> list = new ArrayList<Object>();
+                JsonArray arr = in.getAsJsonArray();
+                for (JsonElement anArr : arr) {
+                    list.add(read(anArr));
+                }
+                return list;
+            }else if(in.isJsonObject()){
+                Map<String, Object> map = new LinkedTreeMap<String, Object>();
+                JsonObject obj = in.getAsJsonObject();
+                Set<Map.Entry<String, JsonElement>> entitySet = obj.entrySet();
+                for(Map.Entry<String, JsonElement> entry: entitySet){
+                    map.put(entry.getKey(), read(entry.getValue()));
+                }
+                return map;
+            }else if( in.isJsonPrimitive()){
+                JsonPrimitive prim = in.getAsJsonPrimitive();
+                if(prim.isBoolean()){
+                    return prim.getAsBoolean();
+                }else if(prim.isString()){
+                    return prim.getAsString();
+                }else if(prim.isNumber()){
+
+                    Number num = prim.getAsNumber();
+                    // here you can handle double int/long values
+                    // and return any type you want
+                    // this solution will transform 3.0 float to long values
+                    if(Math.ceil(num.doubleValue())  == num.longValue()){
+                        if(num.longValue() > Integer.MAX_VALUE){
+                            return num.longValue();
+                        }else {
+                            return num.intValue();
+                        }
+                    } else{
+                        return num.doubleValue();
+                    }
+                }
+            }
+            return null;
+        }
     }
 
 }
