@@ -88,6 +88,16 @@ public class BungeeText extends SearchText {
     }
 
     @Override
+    public void saveFile() {
+        saveConfig();
+    }
+
+    @Override
+    public void setString(String path, String value) {
+        configuration.set(path,value);
+    }
+
+    @Override
     public File getFile() {
         return file;
     }

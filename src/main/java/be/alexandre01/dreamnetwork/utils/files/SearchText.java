@@ -26,6 +26,7 @@ public abstract class SearchText {
     @Getter private static SearchText instance;
     private final boolean autoDelete;
 
+
     public static String get(String path){
         return instance.getMessage(path);
     }
@@ -43,7 +44,19 @@ public abstract class SearchText {
         if(autoDelete){
           tryToDelete();
         }
+        if(old != null){
+            old.messages.entrySet().forEach(e -> {
+                if(!messages.containsKey(e.getKey())){
+                    messages.put(e.getKey(),e.getValue());
+                    setString(path1+"."+e.getKey(),e.getValue());
+                }
+            });
+            saveFile();
+        }
     }
+
+
+
     public void tryToDelete(){
         executorService.scheduleAtFixedRate(new Runnable() {
             @Override
@@ -110,6 +123,9 @@ public abstract class SearchText {
             message = old.messages.get(path);
         }
 
+        if(message == null) return "null";
+
+        message = message.replaceAll("&","§");
         distributeText.exec(message,objects);
 
 
@@ -161,6 +177,8 @@ public abstract class SearchText {
     }
 
     public abstract void reloadConfig();
+    public abstract void saveFile();
+    public abstract void setString(String path, String value);
     public abstract File getFile();
     protected interface distributeText{
         void exec(String message,Object... objects);

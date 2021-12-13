@@ -9,6 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
 public class SpigotText extends SearchText {
@@ -76,6 +77,20 @@ public class SpigotText extends SearchText {
         } catch (InvalidConfigurationException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void saveFile() {
+        try {
+            configuration.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void setString(String path, String value) {
+        configuration.set(path,value);
     }
 
     @Override
