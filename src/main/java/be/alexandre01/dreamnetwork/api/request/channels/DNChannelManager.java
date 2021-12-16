@@ -20,15 +20,25 @@ public class DNChannelManager {
         return channels.get(name);
     }
 
+    @Deprecated
     public DNChannel registerChannel(DNChannel dnChannel){
-        return registerChannel(dnChannel,false);
+        return registerChannel(dnChannel,false,null);
     }
+    @Deprecated
     public DNChannel registerChannel(DNChannel dnChannel,boolean receiveSendedMessage){
+        return registerChannel(dnChannel,receiveSendedMessage,null);
+    }
+    @Deprecated
+    public DNChannel registerChannel(DNChannel dnChannel, boolean receiveSendedMessage, DNChannel.RegisterListener registerListener){
         if(hasChannel(dnChannel.getName())){
-            System.out.println("Existe deja ?");
-            return getChannel(dnChannel.getName());
+            DNChannel channel = getChannel(dnChannel.getName());
+            if(registerListener != null)
+                channel.setRegisterListener(registerListener);
+            channel.callRegisterEvent(true);
+            return channel;
         }
-        System.out.println("Tu envoie fdp ?");
+        if(registerListener != null)
+            dnChannel.setRegisterListener(registerListener);
         NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_REGISTER_CHANNEL,dnChannel.getName(),receiveSendedMessage);
         channels.put(dnChannel.getName(),dnChannel);
 
@@ -36,18 +46,21 @@ public class DNChannelManager {
     }
 
     public DNChannel registerChannel(String channelName,boolean receiveSendedMessage){
+        return registerChannel(channelName,receiveSendedMessage,null);
+    }
+    public DNChannel registerChannel(String channelName,boolean receiveSendedMessage,DNChannel.RegisterListener registerListener){
         if(hasChannel(channelName)){
+            DNChannel channel = getChannel(channelName);
+            if(registerListener != null)
+                channel.setRegisterListener(registerListener);
+            channel.callRegisterEvent(true);
             return getChannel(channelName);
         }
-        NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_REGISTER_CHANNEL,channelName,receiveSendedMessage);
-        DNChannel dnChannel = new DNChannel(channelName);
-        System.out.println(dnChannel);
-        channels.put(channelName,dnChannel);
-        return dnChannel;
+        return registerChannel(new DNChannel(channelName),receiveSendedMessage,registerListener);
     }
+
     public DNChannel registerChannel(String channelName){
-        System.out.println("RegisterChannel");
-        return registerChannel(channelName,false);
+        return registerChannel(channelName,false,null);
     }
     public void unRegisterChannel(DNChannel dnChannel){
         NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_UNREGISTER_CHANNEL,dnChannel.getName());

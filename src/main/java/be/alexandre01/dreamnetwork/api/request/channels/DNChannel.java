@@ -2,6 +2,8 @@ package be.alexandre01.dreamnetwork.api.request.channels;
 
 import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.utils.messages.Message;
+import com.google.gson.internal.LinkedTreeMap;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -15,6 +17,14 @@ import java.util.concurrent.*;
 @Getter
 public class DNChannel {
     private final HashMap<String,DataListener> dataListener = new HashMap<>();
+    private RegisterListener registerListener = null;
+    @Getter(value = AccessLevel.NONE)
+    private boolean hasBeenRegistered = false;
+    @Getter(value = AccessLevel.NONE)
+    private boolean hasCalledNewData = false;
+    @Getter(value = AccessLevel.NONE)
+    @Setter(value = AccessLevel.NONE)
+    private LinkedTreeMap<String,Object> newData = null;
     private final String name;
     private final NetworkBaseAPI networkBaseAPI;
     private final HashMap<String, Object> objects = new HashMap<>();
@@ -32,11 +42,29 @@ public class DNChannel {
         this.dataListener.put(key, dataListener);
     }
     public Object askData(String key){
-        return  objects.get(key);
+        return askData(key,Object.class);
     }
 
     public void initDataIfNotExist(String key, Object object){
         new ChannelPacket(getName(), networkBaseAPI.getProcessName()).createResponse(new Message().set("key", key).set("value",object).set("init",true),"cData");
+    }
+
+    public void setRegisterListener(RegisterListener registerListener){
+        this.registerListener = registerListener;
+        registerListener.setChannel(this);
+        if(hasBeenRegistered && !hasCalledNewData){
+            if(newData != null){
+                registerListener.executeNewData(newData);
+            }
+        }
+        hasCalledNewData = true;
+    }
+
+    public Object getLocalData(String key){
+        return objects.get(key);
+    }
+    public <T> Object getLocalData(String key, Class<T> clazz){
+        return objects.get(key);
     }
 
     public <T> AskedData<T> askData(String key, Class<T> clazz){
@@ -80,6 +108,30 @@ public class DNChannel {
         channelPacket.createResponse(message,"cData");
     }
 
+    public boolean hasBeenCalled() {
+        return hasCalledNewData;
+    }
+
+    public void callRegisterEvent(LinkedTreeMap<String,Object> map){
+        callRegisterEvent(map,false);
+    }
+    public void callRegisterEvent(LinkedTreeMap<String,Object> map,boolean force){
+        newData = map;
+        hasBeenRegistered = true;
+        if(getRegisterListener() != null && !hasCalledNewData || force){
+            getRegisterListener().executeNewData(map);
+            hasBeenRegistered = true;
+        }
+    }
+    public void callRegisterEvent(boolean force){
+        if(newData != null){
+            hasBeenRegistered = true;
+            if(getRegisterListener() != null && !hasCalledNewData || force){
+                getRegisterListener().executeNewData(newData);
+                hasBeenRegistered = true;
+            }
+        }
+    }
     public DNChannel addInterceptor(DNChannelInterceptor dnChannelInterceptor){
         dnChannelInterceptors.add(dnChannelInterceptor);
         return this;
@@ -89,9 +141,39 @@ public class DNChannel {
         channelPacket.createResponse(message);
         return this;
     }
+    public abstract static class RegisterListener{
+        @Getter private DNChannel channel;
+        private LinkedTreeMap<String,Object> newData;
+        public void createInitialData(String key, Object data){
+            if(!contains(key)){
+                channel.initDataIfNotExist(key,data);
+                newData.put(key,data);
+            }
+        }
+
+        protected void setChannel(DNChannel dnChannel){
+            this.channel = dnChannel;
+        }
+        public boolean contains(String key){
+            return channel.newData.containsKey(key);
+        }
+        public Object get(String key){
+            return channel.newData.get(key);
+        }
+        public <T> T get(String key, Class<T> tClass){
+            return (T) channel.newData.get(key);
+        }
+
+        private void executeNewData(LinkedTreeMap<String,Object> newData){
+            channel.objects.putAll(newData);
+            this.newData = newData;
+            onNewDataReceived(this.newData);
+        }
+        public abstract void onNewDataReceived(LinkedTreeMap<String,Object> newData);
+    }
 
     public abstract static class DataListener<T>{
-        @Setter private DNChannel dnChannel;
+        @Getter @Setter private DNChannel dnChannel;
         @Setter private String key;
         @Setter @Getter private Class aClass;
 
@@ -138,6 +220,8 @@ public class DNChannel {
             });
         }
     }
+
+
     public abstract static class GetDataThread<T>{
         public abstract void onComplete(T t);
     }

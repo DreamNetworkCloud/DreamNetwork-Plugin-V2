@@ -14,6 +14,7 @@ import be.alexandre01.dreamnetwork.plugins.spigot.api.events.player.NetworkDisco
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.player.NetworkJoinEvent;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.player.NetworkSwitchServerEvent;
 import be.alexandre01.dreamnetwork.utils.messages.Message;
+import com.google.gson.internal.LinkedTreeMap;
 import io.netty.channel.ChannelHandlerContext;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -162,7 +163,19 @@ public class SpigotRequestResponse extends ClientResponse {
                         NetworkDisconnectEvent event = new NetworkDisconnectEvent(dnPlayer.getServer(),dnPlayer);
                         pluginManager.callEvent(event);
                     }
-            }
+                    break;
+                case CORE_REGISTER_CHANNEL:
+                    System.out.println(message);
+                    String channelName = message.getString("CHANNEL");
+                    System.out.println(message.get("MAP"));
+                    LinkedTreeMap<String,Object> map = (LinkedTreeMap<String, java.lang.Object>) message.get("MAP");
+                    System.out.println("MAP > "+ map);
+
+                    System.out.println(map.values());
+                    System.out.println(map.keySet());
+                    networkBaseAPI.getChannelManager().getChannel(channelName).callRegisterEvent(map);
+                }
+
         }
     }
 }
