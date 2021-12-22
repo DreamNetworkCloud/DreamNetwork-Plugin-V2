@@ -2,6 +2,7 @@ package be.alexandre01.dreamnetwork.api.objects;
 
 import be.alexandre01.dreamnetwork.api.objects.player.DNPlayer;
 import be.alexandre01.dreamnetwork.api.objects.server.DNServer;
+import be.alexandre01.dreamnetwork.utils.Mods;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,12 +14,17 @@ import java.util.List;
 
 @Getter @Setter
 public abstract class RemoteService {
-    protected List<DNPlayer> dnPlayers = new ArrayList<>();
-    protected HashMap<Integer, DNServer> dnServers = new HashMap<>();
+    protected List<DNPlayer> players = new ArrayList<>();
+    protected HashMap<Integer, DNServer> servers = new HashMap<>();
     private String name;
+    private Mods mods;
 
-    public RemoteService(String name){
+    protected boolean isStarted;
+
+    public RemoteService(String name,Mods mods,boolean isStarted){
         this.name = name;
+        this.mods = mods;
+        this.isStarted = isStarted;
     }
 
     public abstract void start();

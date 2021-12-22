@@ -13,6 +13,7 @@ import be.alexandre01.dreamnetwork.plugins.spigot.api.DNSpigotAPI;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.player.NetworkDisconnectEvent;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.player.NetworkJoinEvent;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.player.NetworkSwitchServerEvent;
+import be.alexandre01.dreamnetwork.utils.Mods;
 import be.alexandre01.dreamnetwork.utils.messages.Message;
 import com.google.gson.internal.LinkedTreeMap;
 import io.netty.channel.ChannelHandlerContext;
@@ -51,18 +52,36 @@ public class SpigotRequestResponse extends ClientResponse {
                     break;
                 case SPIGOT_NEW_SERVERS:
                     List<String> nServers = (List<String>) message.getList("SERVERS");
-                    networkBaseAPI.getServers().addAll(nServers);
+                    //networkBaseAPI.getServers().addAll(nServers);
                     for(String servers : nServers){
-                        String[] nums = servers.split("-");
-                        int i = Integer.parseInt(nums[nums.length-1]);
+                        String[] nums = servers.split(";")[0].split("-");
+                        String[] data = servers.split(";");
 
+
+                        boolean b;
+                        if(data[2].equals("true")){
+                            b = true;
+                        }else {
+                            b = false;
+                        }
                         if(!networkBaseAPI.getServices().containsKey(nums[0])){
-                            networkBaseAPI.getServices().put(nums[0],new BaseService(nums[0]));
+                            Mods mods;
+
+                            if(data[1].equals("S")){
+                                mods = Mods.STATIC;
+                            }else {
+                                mods = Mods.DYNAMIC;
+                            }
+                            networkBaseAPI.getServices().put(nums[0],new BaseService(nums[0],mods,b));
                         }
 
-                        BaseService baseService = (BaseService) networkBaseAPI.getServices().get(nums[0]);
 
-                        baseService.createServer(nums[0],i);
+
+                        if(b){
+                            int i = Integer.parseInt(nums[nums.length-1]);
+                            BaseService baseService = (BaseService) networkBaseAPI.getServices().get(nums[0]);
+                            baseService.createServer(nums[0],i);
+                        }
                     }
 
                     System.out.println("New servers : "+ nServers);
@@ -75,7 +94,7 @@ public class SpigotRequestResponse extends ClientResponse {
                         BaseService baseService = (BaseService) networkBaseAPI.getServices().get(nums[0]);
                         baseService.removeServer(i);
                     }
-                    networkBaseAPI.getServers().removeAll(rServers);
+                    //networkBaseAPI.getServers().removeAll(rServers);
                     System.out.println("Remove servers : "+ rServers);
                     break;
                 case SPIGOT_UPDATE_PLAYERS:
@@ -111,11 +130,11 @@ public class SpigotRequestResponse extends ClientResponse {
                                   }
                                   service = remoteServices.get(serverName);
                                   System.out.println("Service "+ service);
-                                  if (service.getDnServers().containsKey(serverId)) {
-                                      dnServer = service.getDnServers().get(serverId);
+                                  if (service.getServers().containsKey(serverId)) {
+                                      dnServer = service.getServers().get(serverId);
                                   } else {
                                       dnServer = new DNServer(serverName, serverId, service);
-                                      service.getDnServers().put(serverId, dnServer);
+                                      service.getServers().put(serverId, dnServer);
                                       System.out.println("Server "+ dnServer);
                                   }
                               }
@@ -136,7 +155,7 @@ public class SpigotRequestResponse extends ClientResponse {
 
                               dnPlayer = new DNPlayer(playerName,uuid,dnServer,id);
                               System.out.println(dnPlayer);
-                              dnServer.getDnPlayers().add(dnPlayer);
+                              dnServer.getPlayers().add(dnPlayer);
                               dnPlayerManager.getDnPlayers().put(id, dnPlayer);
                               System.out.println(dnServer);
                               NetworkJoinEvent event = new NetworkJoinEvent(dnPlayer.getServer(),dnPlayer);
@@ -144,9 +163,9 @@ public class SpigotRequestResponse extends ClientResponse {
                           }else {
                               if(dnServer != null){
                                   System.out.println("Change Server Ouwa "+ dnServer.getName()+" to "+ dnPlayer.getServer().getName());
-                                  dnPlayer.getServer().getRemoteService().getDnPlayers().remove(dnPlayer);
+                                  dnPlayer.getServer().getRemoteService().getPlayers().remove(dnPlayer);
                                   dnPlayer.updateServer(dnServer);
-                                  dnServer.getDnPlayers().add(dnPlayer);
+                                  dnServer.getPlayers().add(dnPlayer);
                                   NetworkSwitchServerEvent event = new NetworkSwitchServerEvent(dnPlayer.getServer(),dnPlayer);
                                   pluginManager.callEvent(event);
                               }
@@ -159,7 +178,7 @@ public class SpigotRequestResponse extends ClientResponse {
                     for(Integer id : unPlayers){
                         DNPlayer dnPlayer = dnPlayerManager.getDnPlayers().get(id);
                         dnPlayerManager.getDnPlayers().remove(id);
-                        dnPlayer.getServer().getRemoteService().getDnPlayers().remove(dnPlayer);
+                        dnPlayer.getServer().getRemoteService().getPlayers().remove(dnPlayer);
                         NetworkDisconnectEvent event = new NetworkDisconnectEvent(dnPlayer.getServer(),dnPlayer);
                         pluginManager.callEvent(event);
                     }

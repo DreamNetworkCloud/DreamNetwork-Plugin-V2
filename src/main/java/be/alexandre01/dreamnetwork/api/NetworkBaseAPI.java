@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 public abstract class NetworkBaseAPI {
-    @Getter @Setter private ArrayList<String> servers = new ArrayList<>();
     @Getter @Setter private HashMap<String,RemoteService> services = new HashMap<>();
 
     private static NetworkBaseAPI instance;

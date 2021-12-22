@@ -4,6 +4,7 @@ import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.api.objects.RemoteService;
 import be.alexandre01.dreamnetwork.api.objects.player.DNPlayer;
 import be.alexandre01.dreamnetwork.api.request.RequestType;
+import be.alexandre01.dreamnetwork.utils.Mods;
 import be.alexandre01.dreamnetwork.utils.messages.Message;
 import lombok.Getter;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Getter
 public class DNServer {
-    private final Collection<DNPlayer> dnPlayers = new ArrayList<>();
+    private final Collection<DNPlayer> players = new ArrayList<>();
     private final RemoteService remoteService;
     private final String name;
     private final int id;
