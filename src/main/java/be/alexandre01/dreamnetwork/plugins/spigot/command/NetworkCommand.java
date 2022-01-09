@@ -129,15 +129,11 @@ public class NetworkCommand extends Command {
             case GUI:
 
         }
-
     return false;
     }
 
     @Override
     public List<String> tabComplete(CommandSender sender, String msg, String[] args) throws IllegalArgumentException {
-        /*sender.sendMessage(args.length+"");
-        sender.sendMessage(msg);
-        sender.sendMessage(String.valueOf(Arrays.asList(args)));*/
         if(args.length == 1){
             List<String> optionsType = new ArrayList<>();
             for(SubCommand s : SubCommand.values()){

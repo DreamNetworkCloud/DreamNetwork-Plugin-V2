@@ -75,6 +75,10 @@ public class DNBungeeAPI extends NetworkBaseAPI{
         getRequestManager().getRequestBuilder().addRequestBuilder(new BungeeGeneratedRequest());
     }
 
+    public static DNBungeeAPI getInstance(){
+        return (DNBungeeAPI) NetworkBaseAPI.getInstance();
+    }
+
     @Override
     public void shutdownProcess() {
         dnBungee.getProxy().stop();

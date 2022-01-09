@@ -6,6 +6,7 @@ import be.alexandre01.dreamnetwork.api.request.channels.ChannelPacket;
 import be.alexandre01.dreamnetwork.api.request.channels.DNChannel;
 import be.alexandre01.dreamnetwork.api.request.channels.DNChannelInterceptor;
 import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
+import be.alexandre01.dreamnetwork.plugins.spigot.api.DNSpigotAPI;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.player.NetworkDisconnectEvent;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.player.NetworkJoinEvent;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.player.NetworkSwitchServerEvent;
@@ -121,8 +122,8 @@ public class TestChannelListener implements Listener {
         });
 
 
-        NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_ASK_DATA,"PLAYERS","ALWAYS");
-
+        DNSpigotAPI dnSpigotAPI = (DNSpigotAPI) DNSpigotAPI.getInstance();
+        dnSpigotAPI.autoRefreshPlayers();
     }
 
     @EventHandler

@@ -28,6 +28,7 @@ public abstract class NetworkBaseAPI {
 
 
 
+
     public abstract String getInfo();
 
     public abstract String getProcessName();

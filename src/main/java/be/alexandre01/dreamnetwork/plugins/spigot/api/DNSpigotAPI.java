@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 public class DNSpigotAPI extends NetworkBaseAPI{
     BasicClientHandler basicClientHandler;
     DNSpigot dnSpigot;
+    boolean refreshedPlayers = false;
     String processName = null;
     @Getter private final DNPlayerManager dnPlayerManager = new DNPlayerManager();
 
@@ -79,14 +80,39 @@ public class DNSpigotAPI extends NetworkBaseAPI{
 
 
     public void autoRefreshPlayers(){
-        getRequestManager().sendRequest(RequestType.CORE_ASK_DATA,"PLAYERS","ALWAYS");
+        if(!refreshedPlayers){
+            getRequestManager().sendRequest(RequestType.CORE_ASK_DATA,"PLAYERS","ALWAYS");
+            refreshedPlayers = true;
+        }else {
+            System.out.println("[DreamNetwork] You already refreshed the players");
+        }
+    }
+    public void autoRefreshPlayers(boolean active){
+        if(active && !refreshedPlayers || !active && refreshedPlayers){
+            getRequestManager().sendRequest(RequestType.CORE_ASK_DATA,"PLAYERS","ALWAYS");
+            refreshedPlayers = true;
+        }else {
+            System.out.println("[DreamNetwork] You already refreshed the players");
+        }
+    }
+
+    public void autoRefreshPlayers(boolean active,long time){
+        if(active && !refreshedPlayers || !active && refreshedPlayers){
+            getRequestManager().sendRequest(RequestType.CORE_ASK_DATA,"PLAYERS","TIME",time);
+            refreshedPlayers = true;
+        }else {
+            System.out.println("[DreamNetwork] You already refreshed the players");
+        }
     }
 
 
-    public void autoRefreshPlayers(long time){
-        getRequestManager().sendRequest(RequestType.CORE_ASK_DATA,"PLAYERS","TIME",time);
+    public static DNSpigotAPI getInstance() {
+        return (DNSpigotAPI) NetworkBaseAPI.getInstance();
     }
 
+    public boolean hasAlreadyPlayerRefreshed(){
+        return refreshedPlayers;
+    }
 
     @Override
     public void shutdownProcess() {
