@@ -78,8 +78,8 @@ public abstract class SearchText {
         messages.clear();
     }
     private boolean recursiveSearch(String currentPath){
-        System.out.println(currentPath);
-        System.out.println(path1+"."+currentPath);
+        //System.out.println(currentPath);
+        //System.out.println(path1+"."+currentPath);
         String path = path1;
         /*if(!currentPath.equals("")){
             path = path+".";
@@ -88,9 +88,9 @@ public abstract class SearchText {
 
 
         for (String s : getKeys(path+currentPath,false)){
-            System.out.println(currentPath);
+            //System.out.println(currentPath);
             String totalPath =path+currentPath+"."+s;
-            System.out.println(totalPath);
+            //System.out.println(totalPath);
             if(!recursiveSearch(currentPath+"."+s)){
                 messages.put(currentPath.substring(1)+"."+s,getString(totalPath));
             }

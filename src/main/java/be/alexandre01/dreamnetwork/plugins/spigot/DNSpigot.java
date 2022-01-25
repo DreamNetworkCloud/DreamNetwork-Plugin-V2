@@ -69,7 +69,7 @@ public class DNSpigot extends JavaPlugin{
 
         registerCommand("network",new NetworkCommand("network"));
         getServer().getPluginManager().registerEvents(new ReloadListener(),this);
-        getServer().getPluginManager().registerEvents(new TestChannelListener(),this);
+        //getServer().getPluginManager().registerEvents(new TestChannelListener(),this);
     }
 
     @Override

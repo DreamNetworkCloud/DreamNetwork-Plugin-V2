@@ -13,8 +13,6 @@ public class DNBungeeServersManager {
             ServerInfo info = ProxyServer.getInstance().constructServerInfo(processName,new InetSocketAddress(ip,port) , "", false);
             ProxyServer.getInstance().getServers().put(processName, info);
             servers.add(processName);
-            System.out.println("ADD SERVER "+ processName);
-            System.out.println(servers);
         }catch (Exception e){
             e.printStackTrace();
         }

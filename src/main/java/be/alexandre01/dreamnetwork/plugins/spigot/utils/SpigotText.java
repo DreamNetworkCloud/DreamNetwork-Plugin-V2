@@ -57,7 +57,6 @@ public class SpigotText extends SearchText {
         configuration = new YamlConfiguration();
 
         if(!file.exists()){
-            System.out.println("MKDIR");
             file.getParentFile().mkdirs();
             try {
                 file.createNewFile();

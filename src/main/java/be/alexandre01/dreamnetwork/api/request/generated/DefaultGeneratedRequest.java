@@ -57,7 +57,6 @@ public class DefaultGeneratedRequest extends RequestBuilder {
                 message.set("RESEND",true);
             }
 
-            System.out.println("Channel registered >> "+ message);
             return message;
         });
         requestData.put(RequestType.CORE_UNREGISTER_CHANNEL,(message, args) -> {

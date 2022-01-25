@@ -41,7 +41,6 @@ public class BungeeText extends SearchText {
 
     @Override
     protected boolean hasSubSection(String path) {
-        System.out.println("HasSubSection > "+ path);
         try {
             configuration.getSection(path);
         }catch (Exception e){
@@ -52,7 +51,6 @@ public class BungeeText extends SearchText {
 
     @Override
     protected String getString(String path) {
-        System.out.println("GetString Init and END MAYBE?"+path);
         return configuration.getString(path);
     }
 

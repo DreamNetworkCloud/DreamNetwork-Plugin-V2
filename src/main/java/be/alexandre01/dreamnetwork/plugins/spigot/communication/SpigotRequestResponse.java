@@ -84,21 +84,22 @@ public class SpigotRequestResponse extends ClientResponse {
                         }
                     }
 
-                    System.out.println("New servers : "+ nServers);
+               //     System.out.println("New servers : "+ nServers);
                     break;
                 case SPIGOT_REMOVE_SERVERS:
                     List<String> rServers = (List<String>) message.getList("SERVERS");
+                    if(rServers.size() > 0){
                     for(String servers : rServers){
                         String[] nums = servers.split("-");
                         int i = Integer.parseInt(nums[nums.length-1]);
                         BaseService baseService = (BaseService) networkBaseAPI.getServices().get(nums[0]);
                         baseService.removeServer(i);
                     }
+                    }
                     //networkBaseAPI.getServers().removeAll(rServers);
                     System.out.println("Remove servers : "+ rServers);
                     break;
                 case SPIGOT_UPDATE_PLAYERS:
-                    System.out.println("UPDATE PLAYERS ?");
                     List<String> upPlayers =  (List<String>) message.getList("P");
                     System.out.println(upPlayers);
                     for(String p : upPlayers){
@@ -115,9 +116,7 @@ public class SpigotRequestResponse extends ClientResponse {
                             System.out.println(split[i]);
                               if(i== 0) {
                                   id = Integer.parseInt(split[i]);
-                                  System.out.println("ID => "+ id);
                                   if (dnPlayerManager.getDnPlayers().containsKey(id)) {
-                                      System.out.println("Je contiens deja");
                                       dnPlayer = dnPlayerManager.getDnPlayers().get(id);
                                   }
                               }
@@ -129,22 +128,18 @@ public class SpigotRequestResponse extends ClientResponse {
                                       continue;
                                   }
                                   service = remoteServices.get(serverName);
-                                  System.out.println("Service "+ service);
                                   if (service.getServers().containsKey(serverId)) {
                                       dnServer = service.getServers().get(serverId);
                                   } else {
                                       dnServer = new DNServer(serverName, serverId, service);
                                       service.getServers().put(serverId, dnServer);
-                                      System.out.println("Server "+ dnServer);
                                   }
                               }
                               if(i == 2) {
                                   playerName = split[i];
-                                  System.out.println("PlayerName "+playerName);
                               }
                               if(i == 3) {
                                   uuid = UUID.fromString(split[i]);
-                                  System.out.println("UUID "+ uuid);
                               }
                           }
 
@@ -154,10 +149,8 @@ public class SpigotRequestResponse extends ClientResponse {
 
 
                               dnPlayer = new DNPlayer(playerName,uuid,dnServer,id);
-                              System.out.println(dnPlayer);
                               dnServer.getPlayers().add(dnPlayer);
                               dnPlayerManager.getDnPlayers().put(id, dnPlayer);
-                              System.out.println(dnServer);
                               NetworkJoinEvent event = new NetworkJoinEvent(dnPlayer.getServer(),dnPlayer);
                               pluginManager.callEvent(event);
                           }else {
@@ -184,14 +177,9 @@ public class SpigotRequestResponse extends ClientResponse {
                     }
                     break;
                 case CORE_REGISTER_CHANNEL:
-                    System.out.println(message);
                     String channelName = message.getString("CHANNEL");
-                    System.out.println(message.get("MAP"));
-                    LinkedTreeMap<String,Object> map = (LinkedTreeMap<String, java.lang.Object>) message.get("MAP");
-                    System.out.println("MAP > "+ map);
 
-                    System.out.println(map.values());
-                    System.out.println(map.keySet());
+                    LinkedTreeMap<String,Object> map = (LinkedTreeMap<String, java.lang.Object>) message.get("MAP");
                     networkBaseAPI.getChannelManager().getChannel(channelName).callRegisterEvent(map);
                 }
 

@@ -72,7 +72,6 @@ public class ChannelPacket {
             message.setInRoot("RID",RID);
         }
 
-        System.out.println("Write >>" + message.toString());
         basicClientHandler.writeAndFlush(message,listener);
     }
 }

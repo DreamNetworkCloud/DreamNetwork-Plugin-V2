@@ -41,7 +41,6 @@ public class BasicClient extends Thread{
 
             // Wait until the connection is closed.
             f.channel().closeFuture().sync();
-            System.out.println("ouf");
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {

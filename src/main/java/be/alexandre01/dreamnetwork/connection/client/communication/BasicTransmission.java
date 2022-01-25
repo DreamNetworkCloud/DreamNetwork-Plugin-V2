@@ -42,25 +42,21 @@ public class BasicTransmission extends ClientResponse {
             return;
         }
         if(message.getHeader().equals("cAsk")) {
-            System.out.println("Est ce que je m'aime ?");
             DNChannel dnChannel = NetworkBaseAPI.getInstance().getChannelManager().getChannel(message.getChannel());
-            System.out.println("Oui et toi ? "+ dnChannel);
             if(dnChannel != null){
                 String key = message.getString("key");
                 Object value = message.get("value");
-                System.out.println(value + " " + key);
-                System.out.println("class : " + value.getClass());
+                /*System.out.println(value + " " + key);
+                System.out.println("class : " + value.getClass());*/
 
 
                 if(dnChannel.getDataListener().containsKey(key)){
-                    DNChannel.DataListener dataListener = dnChannel.getDataListener().get(key);
+                    /*DNChannel.DataListener dataListener = dnChannel.getDataListener().get(key);
                     if(dataListener.getAClass() == Integer.class){
 
-                    }
+                    }*/
                     dnChannel.getDataListener().get(key).onUpdateData(value);
                 }
-                System.out.println("Complete ASK");
-
                 dnChannel.getCompletables().get(key).supplyAsync(() -> value).complete(value);
 
                 dnChannel.getObjects().put(key,value);

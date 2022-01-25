@@ -190,12 +190,11 @@ public class DNChannel {
 
 
         public void get(GetDataThread<T> getDataThread){
-            System.out.println("GETTER !");
             ExecutorService pool = Executors.newSingleThreadExecutor();
             pool.execute(new Runnable() {
                 @Override
                 public void run() {
-                    System.out.println("Submitted !");
+                    //dSystem.out.println("Submitted !");
                     CompletableFuture<T> completableFuture = new CompletableFuture<>();
                     new ChannelPacket(dnChannel.getName(), dnChannel.networkBaseAPI.getProcessName()).createResponse(new Message().set("key", key),"cAsk");
 
@@ -205,7 +204,6 @@ public class DNChannel {
                         return;
                     }
 
-                    System.out.println("Agregre");
 
                     dnChannel.completables.put(key, completableFuture);
                     try {
