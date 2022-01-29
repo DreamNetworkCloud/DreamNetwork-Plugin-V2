@@ -58,7 +58,7 @@ public class NetworkCommand extends Command {
                     sender.sendMessage("§cVeuillez mettre un id valide. exemple: nomduserver-0");
                     return false;
                 }
-                if(NetworkBaseAPI.getInstance().getServices().containsKey(server)){
+                if(!NetworkBaseAPI.getInstance().getServices().containsKey(server)){
                     sender.sendMessage("§cVeuillez mettre un autre nom de serveur car celui là est invalide.");
                     return false;
                 }
