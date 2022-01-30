@@ -87,7 +87,7 @@ public class DNBungee extends Plugin {
         lobby = configuration.getString("network.lobby");
 
         if(!configuration.contains("network.connexionOnLobby")){
-            configuration.set("network.connexionOnLobby",true);
+            configuration.set("network.connexionOnLobby",false);
             saveConfig();
         }
         connexionOnLobby = configuration.getBoolean("network.connexionOnLobby");
@@ -100,7 +100,7 @@ public class DNBungee extends Plugin {
         isMaintenance = configuration.getBoolean("network.maintenance");
 
         if(!configuration.contains("network.kickRedirection")){
-            configuration.set("network.kickRedirection.enabled",true);
+            configuration.set("network.kickRedirection.enabled",false);
             configuration.set("network.kickRedirection.server",lobby);
             saveConfig();
         }
