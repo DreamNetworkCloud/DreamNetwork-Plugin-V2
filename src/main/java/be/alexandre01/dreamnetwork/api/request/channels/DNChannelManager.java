@@ -3,7 +3,6 @@ package be.alexandre01.dreamnetwork.api.request.channels;
 import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.api.request.RequestType;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DNChannelManager {
@@ -29,7 +28,7 @@ public class DNChannelManager {
         return registerChannel(dnChannel,receiveSendedMessage,null);
     }
     @Deprecated
-    public DNChannel registerChannel(DNChannel dnChannel, boolean receiveSendedMessage, DNChannel.RegisterListener registerListener){
+    public DNChannel registerChannel(DNChannel dnChannel, boolean receiveSendedMessage, RegisterListener registerListener){
         if(hasChannel(dnChannel.getName())){
             DNChannel channel = getChannel(dnChannel.getName());
             if(registerListener != null)
@@ -48,7 +47,7 @@ public class DNChannelManager {
     public DNChannel registerChannel(String channelName,boolean receiveSendedMessage){
         return registerChannel(channelName,receiveSendedMessage,null);
     }
-    public DNChannel registerChannel(String channelName,boolean receiveSendedMessage,DNChannel.RegisterListener registerListener){
+    public DNChannel registerChannel(String channelName, boolean receiveSendedMessage, RegisterListener registerListener){
         if(hasChannel(channelName)){
             DNChannel channel = getChannel(channelName);
             if(registerListener != null)

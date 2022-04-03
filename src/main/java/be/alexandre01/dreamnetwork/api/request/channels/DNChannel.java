@@ -5,25 +5,21 @@ import be.alexandre01.dreamnetwork.utils.messages.Message;
 import com.google.gson.internal.LinkedTreeMap;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.SneakyThrows;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 import java.util.concurrent.*;
 
 @Getter
 public class DNChannel {
-    private final HashMap<String,DataListener> dataListener = new HashMap<>();
+    private final HashMap<String, DataListener> dataListener = new HashMap<>();
     private RegisterListener registerListener = null;
     @Getter(value = AccessLevel.NONE)
     private boolean hasBeenRegistered = false;
     @Getter(value = AccessLevel.NONE)
     private boolean hasCalledNewData = false;
-    @Getter(value = AccessLevel.NONE)
-    @Setter(value = AccessLevel.NONE)
+
     private LinkedTreeMap<String,Object> newData = null;
     private final String name;
     private final NetworkBaseAPI networkBaseAPI;
@@ -46,6 +42,7 @@ public class DNChannel {
     }
 
     public void initDataIfNotExist(String key, Object object){
+        System.out.println("Init Data ! " + key);
         new ChannelPacket(getName(), networkBaseAPI.getProcessName()).createResponse(new Message().set("key", key).set("value",object).set("init",true),"cData");
     }
 
@@ -56,15 +53,16 @@ public class DNChannel {
             if(newData != null){
                 registerListener.executeNewData(newData);
             }
+            hasCalledNewData = true;
         }
-        hasCalledNewData = true;
+
     }
 
     public Object getLocalData(String key){
         return objects.get(key);
     }
-    public <T> Object getLocalData(String key, Class<T> clazz){
-        return objects.get(key);
+    public <T> T getLocalData(String key, Class<T> clazz){
+        return (T) objects.get(key);
     }
 
     public <T> AskedData<T> askData(String key, Class<T> clazz){
@@ -86,7 +84,6 @@ public class DNChannel {
             return this;
         }
         channelPacket.createResponse(new Message().set("key", key).set("value", object),"cData");
-        setData("",new ArrayList<>());
         return this;
     }
 
@@ -122,13 +119,19 @@ public class DNChannel {
             getRegisterListener().executeNewData(map);
             hasBeenRegistered = true;
         }
+        for(Map.Entry<String,Object> entry : newData.entrySet()){
+            getDataListener().get(entry.getKey()).onUpdateData(entry.getValue());
+        }
     }
     public void callRegisterEvent(boolean force){
         if(newData != null){
             hasBeenRegistered = true;
-            if(getRegisterListener() != null && !hasCalledNewData || force){
+            if(getRegisterListener() != null && (!hasCalledNewData || force)){
                 getRegisterListener().executeNewData(newData);
                 hasBeenRegistered = true;
+            }
+            for(Map.Entry<String,Object> entry : newData.entrySet()){
+                getDataListener().get(entry.getKey()).onUpdateData(entry.getValue());
             }
         }
     }
@@ -141,86 +144,6 @@ public class DNChannel {
         channelPacket.createResponse(message);
         return this;
     }
-    public abstract static class RegisterListener{
-        @Getter private DNChannel channel;
-        private LinkedTreeMap<String,Object> newData;
-        public void createInitialData(String key, Object data){
-            if(!contains(key)){
-                channel.initDataIfNotExist(key,data);
-                newData.put(key,data);
-            }
-        }
-
-        protected void setChannel(DNChannel dnChannel){
-            this.channel = dnChannel;
-        }
-        public boolean contains(String key){
-            return channel.newData.containsKey(key);
-        }
-        public Object get(String key){
-            return channel.newData.get(key);
-        }
-        public <T> T get(String key, Class<T> tClass){
-            return (T) channel.newData.get(key);
-        }
-
-        private void executeNewData(LinkedTreeMap<String,Object> newData){
-            channel.objects.putAll(newData);
-            this.newData = newData;
-            onNewDataReceived(this.newData);
-        }
-        public abstract void onNewDataReceived(LinkedTreeMap<String,Object> newData);
-    }
-
-    public abstract static class DataListener<T>{
-        @Getter @Setter private DNChannel dnChannel;
-        @Setter private String key;
-        @Setter @Getter private Class aClass;
 
 
-        public void set(T data){
-            dnChannel.setData(key,data);
-        }
-        public abstract void onUpdateData(T data);
-    }
-
-    public static class AskedData<T>{
-        @Setter private String key;
-        @Setter private DNChannel dnChannel;
-
-
-        public void get(GetDataThread<T> getDataThread){
-            ExecutorService pool = Executors.newSingleThreadExecutor();
-            pool.execute(new Runnable() {
-                @Override
-                public void run() {
-                    //dSystem.out.println("Submitted !");
-                    CompletableFuture<T> completableFuture = new CompletableFuture<>();
-                    new ChannelPacket(dnChannel.getName(), dnChannel.networkBaseAPI.getProcessName()).createResponse(new Message().set("key", key),"cAsk");
-
-                    if(dnChannel.getAutoSendObjects().containsKey(key) && dnChannel.getObjects().containsKey(key)){
-                        getDataThread.onComplete(completableFuture.getNow((T) dnChannel.getObjects().get(key)));
-                        pool.shutdown();
-                        return;
-                    }
-
-
-                    dnChannel.completables.put(key, completableFuture);
-                    try {
-                        getDataThread.onComplete(completableFuture.get());
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            });
-        }
-    }
-
-
-    public abstract static class GetDataThread<T>{
-        public abstract void onComplete(T t);
-    }
 }

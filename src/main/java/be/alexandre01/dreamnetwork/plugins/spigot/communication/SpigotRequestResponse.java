@@ -60,7 +60,7 @@ public class SpigotRequestResponse extends ClientResponse {
 
 
                         boolean b;
-                        if(data[2].equals("true")){
+                        if(data[2].equals("t")){
                             b = true;
                         }else {
                             b = false;
@@ -79,7 +79,7 @@ public class SpigotRequestResponse extends ClientResponse {
 
 
                         if(b){
-                            int i = Integer.parseInt(nums[nums.length-1]);
+                            int i = Integer.parseInt(nums[1]);
                             BaseService baseService = (BaseService) networkBaseAPI.getServices().get(nums[0]);
                             baseService.createServer(nums[0],i);
                         }
@@ -186,8 +186,9 @@ public class SpigotRequestResponse extends ClientResponse {
                     break;
                 case CORE_REGISTER_CHANNEL:
                     String channelName = message.getString("CHANNEL");
-
                     LinkedTreeMap<String,Object> map = (LinkedTreeMap<String, java.lang.Object>) message.get("MAP");
+                    System.out.println("Données ! > "+map);
+                    System.out.println("Nom du channel ! > "+ channelName);
                     networkBaseAPI.getChannelManager().getChannel(channelName).callRegisterEvent(map);
                 }
 

@@ -1,11 +1,7 @@
 package be.alexandre01.dreamnetwork.plugins.spigot.listeners;
 
 import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
-import be.alexandre01.dreamnetwork.api.request.RequestType;
-import be.alexandre01.dreamnetwork.api.request.channels.ChannelPacket;
-import be.alexandre01.dreamnetwork.api.request.channels.DNChannel;
-import be.alexandre01.dreamnetwork.api.request.channels.DNChannelInterceptor;
-import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
+import be.alexandre01.dreamnetwork.api.request.channels.*;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.DNSpigotAPI;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.player.NetworkDisconnectEvent;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.player.NetworkJoinEvent;
@@ -17,10 +13,6 @@ import be.alexandre01.dreamnetwork.utils.messages.Message;
 import com.google.gson.internal.LinkedTreeMap;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-
-import java.util.Date;
-import java.util.concurrent.ExecutionException;
 
 public class TestChannelListener implements Listener {
     int serverOnline = 0;
@@ -39,14 +31,14 @@ public class TestChannelListener implements Listener {
 
 
         //Ajout de plusieurs intercepteurs de données (exemple)
-        dnChannel.setDataListener("server_online", Integer.class, new DNChannel.DataListener<Integer>() {
+        dnChannel.setDataListener("server_online", Integer.class, new DataListener<Integer>() {
             @Override
             public void onUpdateData(Integer data) {
                 System.out.println("Update de serveur en ligne > "+ data);
                 serverOnline = data;
             }
         });
-        dnChannel.setDataListener("players_online", Integer.class, new DNChannel.DataListener<Integer>() {
+        dnChannel.setDataListener("players_online", Integer.class, new DataListener<Integer>() {
             @Override
             public void onUpdateData(Integer data) {
                 System.out.println("Update de joueurs en ligne > "+ data);
@@ -57,7 +49,7 @@ public class TestChannelListener implements Listener {
 
         //Enregistrement du channel au prêt de DreamNetwork ! (exemple)
         // Et on peut récupérer les données inscrit sur le channel si on le souhaite
-        dnChannelManager.registerChannel(dnChannel, true, new DNChannel.RegisterListener() {
+        dnChannelManager.registerChannel(dnChannel, true, new RegisterListener() {
             @Override
             public void onNewDataReceived(LinkedTreeMap<String, Object> newData) {
                 createInitialData("server_online", 0);
@@ -114,7 +106,7 @@ public class TestChannelListener implements Listener {
         dnChannel.getLocalData("test", String.class);
 
         //EXEMPLE DE RECUPERATION D'UNE VALEUR ENREGISTREE SUR LE CHANNEL ET LA TRAITER
-        dnChannel.askData("test", String.class).get(new DNChannel.GetDataThread<String>() {
+        dnChannel.askData("test", String.class).get(new GetDataThread<String>() {
             @Override
             public void onComplete(String s) {
                 System.out.println(s);
