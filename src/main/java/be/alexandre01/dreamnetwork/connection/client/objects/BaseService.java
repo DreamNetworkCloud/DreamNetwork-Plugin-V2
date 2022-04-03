@@ -4,6 +4,7 @@ import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.api.objects.RemoteService;
 import be.alexandre01.dreamnetwork.api.objects.server.DNServer;
 import be.alexandre01.dreamnetwork.api.request.RequestType;
+import be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.server.ServerStartedEvent;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.server.ServerStoppedEvent;
 import be.alexandre01.dreamnetwork.utils.Mods;
@@ -41,9 +42,14 @@ public class BaseService extends RemoteService {
 
         if(!isStarted())
             isStarted = true;
+        Bukkit.getScheduler().scheduleSyncDelayedTask(DNSpigot.getInstance(),()->{
+            ServerStartedEvent event = new ServerStartedEvent(dnServer);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(DNSpigot.getInstance(), () -> {
+                Bukkit.getPluginManager().callEvent(event);
+            });
 
-        ServerStartedEvent event = new ServerStartedEvent(dnServer);
-        Bukkit.getPluginManager().callEvent(event);
+        });
+
     }
 
     public void removeServer(String serverName){
@@ -59,7 +65,11 @@ public class BaseService extends RemoteService {
         if(servers.isEmpty()){
             isStarted = false;
         }
+
         ServerStoppedEvent event = new ServerStoppedEvent(dnServer);
-        Bukkit.getPluginManager().callEvent(event);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(DNSpigot.getInstance(), () -> {
+            Bukkit.getPluginManager().callEvent(event);
+        });
+
     }
 }

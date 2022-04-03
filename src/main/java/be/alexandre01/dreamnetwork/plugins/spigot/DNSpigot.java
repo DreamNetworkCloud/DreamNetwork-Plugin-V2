@@ -88,7 +88,10 @@ public class DNSpigot extends JavaPlugin{
     public void callServerAttachedEvent(){
         System.out.println(DNSpigot.getInstance().getMessage("console.events.attached"));
         ServerAttachedEvent serverAttachedEvent = new ServerAttachedEvent();
-        DNSpigot.getInstance().getServer().getPluginManager().callEvent(serverAttachedEvent);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(DNSpigot.getInstance(), () -> {
+            DNSpigot.getInstance().getServer().getPluginManager().callEvent(serverAttachedEvent);
+        });
+
     }
     public void registerCommand(String commandName, Command commandClass){
         try{

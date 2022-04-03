@@ -13,6 +13,7 @@ import be.alexandre01.dreamnetwork.plugins.spigot.api.DNSpigotAPI;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.player.NetworkDisconnectEvent;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.player.NetworkJoinEvent;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.events.player.NetworkSwitchServerEvent;
+import be.alexandre01.dreamnetwork.plugins.spigot.api.events.server.ServerStartedEvent;
 import be.alexandre01.dreamnetwork.utils.Mods;
 import be.alexandre01.dreamnetwork.utils.messages.Message;
 import com.google.gson.internal.LinkedTreeMap;
@@ -151,8 +152,11 @@ public class SpigotRequestResponse extends ClientResponse {
                               dnPlayer = new DNPlayer(playerName,uuid,dnServer,id);
                               dnServer.getPlayers().add(dnPlayer);
                               dnPlayerManager.getDnPlayers().put(id, dnPlayer);
+
                               NetworkJoinEvent event = new NetworkJoinEvent(dnPlayer.getServer(),dnPlayer);
-                              pluginManager.callEvent(event);
+                              Bukkit.getScheduler().scheduleSyncDelayedTask(DNSpigot.getInstance(), () -> {
+                                  pluginManager.callEvent(event);
+                              });
                           }else {
                               if(dnServer != null){
                                   System.out.println("Change Server Ouwa "+ dnServer.getName()+" to "+ dnPlayer.getServer().getName());
@@ -160,7 +164,9 @@ public class SpigotRequestResponse extends ClientResponse {
                                   dnPlayer.updateServer(dnServer);
                                   dnServer.getPlayers().add(dnPlayer);
                                   NetworkSwitchServerEvent event = new NetworkSwitchServerEvent(dnPlayer.getServer(),dnPlayer);
-                                  pluginManager.callEvent(event);
+                                  Bukkit.getScheduler().scheduleSyncDelayedTask(DNSpigot.getInstance(), () -> {
+                                      pluginManager.callEvent(event);
+                                  });
                               }
                           }
 
@@ -172,8 +178,10 @@ public class SpigotRequestResponse extends ClientResponse {
                         DNPlayer dnPlayer = dnPlayerManager.getDnPlayers().get(id);
                         dnPlayerManager.getDnPlayers().remove(id);
                         dnPlayer.getServer().getRemoteService().getPlayers().remove(dnPlayer);
-                        NetworkDisconnectEvent event = new NetworkDisconnectEvent(dnPlayer.getServer(),dnPlayer);
-                        pluginManager.callEvent(event);
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(DNSpigot.getInstance(),()->{
+                            NetworkDisconnectEvent event = new NetworkDisconnectEvent(dnPlayer.getServer(),dnPlayer);
+                            pluginManager.callEvent(event);
+                        });
                     }
                     break;
                 case CORE_REGISTER_CHANNEL:
