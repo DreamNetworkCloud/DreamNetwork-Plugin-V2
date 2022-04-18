@@ -42,7 +42,7 @@ public class DNChannel {
     }
 
     public void initDataIfNotExist(String key, Object object){
-        System.out.println("Init Data ! " + key);
+        System.out.println("Init Data: " + key);
         new ChannelPacket(getName(), networkBaseAPI.getProcessName()).createResponse(new Message().set("key", key).set("value",object).set("init",true),"cData");
     }
 
@@ -119,19 +119,36 @@ public class DNChannel {
             getRegisterListener().executeNewData(map);
             hasBeenRegistered = true;
         }
+
+        System.out.println("Called Register Event ! " + map);
+
+
         for(Map.Entry<String,Object> entry : newData.entrySet()){
-            getDataListener().get(entry.getKey()).onUpdateData(entry.getValue());
+           /* System.out.println("Key : " + entry.getKey() + " Value : " + entry.getValue());
+            System.out.println(getDataListener());
+            System.out.println(getDataListener().values());
+            System.out.println(getDataListener().keySet());
+            System.out.println(getObjects().values());
+            System.out.println(this);-*/
+            if(getDataListener().containsKey(entry.getKey())){
+                getDataListener().get(entry.getKey()).onUpdateData(entry.getValue());
+            }
         }
     }
     public void callRegisterEvent(boolean force){
+        System.out.println("Called Register Event ! " + newData);
+
         if(newData != null){
             hasBeenRegistered = true;
+            ;
             if(getRegisterListener() != null && (!hasCalledNewData || force)){
                 getRegisterListener().executeNewData(newData);
                 hasBeenRegistered = true;
             }
             for(Map.Entry<String,Object> entry : newData.entrySet()){
-                getDataListener().get(entry.getKey()).onUpdateData(entry.getValue());
+                if(getDataListener().containsKey(entry.getKey())){
+                    getDataListener().get(entry.getKey()).onUpdateData(entry.getValue());
+                }
             }
         }
     }

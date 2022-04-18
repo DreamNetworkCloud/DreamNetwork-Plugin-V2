@@ -56,7 +56,12 @@ public class DNChannelManager {
             channel.callRegisterEvent(true);
             return getChannel(channelName);
         }
-        return registerChannel(new DNChannel(channelName),receiveSendedMessage,registerListener);
+        DNChannel dnChannel = new DNChannel(channelName);
+        if(registerListener != null)
+            dnChannel.setRegisterListener(registerListener);
+        NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_REGISTER_CHANNEL,dnChannel.getName(),receiveSendedMessage);
+        channels.put(dnChannel.getName(),dnChannel);
+        return dnChannel;
     }
 
     public DNChannel registerChannel(String channelName){
