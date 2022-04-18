@@ -2,11 +2,12 @@ package be.alexandre01.dreamnetwork.api.request.channels;
 
 import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.api.request.RequestType;
+import lombok.Getter;
 
 import java.util.HashMap;
 
 public class DNChannelManager {
-    final HashMap<String, DNChannel> channels;
+    @Getter final HashMap<String, DNChannel> channels;
 
     public DNChannelManager(){
         channels = new HashMap<>();

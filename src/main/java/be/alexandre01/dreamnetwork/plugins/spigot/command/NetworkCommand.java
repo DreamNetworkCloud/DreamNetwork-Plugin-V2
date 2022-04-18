@@ -4,6 +4,7 @@ import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.api.objects.server.DNServer;
 import be.alexandre01.dreamnetwork.api.request.RequestPacket;
 import be.alexandre01.dreamnetwork.api.request.RequestType;
+import be.alexandre01.dreamnetwork.api.request.channels.DNChannel;
 import be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot;
 import be.alexandre01.dreamnetwork.plugins.spigot.api.DNSpigotAPI;
 import be.alexandre01.dreamnetwork.utils.Mods;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 
 public class NetworkCommand extends Command {
     public enum SubCommand{
-        GUI,GETSERVER,GETSERVERS,START,STOP,CMD,SEND;
+        GUI,GETSERVER,GETSERVERS,START,STOP,CMD,SEND,DATA;
     }
     public NetworkCommand(String name) {
         super(name);
@@ -192,6 +193,24 @@ public class NetworkCommand extends Command {
                 out.writeUTF(server);
                 player.sendPluginMessage(DNSpigot.getInstance(), "BungeeCord", out.toByteArray());
                 break;
+            case DATA:
+                if(args.length < 2){
+                    sender.sendMessage("§e - §9/network §lDATA§9 [TABLE]");
+                    for(DNChannel c : DNSpigotAPI.getInstance().getChannelManager().getChannels().values()){
+                        sender.sendMessage(c.getName());
+                    }
+                    return true;
+                }
+                DNChannel c = DNSpigotAPI.getInstance().getChannelManager().getChannel(args[1]);
+                if(c == null){
+                    sender.sendMessage("§cThe channel is not valid.");
+                }
+                sender.sendMessage(c.getName()+" :");
+                for(String s : c.getObjects().keySet()){
+                   sender.sendMessage(" "+s +" : "+ c.getObjects().get(s).toString());
+                }
+
+
             case GUI:
                 break;
         }
