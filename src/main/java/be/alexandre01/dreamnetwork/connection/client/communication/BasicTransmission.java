@@ -34,10 +34,19 @@ public class BasicTransmission extends ClientResponse {
             if(dnChannel != null){
                String key = message.getString("key");
                Object value = message.get("value");
+                /*System.out.println("key: " + key + " value: " + value);
+
+                System.out.println(dnChannel.getDataListener().keySet());
+                System.out.println(dnChannel.getDataListener().values());*/
                 if(dnChannel.getDataListener().containsKey(key)){
                     dnChannel.getDataListener().get(key).onUpdateData(value);
                 }
+             /*   System.out.println(dnChannel.getName());
+                System.out.println(dnChannel);*/
                 dnChannel.getObjects().put(key,value);
+                /*System.out.println(dnChannel.getObjects().keySet());
+                System.out.println(dnChannel.getObjects().values());*/
+
             }
             return;
         }
@@ -46,15 +55,10 @@ public class BasicTransmission extends ClientResponse {
             if(dnChannel != null){
                 String key = message.getString("key");
                 Object value = message.get("value");
-                /*System.out.println(value + " " + key);
-                System.out.println("class : " + value.getClass());*/
 
-
+                System.out.println(dnChannel.getDataListener().keySet());
+                System.out.println(dnChannel.getDataListener().values());
                 if(dnChannel.getDataListener().containsKey(key)){
-                    /*DNChannel.DataListener dataListener = dnChannel.getDataListener().get(key);
-                    if(dataListener.getAClass() == Integer.class){
-
-                    }*/
                     dnChannel.getDataListener().get(key).onUpdateData(value);
                 }
                 dnChannel.getCompletables().get(key).supplyAsync(() -> value).complete(value);

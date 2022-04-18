@@ -33,9 +33,13 @@ public abstract class RegisterListener {
 
     public void executeNewData(LinkedTreeMap<String, Object> newData) {
         channel.getObjects().putAll(newData);
+       /* System.out.println("PUT ALL " + newData);
+        System.out.println("OBJECTS ? " + channel.getObjects());
+        System.out.println(channel.getName());
+        System.out.println(channel);*/
         this.newData = newData;
         onNewDataReceived(this.newData);
-        this.channel.getObjects().putAll(newData);
+        channel.getObjects().putAll(newData);
     }
 
     public abstract void onNewDataReceived(LinkedTreeMap<String, Object> newData);
