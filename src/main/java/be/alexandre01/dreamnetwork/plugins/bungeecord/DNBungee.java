@@ -51,6 +51,7 @@ public class DNBungee extends Plugin {
     public boolean logoStatus;
     public boolean autoSendPlayer;
     public boolean connexionOnLobby;
+    public int maxPerLobby;
     public TablistCustomizer tablistCustomizer;
     @Getter private final PlayerManagement playerManagement = new PlayerManagement();
     private BungeeText bungeeText;
@@ -84,12 +85,20 @@ public class DNBungee extends Plugin {
             configuration.set("network.lobby","lobby");
             saveConfig();
         }
+
         lobby = configuration.getString("network.lobby");
+
+
 
         if(!configuration.contains("network.connexionOnLobby")){
             configuration.set("network.connexionOnLobby",false);
             saveConfig();
         }
+        if(!configuration.contains("network.maxPerLobby")){
+            configuration.set("network.maxPerLobby",15);
+            saveConfig();
+        }
+        maxPerLobby =  configuration.getInt("network.maxPerLobby");
         connexionOnLobby = configuration.getBoolean("network.connexionOnLobby");
 
 
@@ -122,6 +131,7 @@ public class DNBungee extends Plugin {
             configuration.set("network.players.autoSend",false);
             saveConfig();
         }
+
         autoSendPlayer = configuration.getBoolean("network.players.autoSend");
         for(String string : configuration.getStringList("network.allowed-players-maintenance")){
             allowedPlayer.add(string.toLowerCase());

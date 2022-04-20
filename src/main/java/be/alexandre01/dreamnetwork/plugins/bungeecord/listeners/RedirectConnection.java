@@ -12,6 +12,7 @@ import net.md_5.bungee.api.event.ServerSwitchEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -21,10 +22,12 @@ public class RedirectConnection implements Listener {
     private final Set<UUID> pending = new HashSet<>();
     private final DNBungee dnBungee;
     private final DNBungeeAPI dnBungeeAPI;
+    private final int max;
 
     public RedirectConnection(){
         dnBungee = DNBungee.getInstance();
         dnBungeeAPI = (DNBungeeAPI) DNBungeeAPI.getInstance();
+        max = dnBungee.maxPerLobby;
     }
 
     @EventHandler
@@ -134,19 +137,29 @@ public class RedirectConnection implements Listener {
     }
     public ServerInfo getServer(String server){
         int i = 0;
-        int max = 50;
+        ServerInfo serverInfoFree = null;
         String word = null;
         boolean isFound = false;
+
         for (String str :dnBungeeAPI.getDnBungeeServersManager().servers){
             if(str.startsWith(dnBungee.lobby)){
                 i = Integer.parseInt(str.split("-")[1]);
                 word = str.split("-")[0];
                 ServerInfo serverInfo = dnBungee.getProxy().getServerInfo(str);
-                if(serverInfo.getPlayers().size() < 15){
-                    return serverInfo;
-                }
 
+                if(serverInfo.getPlayers().size() < max){
+                    if(serverInfoFree != null){
+                        if(serverInfoFree.getPlayers().size() < serverInfo.getPlayers().size()){
+                            serverInfoFree = serverInfo;
+                        }
+                    }else {
+                        serverInfoFree = serverInfo;
+                    }
+                }
             }
+        }
+        if(serverInfoFree != null){
+            return serverInfoFree;
         }
         return null;
     }
