@@ -139,7 +139,6 @@ public class RedirectConnection implements Listener {
         int i = 0;
         ServerInfo serverInfoFree = null;
         String word = null;
-        boolean isFound = false;
 
         for (String str :dnBungeeAPI.getDnBungeeServersManager().servers){
             if(str.startsWith(dnBungee.lobby)){

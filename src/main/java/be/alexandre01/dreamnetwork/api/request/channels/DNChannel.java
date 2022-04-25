@@ -52,8 +52,8 @@ public class DNChannel {
         if(hasBeenRegistered && !hasCalledNewData){
             if(newData != null){
                 registerListener.executeNewData(newData);
+                hasCalledNewData = true;
             }
-            hasCalledNewData = true;
         }
 
     }
@@ -115,12 +115,13 @@ public class DNChannel {
     public void callRegisterEvent(LinkedTreeMap<String,Object> map,boolean force){
         newData = map;
         hasBeenRegistered = true;
-        if(getRegisterListener() != null && !hasCalledNewData || force){
+        if((getRegisterListener() != null && !hasCalledNewData) || force){
             getRegisterListener().executeNewData(map);
             hasBeenRegistered = true;
         }
 
         System.out.println("Called Register Event ! " + map);
+        System.out.println(1);
 
 
         for(Map.Entry<String,Object> entry : newData.entrySet()){
@@ -137,11 +138,10 @@ public class DNChannel {
     }
     public void callRegisterEvent(boolean force){
         System.out.println("Called Register Event ! " + newData);
-
-        if(newData != null){
+        System.out.println(2);
+        //if(newData != null){
             hasBeenRegistered = true;
-            ;
-            if(getRegisterListener() != null && (!hasCalledNewData || force)){
+            if((getRegisterListener() != null && !hasCalledNewData) || force){
                 getRegisterListener().executeNewData(newData);
                 hasBeenRegistered = true;
             }
@@ -150,7 +150,7 @@ public class DNChannel {
                     getDataListener().get(entry.getKey()).onUpdateData(entry.getValue());
                 }
             }
-        }
+       // }
     }
     public DNChannel addInterceptor(DNChannelInterceptor dnChannelInterceptor){
         dnChannelInterceptors.add(dnChannelInterceptor);

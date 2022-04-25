@@ -88,6 +88,8 @@ public class SpigotRequestResponse extends ClientResponse {
                //     System.out.println("New servers : "+ nServers);
                     break;
                 case SPIGOT_REMOVE_SERVERS:
+                    System.out.println("Removing servers");
+                    System.out.println(message.toString());
                     List<String> rServers = (List<String>) message.getList("SERVERS");
                     if(rServers.size() > 0){
                     for(String servers : rServers){
