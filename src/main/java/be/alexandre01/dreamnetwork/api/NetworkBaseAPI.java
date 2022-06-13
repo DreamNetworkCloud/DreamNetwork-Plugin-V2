@@ -3,6 +3,7 @@ package be.alexandre01.dreamnetwork.api;
 import be.alexandre01.dreamnetwork.api.objects.RemoteService;
 import be.alexandre01.dreamnetwork.api.request.RequestManager;
 import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
+import be.alexandre01.dreamnetwork.api.request.communication.ResponseManager;
 import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
 import lombok.Data;
 import lombok.Getter;
@@ -25,6 +26,8 @@ public abstract class NetworkBaseAPI {
         instance = this;
     }
 
+    public ResponseManager responseManager = new ResponseManager(this);
+
 
 
 
@@ -46,6 +49,11 @@ public abstract class NetworkBaseAPI {
     public abstract void setRequestManager(RequestManager requestManager);
 
     public abstract BasicClientHandler getBasicClientHandler();
+
+    public ResponseManager getResponseManager(){
+        return responseManager;
+    }
+
 
     public abstract void setBasicClientHandler(BasicClientHandler basicClientHandler);
 

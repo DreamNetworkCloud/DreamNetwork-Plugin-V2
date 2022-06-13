@@ -97,6 +97,8 @@ public class DNSpigot extends JavaPlugin{
         });
 
     }
+
+
     public void registerCommand(String commandName, Command commandClass){
         try{
             final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
