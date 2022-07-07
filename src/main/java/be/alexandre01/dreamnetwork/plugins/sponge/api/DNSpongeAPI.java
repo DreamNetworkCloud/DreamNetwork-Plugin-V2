@@ -33,6 +33,26 @@ public class DNSpongeAPI extends NetworkBaseAPI {
     }
 
     @Override
+    public String getServerName() {
+        return "null";
+    }
+
+    @Override
+    public void setServerName(String serverName) {
+        return;
+    }
+
+    @Override
+    public int getID() {
+        return 0;
+    }
+
+    @Override
+    public void setID(int id) {
+        return;
+    }
+
+    @Override
     public int getPort() {
         return dnSponge.getPort();
     }

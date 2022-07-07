@@ -17,6 +17,9 @@ public class DNBungeeAPI extends NetworkBaseAPI{
     BasicClientHandler basicClientHandler;
     DNBungee dnBungee;
     @Getter DNBungeeServersManager dnBungeeServersManager;
+
+    String serverName;
+    int id;
     String processName = null;
     public DNBungeeAPI(DNBungee dnBungee){
         this.dnBungee = dnBungee;
@@ -40,6 +43,26 @@ public class DNBungeeAPI extends NetworkBaseAPI{
     @Override
     public void setProcessName(String processName) {
        this.processName = processName;
+    }
+
+    @Override
+    public String getServerName() {
+        return serverName;
+    }
+
+    @Override
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
+    }
+
+    @Override
+    public int getID() {
+        return id;
+    }
+
+    @Override
+    public void setID(int id) {
+        this.id = id;
     }
 
     @Override

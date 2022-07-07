@@ -1,6 +1,7 @@
 package be.alexandre01.dreamnetwork.api;
 
 import be.alexandre01.dreamnetwork.api.objects.RemoteService;
+import be.alexandre01.dreamnetwork.api.objects.server.DNServer;
 import be.alexandre01.dreamnetwork.api.request.RequestManager;
 import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
 import be.alexandre01.dreamnetwork.api.request.communication.ResponseManager;
@@ -29,7 +30,9 @@ public abstract class NetworkBaseAPI {
     public ResponseManager responseManager = new ResponseManager(this);
 
 
-
+    public RemoteService getByName(String process){
+        return services.get(process);
+    }
 
 
     public abstract String getInfo();
@@ -37,6 +40,15 @@ public abstract class NetworkBaseAPI {
     public abstract String getProcessName();
 
     public abstract void setProcessName(String processName);
+
+
+    public abstract String getServerName();
+
+    public abstract void setServerName(String serverName);
+
+    public abstract int getID();
+
+    public abstract void setID(int id);
 
     public abstract int getPort();
 

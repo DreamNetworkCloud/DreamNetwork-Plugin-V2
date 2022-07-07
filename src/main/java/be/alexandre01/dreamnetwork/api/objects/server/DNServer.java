@@ -26,6 +26,10 @@ public class DNServer {
         this.remoteService = remoteService;
     }
 
+    public String getFullName(){
+        return name + "-" + id;
+    }
+
     public void sendMessage(Message message){
         networkBaseAPI.getRequestManager().sendRequest(RequestType.CORE_RETRANSMISSION,message,name+"-"+id);
     }

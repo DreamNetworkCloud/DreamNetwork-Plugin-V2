@@ -95,8 +95,9 @@ public class DNSpigot extends JavaPlugin{
         Bukkit.getScheduler().scheduleSyncDelayedTask(DNSpigot.getInstance(), () -> {
             DNSpigot.getInstance().getServer().getPluginManager().callEvent(serverAttachedEvent);
         });
-
     }
+
+
 
 
     public void registerCommand(String commandName, Command commandClass){

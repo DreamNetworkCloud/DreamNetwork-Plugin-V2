@@ -1,6 +1,7 @@
 package be.alexandre01.dreamnetwork.connection.client.communication;
 
 import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
+import be.alexandre01.dreamnetwork.api.objects.server.DNServer;
 import be.alexandre01.dreamnetwork.api.request.channels.ChannelPacket;
 import be.alexandre01.dreamnetwork.api.request.RequestPacket;
 import be.alexandre01.dreamnetwork.api.request.RequestType;
@@ -76,12 +77,30 @@ public class BasicTransmission extends ClientResponse {
         }
         if(message.hasRequest()){
             RequestType requestType = message.getRequest();
+
             if(requestType.equals(RequestType.SPIGOT_HANDSHAKE_SUCCESS)) {
-                NetworkBaseAPI.getInstance().setProcessName("s-" + message.getString("PROCESSNAME"));
+                final NetworkBaseAPI networkBaseAPI = NetworkBaseAPI.getInstance();
+                String processName = message.getString("PROCESSNAME");
+                 networkBaseAPI.setProcessName("s-" + processName);
+                networkBaseAPI.setServerName(processName.split("-")[0]);
+                try{
+                    networkBaseAPI.setID(Integer.parseInt(processName.split("-")[1]));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 System.out.println("The connection has been established on the remote address: " + ctx.channel().remoteAddress());
+
                 DNSpigot.getInstance().callServerAttachedEvent();
             }  else if(requestType.equals(RequestType.BUNGEECORD_HANDSHAKE_SUCCESS)){
-                DNBungeeAPI.getInstance().setProcessName("p-"+message.getString("PROCESSNAME"));
+                String processName = message.getString("PROCESSNAME");
+                final NetworkBaseAPI networkBaseAPI = NetworkBaseAPI.getInstance();
+                networkBaseAPI.setProcessName("p-"+processName);
+                networkBaseAPI.setServerName(processName.split("-")[0]);
+                try{
+                    networkBaseAPI.setID(Integer.parseInt(processName.split("-")[1]));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 System.out.println("The connection has been established on the remote address: "+ ctx.channel().remoteAddress());
             }
         }

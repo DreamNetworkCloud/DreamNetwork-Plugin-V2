@@ -2,6 +2,7 @@ package be.alexandre01.dreamnetwork.plugins.spigot.api;
 
 import be.alexandre01.dreamnetwork.api.NetworkBaseAPI;
 import be.alexandre01.dreamnetwork.api.objects.player.DNPlayerManager;
+import be.alexandre01.dreamnetwork.api.objects.server.DNServer;
 import be.alexandre01.dreamnetwork.api.request.RequestManager;
 import be.alexandre01.dreamnetwork.api.request.RequestType;
 import be.alexandre01.dreamnetwork.api.request.channels.DNChannelManager;
@@ -9,8 +10,11 @@ import be.alexandre01.dreamnetwork.connection.client.handler.BasicClientHandler;
 import be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot;
 import be.alexandre01.dreamnetwork.plugins.spigot.communication.SpigotRequestResponse;
 import be.alexandre01.dreamnetwork.plugins.spigot.communication.generated.SpigotGeneratedRequest;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import lombok.*;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.logging.Logger;
 
@@ -20,6 +24,11 @@ public class DNSpigotAPI extends NetworkBaseAPI{
     DNSpigot dnSpigot;
     boolean refreshedPlayers = false;
     String processName = null;
+
+    String serverName = null;
+
+
+    int id;
     @Getter private final DNPlayerManager dnPlayerManager = new DNPlayerManager();
 
     public DNSpigotAPI(DNSpigot dnSpigot){
@@ -38,6 +47,26 @@ public class DNSpigotAPI extends NetworkBaseAPI{
     @Override
     public String getProcessName() {
         return processName;
+    }
+
+    @Override
+    public String getServerName() {
+        return serverName;
+    }
+
+    @Override
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
+    }
+
+    @Override
+    public int getID() {
+        return id;
+    }
+
+    @Override
+    public void setID(int id) {
+        this.id = id;
     }
 
     @Override
@@ -104,6 +133,18 @@ public class DNSpigotAPI extends NetworkBaseAPI{
             System.out.println("[DreamNetwork] You already refreshed the players");
         }
     }
+
+    public void sendPlayerTo(Player player,String server){
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("Connect");
+        out.writeUTF(server);
+        player.sendPluginMessage(DNSpigot.getInstance(), "BungeeCord", out.toByteArray());
+    }
+
+    public void sendPlayerTo(Player player,DNServer dnServer){
+        sendPlayerTo(player,dnServer.getFullName());
+    }
+
 
 
     public static DNSpigotAPI getInstance() {

@@ -52,6 +52,7 @@ public class DNBungee extends Plugin {
     public boolean autoSendPlayer;
     public boolean connexionOnLobby;
     public int maxPerLobby;
+
     public TablistCustomizer tablistCustomizer;
     @Getter private final PlayerManagement playerManagement = new PlayerManagement();
     private BungeeText bungeeText;
@@ -129,6 +130,10 @@ public class DNBungee extends Plugin {
         }
         if(!configuration.contains("network.players.autoSend")){
             configuration.set("network.players.autoSend",false);
+            saveConfig();
+        }
+        if(!configuration.contains("network.slots.autoSend")){
+            configuration.set("network.slots.autoSend",false);
             saveConfig();
         }
 
