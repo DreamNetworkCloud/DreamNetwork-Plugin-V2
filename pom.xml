@@ -3,9 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>be.alexandre01.dreamnetwork</groupId>
+    <groupId>be.alexandre01.dnplugin</groupId>
     <artifactId>DreamNetwork-Plugin</artifactId>
-    <version>1.4.0-SNAPSHOT</version>
+    <version>1.5.0-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -67,51 +67,64 @@
                                     <option>-dontshrink</option>
                                     <option>-dontnote</option>
                                     <option>-dontwarn</option> <!-- added option to ignore com.sun missing classes -->
-                                    <option>-keepattributes Signature,SourceFile,LineNumberTable,*Annotations*,LocalVariable*Table</option>
-                                    <option>-keep class be.alexandre01.dreamnetwork.client.Launcher</option>
-                                    <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.client.Launcher {
+                                    <option>-keepattributes Signature,InnerClasses,SourceFile,LineNumberTable,*Annotations*,LocalVariableTable</option>
+                                    <option>-keep class be.alexandre01.dnplugin.client.Launcher</option>
+
+                                    <option>-keepclasseswithmembernames class be.alexandre01.dnplugin.client.Launcher {
                                         <![CDATA[<methods>]]>;
                                         }
                                     </option>
-                                    <option>-keep class be.alexandre01.dreamnetwork.api.**</option>
-                                    <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.api.** {
+                                    <option>-keep class be.alexandre01.dnplugin.api.request.RequestType</option>
+                                    <option>-keepclasseswithmembernames class be.alexandre01.dnplugin.api.request.RequestType {
+                                        <![CDATA[<methods>]]>;
+                                        <![CDATA[<fields>]]>;
+                                        }
+                                    </option>
+                                    <option>-keep class be.alexandre01.dnplugin.api.**</option>
+                                    <option>-keepclasseswithmembernames class be.alexandre01.dnplugin.api.** {
                                         <![CDATA[<methods>]]>;
                                         }
                                     </option>
-                                    <option>-keep class be.alexandre01.dreamnetwork.plugins.bungeecord.api.**</option>
-                                    <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.plugins.bungeecord.api.** {
+                                    <option>-keep class be.alexandre01.dnplugin.plugins.bungeecord.api.**</option>
+                                    <option>-keepclasseswithmembernames class
+                                        be.alexandre01.dnplugin.plugins.bungeecord.api.** {
                                         <![CDATA[<methods>]]>;
                                         }
                                     </option>
-                                    <option>-keep class be.alexandre01.dreamnetwork.plugins.bungeecord.DNBungee</option>
-                                    <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.plugins.bungeecord.DNBungee {
+                                    <option>-keep class be.alexandre01.dnplugin.plugins.bungeecord.DNBungee</option>
+                                    <option>-keepclasseswithmembernames class
+                                        be.alexandre01.dnplugin.plugins.bungeecord.DNBungee {
                                         <![CDATA[<methods>]]>;
                                         }
                                     </option>
 
 
-                                    <option>-keep class be.alexandre01.dreamnetwork.plugins.spigot.api.**</option>
-                                    <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.plugins.spigot.api.** {
+                                    <option>-keep class be.alexandre01.dnplugin.plugins.spigot.api.**</option>
+                                    <option>-keepclasseswithmembernames class
+                                        be.alexandre01.dnplugin.plugins.spigot.api.** {
                                         <![CDATA[<methods>]]>;
                                         }
                                     </option>
-                                    <option>-keep class be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot</option>
-                                    <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot {
+                                    <option>-keep class be.alexandre01.dnplugin.plugins.spigot.DNSpigot</option>
+                                    <option>-keepclasseswithmembernames class
+                                        be.alexandre01.dnplugin.plugins.spigot.DNSpigot {
                                         <![CDATA[<methods>]]>;
                                         }
                                     </option>
-                                    <option>-keep class be.alexandre01.dreamnetwork.plugins.sponge.api.**</option>
-                                    <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.plugins.sponge.api.**{
+                                    <option>-keep class be.alexandre01.dnplugin.plugins.sponge.api.**</option>
+                                    <option>-keepclasseswithmembernames class
+                                        be.alexandre01.dnplugin.plugins.sponge.api.**{
                                         <![CDATA[<methods>]]>;
                                         }
                                     </option>
-                                    <option>-keep class be.alexandre01.dreamnetwork.plugins.sponge.DNSponge</option>
-                                    <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.plugins.sponge.DNSponge {
+                                    <option>-keep class be.alexandre01.dnplugin.plugins.sponge.DNSponge</option>
+                                    <option>-keepclasseswithmembernames class
+                                        be.alexandre01.dnplugin.plugins.sponge.DNSponge {
                                         <![CDATA[<methods>]]>;
                                         }
                                     </option>
-                                    <option>-keep class be.alexandre01.dreamnetwork.utils.messages.**</option>
-                                    <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.utils.messages.**{
+                                    <option>-keep class be.alexandre01.dnplugin.utils.messages.**</option>
+                                    <option>-keepclasseswithmembernames class be.alexandre01.dnplugin.utils.messages.**{
                                         <![CDATA[<methods>]]>;
                                         }
                                     </option>
@@ -146,17 +159,20 @@
                                 <goal>shade</goal>
                             </goals>
                             <configuration>
-                                <createDependencyReducedPom>false</createDependencyReducedPom>
                                 <outputFile>${project.basedir}/target/${project.artifactId}.jar</outputFile>
                                 <minimizeJar>true</minimizeJar>
                                 <relocations>
                                     <relocation>
                                         <pattern>io.netty</pattern>
-                                        <shadedPattern>be.alexandre01.dreamnetwork.netty</shadedPattern>
+                                        <shadedPattern>be.alexandre01.dnplugin.netty</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>com.google.gson</pattern>
-                                        <shadedPattern>be.alexandre01.dreamnetwork.gson</shadedPattern>
+                                        <shadedPattern>be.alexandre01.dnplugin.gson</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>org.bstats</pattern>
+                                        <shadedPattern>be.alexandre01.dnplugin.bstats</shadedPattern>
                                     </relocation>
                                 </relocations>
                             </configuration>
@@ -200,11 +216,15 @@
                                 <relocations>
                                     <relocation>
                                         <pattern>io.netty</pattern>
-                                        <shadedPattern>be.alexandre01.dreamnetwork.netty</shadedPattern>
+                                        <shadedPattern>be.alexandre01.dnplugin.netty</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>com.google.gson</pattern>
-                                        <shadedPattern>be.alexandre01.dreamnetwork.gson</shadedPattern>
+                                        <shadedPattern>be.alexandre01.dnplugin.gson</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>org.bstats</pattern>
+                                        <shadedPattern>be.alexandre01.dnplugin.bstats</shadedPattern>
                                     </relocation>
                                 </relocations>
                             </configuration>
@@ -255,52 +275,66 @@
                                         <option>-dontshrink</option>
                                         <option>-dontnote</option>
                                         <option>-dontwarn</option> <!-- added option to ignore com.sun missing classes -->
-                                        <option>-keepattributes Signature,SourceFile,LineNumberTable,*Annotations*,LocalVariable*Table</option>
-                                        <option>-keep class be.alexandre01.dreamnetwork.client.Launcher</option>
-                                        <option>-keep class be.alexandre01.dreamnetwork.**</option>
-                                        <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.client.Launcher {
+                                        <option>-keepattributes Signature,InnerClasses,SourceFile,LineNumberTable,*Annotations*,LocalVariableTable</option>
+                                        <option>-keep class be.alexandre01.dnplugin.client.Launcher</option>
+                                        <option>-keep class be.alexandre01.dnplugin.**</option>
+                                        <option>-keepclasseswithmembernames class
+                                            be.alexandre01.dnplugin.client.Launcher {
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
-                                        <option>-keep class be.alexandre01.dreamnetwork.api.**</option>
-                                        <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.api.** {
+                                        <option>-keep class be.alexandre01.dnplugin.api.request.RequestType</option>
+                                        <option>-keepclasseswithmembernames class be.alexandre01.dnplugin.api.request.RequestType {
+                                            <![CDATA[<methods>]]>;
+                                            <![CDATA[<fields>]]>;
+                                        }
+                                        </option>
+                                        <option>-keep class be.alexandre01.dnplugin.api.**</option>
+                                        <option>-keepclasseswithmembernames class be.alexandre01.dnplugin.api.** {
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
-                                        <option>-keep class be.alexandre01.dreamnetwork.plugins.bungeecord.api.**</option>
-                                        <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.plugins.bungeecord.api.** {
+                                        <option>-keep class be.alexandre01.dnplugin.plugins.bungeecord.api.**</option>
+                                        <option>-keepclasseswithmembernames class
+                                            be.alexandre01.dnplugin.plugins.bungeecord.api.** {
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
-                                        <option>-keep class be.alexandre01.dreamnetwork.plugins.bungeecord.DNBungee</option>
-                                        <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.plugins.bungeecord.DNBungee {
+                                        <option>-keep class be.alexandre01.dnplugin.plugins.bungeecord.DNBungee</option>
+                                        <option>-keepclasseswithmembernames class
+                                            be.alexandre01.dnplugin.plugins.bungeecord.DNBungee {
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
 
 
-                                        <option>-keep class be.alexandre01.dreamnetwork.plugins.spigot.api.**</option>
-                                        <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.plugins.spigot.api.** {
+                                        <option>-keep class be.alexandre01.dnplugin.plugins.spigot.api.**</option>
+                                        <option>-keepclasseswithmembernames class
+                                            be.alexandre01.dnplugin.plugins.spigot.api.** {
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
-                                        <option>-keep class be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot</option>
-                                        <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.plugins.spigot.DNSpigot {
+                                        <option>-keep class be.alexandre01.dnplugin.plugins.spigot.DNSpigot</option>
+                                        <option>-keepclasseswithmembernames class
+                                            be.alexandre01.dnplugin.plugins.spigot.DNSpigot {
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
-                                        <option>-keep class be.alexandre01.dreamnetwork.plugins.sponge.api.**</option>
-                                        <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.plugins.sponge.api.**{
+                                        <option>-keep class be.alexandre01.dnplugin.plugins.sponge.api.**</option>
+                                        <option>-keepclasseswithmembernames class
+                                            be.alexandre01.dnplugin.plugins.sponge.api.**{
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
-                                        <option>-keep class be.alexandre01.dreamnetwork.plugins.sponge.DNSponge</option>
-                                        <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.plugins.sponge.DNSponge {
+                                        <option>-keep class be.alexandre01.dnplugin.plugins.sponge.DNSponge</option>
+                                        <option>-keepclasseswithmembernames class
+                                            be.alexandre01.dnplugin.plugins.sponge.DNSponge {
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
-                                        <option>-keep class be.alexandre01.dreamnetwork.utils.messages.**</option>
-                                        <option>-keepclasseswithmembernames class be.alexandre01.dreamnetwork.utils.messages.**{
+                                        <option>-keep class be.alexandre01.dnplugin.utils.messages.**</option>
+                                        <option>-keepclasseswithmembernames class
+                                            be.alexandre01.dnplugin.utils.messages.**{
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
@@ -341,68 +375,68 @@
                                     <minimizeJar>true</minimizeJar>
                                     <filters>
                                         <filter>
-                                            <artifact>be.alexandre01.dreamnetwork:DreamNetwork-Plugin</artifact>
+                                            <artifact>be.alexandre01.dnplugin:DreamNetwork-Plugin</artifact>
                                             <excludes>
-                                                <exclude>be/alexandre01/dreamnetwork/connection/**</exclude>
+                                                <exclude>be/alexandre01/dnplugin/connection/**</exclude>
                                             </excludes>
                                         </filter>
                                         <filter>
-                                            <artifact>be.alexandre01.dreamnetwork:DreamNetwork-Plugin</artifact>
+                                            <artifact>be.alexandre01.dnplugin:DreamNetwork-Plugin</artifact>
                                             <excludes>
-                                                <exclude>be/alexandre01/dreamnetwork/plugins/bungeecord/utils/**</exclude>
+                                                <exclude>be/alexandre01/dnplugin/plugins/bungeecord/utils/**</exclude>
                                             </excludes>
                                         </filter>
                                         <filter>
-                                            <artifact>be.alexandre01.dreamnetwork:DreamNetwork-Plugin</artifact>
+                                            <artifact>be.alexandre01.dnplugin:DreamNetwork-Plugin</artifact>
                                             <excludes>
-                                                <exclude>be/alexandre01/dreamnetwork/plugins/bungeecord/communication/**</exclude>
+                                                <exclude>be/alexandre01/dnplugin/plugins/bungeecord/communication/**</exclude>
                                             </excludes>
                                         </filter>
                                         <filter>
-                                            <artifact>be.alexandre01.dreamnetwork:DreamNetwork-Plugin</artifact>
+                                            <artifact>be.alexandre01.dnplugin:DreamNetwork-Plugin</artifact>
                                             <excludes>
-                                                <exclude>be/alexandre01/dreamnetwork/plugins/bungeecord/components/**</exclude>
+                                                <exclude>be/alexandre01/dnplugin/plugins/bungeecord/components/**</exclude>
                                             </excludes>
                                         </filter>
                                         <filter>
-                                            <artifact>be.alexandre01.dreamnetwork:DreamNetwork-Plugin</artifact>
+                                            <artifact>be.alexandre01.dnplugin:DreamNetwork-Plugin</artifact>
                                             <excludes>
-                                                <exclude>be/alexandre01/dreamnetwork/plugins/bungeecord/listeners/**</exclude>
+                                                <exclude>be/alexandre01/dnplugin/plugins/bungeecord/listeners/**</exclude>
                                             </excludes>
                                         </filter>
                                         <filter>
-                                            <artifact>be.alexandre01.dreamnetwork:DreamNetwork-Plugin</artifact>
+                                            <artifact>be.alexandre01.dnplugin:DreamNetwork-Plugin</artifact>
                                             <excludes>
-                                                <exclude>be/alexandre01/dreamnetwork/plugins/spigot/command/**</exclude>
+                                                <exclude>be/alexandre01/dnplugin/plugins/spigot/command/**</exclude>
                                             </excludes>
                                         </filter>
                                         <filter>
-                                            <artifact>be.alexandre01.dreamnetwork:DreamNetwork-Plugin</artifact>
+                                            <artifact>be.alexandre01.dnplugin:DreamNetwork-Plugin</artifact>
                                             <excludes>
-                                                <exclude>be/alexandre01/dreamnetwork/plugins/spigot/communication/**</exclude>
+                                                <exclude>be/alexandre01/dnplugin/plugins/spigot/communication/**</exclude>
                                             </excludes>
                                         </filter>
                                         <filter>
-                                            <artifact>be.alexandre01.dreamnetwork:DreamNetwork-Plugin</artifact>
+                                            <artifact>be.alexandre01.dnplugin:DreamNetwork-Plugin</artifact>
                                             <excludes>
-                                                <exclude>be/alexandre01/dreamnetwork/plugins/spigot/listeners/**</exclude>
+                                                <exclude>be/alexandre01/dnplugin/plugins/spigot/listeners/**</exclude>
                                             </excludes>
                                         </filter>
                                         <filter>
-                                            <artifact>be.alexandre01.dreamnetwork:DreamNetwork-Plugin</artifact>
+                                            <artifact>be.alexandre01.dnplugin:DreamNetwork-Plugin</artifact>
                                             <excludes>
-                                                <exclude>be/alexandre01/dreamnetwork/plugins/sponge/communication/**</exclude>
+                                                <exclude>be/alexandre01/dnplugin/plugins/sponge/communication/**</exclude>
                                             </excludes>
                                         </filter>
                                     </filters>
                                     <relocations>
                                         <relocation>
                                             <pattern>io.netty</pattern>
-                                            <shadedPattern>be.alexandre01.dreamnetwork.netty</shadedPattern>
+                                            <shadedPattern>be.alexandre01.dnplugin.netty</shadedPattern>
                                         </relocation>
                                         <relocation>
                                             <pattern>com.google.gson</pattern>
-                                            <shadedPattern>be.alexandre01.dreamnetwork.gson</shadedPattern>
+                                            <shadedPattern>be.alexandre01.dnplugin.gson</shadedPattern>
                                         </relocation>
                                     </relocations>
                                 </configuration>
@@ -443,6 +477,14 @@
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.bstats/bstats-bungeecord -->
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bungeecord</artifactId>
+            <version>3.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>

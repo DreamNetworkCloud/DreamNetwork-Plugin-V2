@@ -1,4 +1,4 @@
-main: be.alexandre01.dreamnetwork.plugins.bungeecord.DNBungee
+main: be.alexandre01.dnplugin.plugins.bungeecord.DNBungee
 author: Alexandre01
 name: DreamNetwork-Core
 version: ${project.version}
