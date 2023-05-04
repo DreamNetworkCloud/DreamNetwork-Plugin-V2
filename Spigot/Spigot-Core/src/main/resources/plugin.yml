@@ -1,0 +1,4 @@
+name: DreamNetwork-Core
+author: Alexandre01
+main: be.alexandre01.dnplugin.plugins.spigot.DNSpigot
+version: ${project.version}

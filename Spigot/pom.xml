@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>be.alexandre01.dnplugin</groupId>
-    <artifactId>DreamNetwork-Plugin</artifactId>
+    <artifactId>DreamNetwork-Spigot</artifactId>
     <version>1.5.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <properties>
@@ -19,13 +19,7 @@
         </repository>
     </repositories>
     <modules>
-        <module>API</module>
-        <module>BungeeCord</module>
-        <module>Spigot</module>
-        <module>Network</module>
+        <module>Spigot-API</module>
+        <module>Spigot-Core</module>
     </modules>
-
-
-
-
 </project>

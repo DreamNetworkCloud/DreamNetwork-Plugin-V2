@@ -1,4 +1,0 @@
-messages:
-  console:
-    events:
-      attached: "Server attached with success"
