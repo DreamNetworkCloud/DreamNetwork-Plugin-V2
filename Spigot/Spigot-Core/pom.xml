@@ -58,7 +58,7 @@
                                     <outjar>${project.build.finalName}-small.jar</outjar>
                                     <injarNotExistsSkip>true</injarNotExistsSkip>
                                     <libs>
-                                        <lib>${java.home}/lib/rt.jar</lib>
+                                        <lib>${maven.multiModuleProjectDirectory}/lib/rt.jar</lib>
                                     </libs>
 
                                     <options>
@@ -159,7 +159,7 @@
                                     <goal>shade</goal>
                                 </goals>
                                 <configuration>
-                                    <outputFile>${project.basedir}/target/${project.artifactId}.jar</outputFile>
+                                    <outputFile>${maven.multiModuleProjectDirectory}/builds/${project.artifactId}.jar</outputFile>
                                     <minimizeJar>true</minimizeJar>
                                     <relocations>
                                         <relocation>
@@ -211,7 +211,7 @@
                                 </goals>
                                 <configuration>
                                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>${project.basedir}/target/${project.artifactId}.jar</outputFile>
+                                    <outputFile>${maven.multiModuleProjectDirectory}/builds/${project.artifactId}.jar</outputFile>
                                     <minimizeJar>true</minimizeJar>
                                     <relocations>
                                         <relocation>
@@ -266,7 +266,7 @@
                                     <outjar>${project.build.finalName}-small.jar</outjar>
                                     <injarNotExistsSkip>true</injarNotExistsSkip>
                                     <libs>
-                                        <lib>${java.home}/lib/rt.jar</lib>
+                                        <lib>${maven.multiModuleProjectDirectory}/lib/rt.jar</lib>
                                     </libs>
 
                                     <options>
@@ -371,7 +371,7 @@
 
                                 <configuration>
                                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>${project.basedir}/target/${project.artifactId}-api.jar</outputFile>
+                                    <outputFile>${maven.multiModuleProjectDirectory}/builds/${project.artifactId}.jar</outputFile>
                                     <minimizeJar>true</minimizeJar>
                                     <filters>
                                         <filter>
@@ -449,12 +449,6 @@
     </profiles>
 
     <dependencies>
-        <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
-            <version>1.16-R0.4</version>
-            <scope>provided</scope>
-        </dependency>
 
         <!--This adds the Spigot API artifact to the build -->
         <dependency>
@@ -470,20 +464,7 @@
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.spongepowered</groupId>
-            <artifactId>spongeapi</artifactId>
-            <version>7.2.0</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.bstats/bstats-bungeecord -->
-        <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bungeecord</artifactId>
-            <version>3.0.0</version>
-            <scope>compile</scope>
-        </dependency>
+
 
         <dependency>
             <groupId>io.netty</groupId>

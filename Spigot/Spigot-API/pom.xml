@@ -27,7 +27,7 @@
             </activation>
             <properties>
                 <java.version>8</java.version>
-                <outputPath>${project.basedir}/target/</outputPath>
+                <outputPath>${project.basedir}/deploy/</outputPath>
             </properties>
             <build>
                 <resources>
@@ -58,7 +58,7 @@
                                     <outjar>${project.build.finalName}-small.jar</outjar>
                                     <injarNotExistsSkip>true</injarNotExistsSkip>
                                     <libs>
-                                        <lib>${java.home}/lib/rt.jar</lib>
+                                        <lib>${maven.multiModuleProjectDirectory}/lib/rt.jar</lib>
                                     </libs>
 
                                     <options>
@@ -159,7 +159,7 @@
                                     <goal>shade</goal>
                                 </goals>
                                 <configuration>
-                                    <outputFile>${project.basedir}/target/${project.artifactId}.jar</outputFile>
+                                    <outputFile>${maven.multiModuleProjectDirectory}/builds/${project.artifactId}.jar</outputFile>
                                     <minimizeJar>true</minimizeJar>
                                     <relocations>
                                         <relocation>
@@ -211,7 +211,7 @@
                                 </goals>
                                 <configuration>
                                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>${project.basedir}/target/${project.artifactId}.jar</outputFile>
+                                    <outputFile>${maven.multiModuleProjectDirectory}/builds/${project.artifactId}.jar</outputFile>
                                     <minimizeJar>true</minimizeJar>
                                     <relocations>
                                         <relocation>
@@ -246,119 +246,6 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>com.github.wvengen</groupId>
-                        <artifactId>proguard-maven-plugin</artifactId>
-                        <version>2.0.13</version>
-                        <executions>
-                            <execution>
-                                <id>obfuscation-packaging</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>proguard</goal>
-                                </goals>
-                                <configuration>
-                                    <proguardVersion>7.1</proguardVersion>
-                                    <obfuscate>true</obfuscate>
-                                    <attach>true</attach>
-                                    <appendClassifier>false</appendClassifier>
-                                    <addMavenDescriptor>true</addMavenDescriptor>
-                                    <injar>${project.build.finalName}.jar</injar>
-                                    <outjar>${project.build.finalName}-small.jar</outjar>
-                                    <injarNotExistsSkip>true</injarNotExistsSkip>
-                                    <libs>
-                                        <lib>${java.home}/lib/rt.jar</lib>
-                                    </libs>
-
-                                    <options>
-                                        <option>-allowaccessmodification</option>
-                                        <option>-dontoptimize</option>
-                                        <option>-dontshrink</option>
-                                        <option>-dontnote</option>
-                                        <option>-dontwarn</option> <!-- added option to ignore com.sun missing classes -->
-                                        <option>-keepattributes Signature,InnerClasses,SourceFile,LineNumberTable,*Annotations*,LocalVariableTable</option>
-                                        <option>-keep class be.alexandre01.dnplugin.client.Launcher</option>
-                                        <option>-keep class be.alexandre01.dnplugin.**</option>
-                                        <option>-keepclasseswithmembernames class
-                                            be.alexandre01.dnplugin.client.Launcher {
-                                            <![CDATA[<methods>]]>;
-                                            }
-                                        </option>
-                                        <option>-keep class be.alexandre01.dnplugin.api.request.RequestType</option>
-                                        <option>-keepclasseswithmembernames class be.alexandre01.dnplugin.api.request.RequestType {
-                                            <![CDATA[<methods>]]>;
-                                            <![CDATA[<fields>]]>;
-                                            }
-                                        </option>
-                                        <option>-keep class be.alexandre01.dnplugin.api.**</option>
-                                        <option>-keepclasseswithmembernames class be.alexandre01.dnplugin.api.** {
-                                            <![CDATA[<methods>]]>;
-                                            }
-                                        </option>
-                                        <option>-keep class be.alexandre01.dnplugin.plugins.bungeecord.api.**</option>
-                                        <option>-keepclasseswithmembernames class
-                                            be.alexandre01.dnplugin.plugins.bungeecord.api.** {
-                                            <![CDATA[<methods>]]>;
-                                            }
-                                        </option>
-                                        <option>-keep class be.alexandre01.dnplugin.plugins.bungeecord.DNBungee</option>
-                                        <option>-keepclasseswithmembernames class
-                                            be.alexandre01.dnplugin.plugins.bungeecord.DNBungee {
-                                            <![CDATA[<methods>]]>;
-                                            }
-                                        </option>
-
-
-                                        <option>-keep class be.alexandre01.dnplugin.plugins.spigot.api.**</option>
-                                        <option>-keepclasseswithmembernames class
-                                            be.alexandre01.dnplugin.plugins.spigot.api.** {
-                                            <![CDATA[<methods>]]>;
-                                            }
-                                        </option>
-                                        <option>-keep class be.alexandre01.dnplugin.plugins.spigot.DNSpigot</option>
-                                        <option>-keepclasseswithmembernames class
-                                            be.alexandre01.dnplugin.plugins.spigot.DNSpigot {
-                                            <![CDATA[<methods>]]>;
-                                            }
-                                        </option>
-                                        <option>-keep class be.alexandre01.dnplugin.plugins.sponge.api.**</option>
-                                        <option>-keepclasseswithmembernames class
-                                            be.alexandre01.dnplugin.plugins.sponge.api.**{
-                                            <![CDATA[<methods>]]>;
-                                            }
-                                        </option>
-                                        <option>-keep class be.alexandre01.dnplugin.plugins.sponge.DNSponge</option>
-                                        <option>-keepclasseswithmembernames class
-                                            be.alexandre01.dnplugin.plugins.sponge.DNSponge {
-                                            <![CDATA[<methods>]]>;
-                                            }
-                                        </option>
-                                        <option>-keep class be.alexandre01.dnplugin.utils.messages.**</option>
-                                        <option>-keepclasseswithmembernames class
-                                            be.alexandre01.dnplugin.utils.messages.**{
-                                            <![CDATA[<methods>]]>;
-                                            }
-                                        </option>
-                                        <option>
-                                            -keepclassmembers class * extends java.lang.Enum {
-                                            <![CDATA[<fields>]]>;
-                                            public static **[] values();
-                                            public static ** valueOf(java.lang.String);
-                                            }
-                                        </option>
-                                        <option>-keep public class javax.xml.*</option>
-                                    </options>
-                                </configuration>
-                            </execution>
-                        </executions>
-                        <dependencies>
-                            <dependency>
-                                <groupId>net.sf.proguard</groupId>
-                                <artifactId>proguard-base</artifactId>
-                                <version>6.2.2</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-shade-plugin</artifactId>
                         <version>3.2.4</version>
@@ -371,7 +258,7 @@
 
                                 <configuration>
                                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>${project.basedir}/target/${project.artifactId}-api.jar</outputFile>
+                                    <outputFile>${maven.multiModuleProjectDirectory}/builds/${project.artifactId}.jar</outputFile>
                                     <minimizeJar>true</minimizeJar>
                                     <filters>
                                         <filter>
@@ -515,19 +402,13 @@
             <groupId>be.alexandre01.dnplugin</groupId>
             <artifactId>DreamNetwork-API</artifactId>
             <version>1.5.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>be.alexandre01.dnplugin</groupId>
             <artifactId>DreamNetwork-Network</artifactId>
             <version>1.5.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>be.alexandre01.dnplugin</groupId>
-            <artifactId>DreamNetwork-Network</artifactId>
-            <version>1.5.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>

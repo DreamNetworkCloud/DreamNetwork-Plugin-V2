@@ -1,5 +1,6 @@
 package be.alexandre01.dnplugin.api;
 
+import be.alexandre01.dnplugin.api.connection.IBasicClient;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
 import be.alexandre01.dnplugin.api.objects.RemoteService;
 import be.alexandre01.dnplugin.api.request.CustomRequestInfo;
@@ -18,6 +19,8 @@ import java.util.logging.Logger;
 
 public abstract class NetworkBaseAPI {
     @Getter @Setter private HashMap<String,RemoteService> services = new HashMap<>();
+
+    private boolean isInit = false;
     private final ArrayList<RequestType> requestTypes = new ArrayList<>();
     private static NetworkBaseAPI instance;
 
@@ -91,6 +94,36 @@ public abstract class NetworkBaseAPI {
     public abstract void callServerAttachedEvent();
 
     public abstract void shutdownProcess();
+
+    @Deprecated
+    public boolean initConnection(){
+        //check if class be.alexandre01.dnplugin.connection.BaseClient exist
+        if(isInit){
+            throw new RuntimeException("Connection already initialized");
+        }
+        Class<?> clazz = null;
+        try {
+            clazz = Class.forName("be.alexandre01.dnplugin.connection.BaseClient");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+        Object o;
+        try {
+             o = clazz.newInstance();
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        if(o instanceof IBasicClient){
+            IBasicClient basicClient = (IBasicClient) o;
+            Thread thread = new Thread(basicClient);
+            thread.start();
+            return isInit = true;
+        }
+        throw new RuntimeException("Class be.alexandre01.dnplugin.connection.BaseClient not found or castable");
+    }
 
 
 

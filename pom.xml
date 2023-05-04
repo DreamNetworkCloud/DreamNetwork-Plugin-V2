@@ -11,6 +11,11 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
     <repositories>
         <repository>
             <id>sponge-repo</id>
@@ -18,14 +23,140 @@
             <url>https://repo.spongepowered.org/maven</url>
         </repository>
     </repositories>
-    <modules>
-        <module>API</module>
-        <module>BungeeCord</module>
-        <module>Spigot</module>
-        <module>Network</module>
-    </modules>
 
+    <profiles>
+        <profile>
+            <id>Default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <java.version>8</java.version>
+                <outputPath>${project.basedir}/target/</outputPath>
+            </properties>
+            <modules>
+                <module>API</module>
+                <module>BungeeCord/Bungee-Core</module>
+                <module>Spigot/Spigot-Core</module>
+                <module>Network</module>
+            </modules>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>3.3.0</version>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <finalName>DreamNetwork-Plugin</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>make-assembly</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>be.alexandre01.dnplugin</groupId>
+                    <artifactId>DreamNetwork-Network</artifactId>
+                    <version>1.5.0-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>be.alexandre01.dnplugin</groupId>
+                    <artifactId>DreamNetwork-API</artifactId>
+                    <version>1.5.0-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>be.alexandre01.dnplugin</groupId>
+                    <artifactId>DreamNetwork-Bungee-API</artifactId>
+                    <version>1.5.0-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>be.alexandre01.dnplugin</groupId>
+                    <artifactId>DreamNetwork-Bungee-Core</artifactId>
+                    <version>1.5.0-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>be.alexandre01.dnplugin</groupId>
+                    <artifactId>DreamNetwork-Spigot-API</artifactId>
+                    <version>1.5.0-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>be.alexandre01.dnplugin</groupId>
+                    <artifactId>DreamNetwork-Spigot-Core</artifactId>
+                    <version>1.5.0-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>API</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <java.version>8</java.version>
+                <outputPath>${project.basedir}/target/</outputPath>
+            </properties>
+            <modules>
+                <module>API</module>
+                <module>BungeeCord/Bungee-API</module>
+                <module>Spigot/Spigot-API</module>
+            </modules>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>3.3.0</version>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <finalName>DreamNetwork-Plugin-API</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>make-assembly</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>be.alexandre01.dnplugin</groupId>
+                    <artifactId>DreamNetwork-API</artifactId>
+                    <version>1.5.0-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>be.alexandre01.dnplugin</groupId>
+                    <artifactId>DreamNetwork-Bungee-API</artifactId>
+                    <version>1.5.0-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>be.alexandre01.dnplugin</groupId>
+                    <artifactId>DreamNetwork-Spigot-API</artifactId>
+                    <version>1.5.0-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
+        </profile>
 
+    </profiles>
 
 
 </project>

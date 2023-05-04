@@ -2,6 +2,8 @@ package be.alexandre01.dnplugin.plugins.spigot.listeners;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.request.channels.*;
+import be.alexandre01.dnplugin.plugins.spigot.DNSpigot;
+import be.alexandre01.dnplugin.plugins.spigot.ImplAPI;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.player.NetworkDisconnectEvent;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.player.NetworkJoinEvent;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.player.NetworkSwitchServerEvent;
@@ -113,7 +115,7 @@ public class TestChannelListener implements Listener {
         });
 
 
-        DNSpigotAPI dnSpigotAPI = (DNSpigotAPI) DNSpigotAPI.getInstance();
+        ImplAPI dnSpigotAPI = (ImplAPI) DNSpigot.getAPI();
         dnSpigotAPI.autoRefreshPlayers();
     }
 

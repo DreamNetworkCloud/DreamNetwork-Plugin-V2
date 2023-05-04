@@ -1,6 +1,7 @@
 package be.alexandre01.dnplugin.connection.client;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
+import be.alexandre01.dnplugin.api.connection.IBasicClient;
 import be.alexandre01.dnplugin.connection.client.handler.BasicClientPipeline;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -13,7 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class BasicClient extends Thread{
+public class BasicClient extends Thread implements IBasicClient {
     ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     public int trying = 0;
 
@@ -22,6 +23,7 @@ public class BasicClient extends Thread{
         connect();
     }
 
+    @Override
     public void connect(){
         String host = "localhost";
         int port = 14520;

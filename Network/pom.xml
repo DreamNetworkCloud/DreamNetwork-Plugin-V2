@@ -58,7 +58,7 @@
                                     <outjar>${project.build.finalName}-small.jar</outjar>
                                     <injarNotExistsSkip>true</injarNotExistsSkip>
                                     <libs>
-                                        <lib>${java.home}/lib/rt.jar</lib>
+                                        <lib>${maven.multiModuleProjectDirectory}/lib/rt.jar</lib>
                                     </libs>
 
                                     <options>
@@ -266,7 +266,7 @@
                                     <outjar>${project.build.finalName}-small.jar</outjar>
                                     <injarNotExistsSkip>true</injarNotExistsSkip>
                                     <libs>
-                                        <lib>${java.home}/lib/rt.jar</lib>
+                                        <lib>${maven.multiModuleProjectDirectory}/lib/rt.jar</lib>
                                     </libs>
 
                                     <options>

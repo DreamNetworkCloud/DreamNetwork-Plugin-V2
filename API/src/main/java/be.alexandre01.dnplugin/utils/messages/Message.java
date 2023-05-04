@@ -1,6 +1,7 @@
 package be.alexandre01.dnplugin.utils.messages;
 import be.alexandre01.dnplugin.api.request.RequestInfo;
 import be.alexandre01.dnplugin.api.request.RequestType;
+import com.google.gson.*;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 
@@ -191,7 +192,7 @@ public class Message extends LinkedHashMap<String, Object> {
         return json;
     }
 
-    public static class MapDeserializerDoubleAsIntFix implements JsonDeserializer<Map<String, Object>>{
+    public static class MapDeserializerDoubleAsIntFix implements JsonDeserializer<Map<String, Object>> {
 
         @Override  @SuppressWarnings("unchecked")
         public Map<String, Object> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

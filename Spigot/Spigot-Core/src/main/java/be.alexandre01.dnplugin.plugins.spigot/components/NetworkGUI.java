@@ -1,6 +1,7 @@
 package be.alexandre01.dnplugin.plugins.spigot.components;
 
 import be.alexandre01.dnplugin.api.objects.RemoteService;
+import be.alexandre01.dnplugin.plugins.spigot.DNSpigot;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -69,7 +70,7 @@ public abstract class NetworkGUI {
         lore.add("§7Status: "+ online);
 
         lore.add("§7Type: " + remoteService.getMods().name());
-        if(DNSpigotAPI.getInstance().hasAlreadyPlayerRefreshed()) {
+        if(DNSpigot.getAPI().hasAlreadyPlayerRefreshed()) {
             lore.add("§7Players: " + remoteService.getPlayers().size());
         }
 

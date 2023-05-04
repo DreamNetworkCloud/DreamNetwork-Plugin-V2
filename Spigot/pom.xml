@@ -11,13 +11,6 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <repositories>
-        <repository>
-            <id>sponge-repo</id>
-            <name>Sponge Maven Repository</name>
-            <url>https://repo.spongepowered.org/maven</url>
-        </repository>
-    </repositories>
     <modules>
         <module>Spigot-API</module>
         <module>Spigot-Core</module>

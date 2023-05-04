@@ -1,5 +1,6 @@
 package be.alexandre01.dnplugin.plugins.spigot;
 
+import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
 import be.alexandre01.dnplugin.api.objects.player.DNPlayerManager;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
@@ -18,7 +19,7 @@ import org.bukkit.entity.Player;
 
 import java.util.logging.Logger;
 
-public class ImplAPI implements DNSpigotAPI {
+public class ImplAPI extends NetworkBaseAPI implements DNSpigotAPI {
     IClientHandler iClientHandler;
     DNSpigot dnSpigot;
     boolean refreshedPlayers = false;
@@ -163,6 +164,11 @@ public class ImplAPI implements DNSpigotAPI {
     @Override
     public boolean hasAlreadyPlayerRefreshed(){
         return refreshedPlayers;
+    }
+
+    @Override
+    public DNServer getCurrentServer() {
+        return DNSpigot.getInstance().getCurrentServer();
     }
 
     @Override

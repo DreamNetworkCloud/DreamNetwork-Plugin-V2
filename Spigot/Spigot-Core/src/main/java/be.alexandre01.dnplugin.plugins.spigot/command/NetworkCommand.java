@@ -70,7 +70,7 @@ public class NetworkCommand extends Command {
                     sender.sendMessage("§cThe server is not online.");
                     return false;
                 }
-                RequestPacket executecmd = DNSpigotAPI.getInstance().getRequestManager().sendRequest(RequestType.SPIGOT_EXECUTE_COMMAND,args[1],cmd.toString());
+                RequestPacket executecmd = DNSpigot.getAPI().getRequestManager().sendRequest(RequestType.SPIGOT_EXECUTE_COMMAND,args[1],cmd.toString());
 
                 executecmd.setRequestFutureResponse(message -> {
                     System.out.println(message);
@@ -99,7 +99,7 @@ public class NetworkCommand extends Command {
                     return false;
                 }
 
-                RequestPacket stop = DNSpigotAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_STOP_SERVER,args[1]);
+                RequestPacket stop = DNSpigot.getAPI().getRequestManager().sendRequest(RequestType.CORE_STOP_SERVER,args[1]);
                 sender.sendMessage("§aThe request to stop the server §l"+args[1]+"§a has been sent. Please wait.");
                 stop.setRequestFutureResponse(message -> {
                     System.out.println(message);
@@ -118,7 +118,7 @@ public class NetworkCommand extends Command {
                             sender.sendMessage("§cPlease put another server name because this one is invalid.");
                             return false;
                         }
-                        RequestPacket start = DNSpigotAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_START_SERVER,args[1]);
+                        RequestPacket start = DNSpigot.getAPI().getRequestManager().sendRequest(RequestType.CORE_START_SERVER,args[1]);
                         sender.sendMessage("§aThe request to start the server §l"+args[1]+"§a has been sent. Please wait.");
                         start.setRequestFutureResponse(message -> {
                             System.out.println(message);
@@ -194,12 +194,12 @@ public class NetworkCommand extends Command {
             case DATA:
                 if(args.length < 2){
                     sender.sendMessage("§e - §9/network §lDATA§9 [TABLE]");
-                    for(DNChannel c : DNSpigotAPI.getInstance().getChannelManager().getChannels().values()){
+                    for(DNChannel c : DNSpigot.getAPI().getChannelManager().getChannels().values()){
                         sender.sendMessage(c.getName());
                     }
                     return true;
                 }
-                DNChannel c = DNSpigotAPI.getInstance().getChannelManager().getChannel(args[1]);
+                DNChannel c = DNSpigot.getAPI().getChannelManager().getChannel(args[1]);
                 if(c == null){
                     sender.sendMessage("§cThe channel is not valid.");
                 }

@@ -1,11 +1,11 @@
 package be.alexandre01.dnplugin.plugins.spigot;
 
+import be.alexandre01.dnplugin.api.connection.IBasicClient;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import be.alexandre01.dnplugin.api.request.RequestFile;
 import be.alexandre01.dnplugin.api.request.RequestManager;
 import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
-import be.alexandre01.dnplugin.connection.client.BasicClient;
 import be.alexandre01.dnplugin.plugins.spigot.command.NetworkCommand;
 import be.alexandre01.dnplugin.plugins.spigot.listeners.ReloadListener;
 import be.alexandre01.dnplugin.plugins.spigot.utils.SpigotText;
@@ -26,7 +26,7 @@ public class DNSpigot extends JavaPlugin{
 
     @Getter private static DNSpigot instance;
     @Getter @Setter private IClientHandler basicClientHandler;
-    @Getter private BasicClient basicClient;
+    @Getter private IBasicClient basicClient;
     @Getter private String version;
     @Getter private String type;
     @Getter private int port;
@@ -61,7 +61,7 @@ public class DNSpigot extends JavaPlugin{
 
         System.out.println("\n");
 
-        ImplAPI dnSpigotAPI = new ImplAPI(this);
+        api = new ImplAPI(this);
 
 
         this.requestManager = new RequestManager();
@@ -70,9 +70,11 @@ public class DNSpigot extends JavaPlugin{
         RequestFile requestFile = new RequestFile();
         requestFile.loadFile(Config.getPath(getServer().getWorldContainer() + "/plugins/DreamNetwork/requests.dream"));
       //  getLogger().log(Level.INFO,"Enabling the Network Connection on the port "+port+"...");
-        basicClient = new BasicClient();
-        Thread thread = new Thread(basicClient);
-        thread.start();
+        if(!api.initConnection()){
+            getLogger().severe("The connection to the server has failed.");
+            Bukkit.getServer().shutdown();
+            return;
+        }
 
         registerCommand("network",new NetworkCommand("network"));
         getServer().getPluginManager().registerEvents(new ReloadListener(),this);

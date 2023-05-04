@@ -28,7 +28,7 @@ public class SpigotRequestResponse extends ClientResponse {
     final HashMap<String, RemoteService> remoteServices;
     public SpigotRequestResponse(){
         networkBaseAPI = NetworkBaseAPI.getInstance();
-        dnPlayerManager = ((DNSpigotAPI) DNSpigotAPI.getInstance()).getDnPlayerManager();
+        dnPlayerManager =  DNSpigot.getAPI().getDnPlayerManager();
         remoteServices = NetworkBaseAPI.getInstance().getServices();
         pluginManager = Bukkit.getPluginManager();
 
