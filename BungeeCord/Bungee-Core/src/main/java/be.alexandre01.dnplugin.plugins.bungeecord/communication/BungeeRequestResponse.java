@@ -16,27 +16,27 @@ public class BungeeRequestResponse extends ClientResponse {
     public BungeeRequestResponse(){
         this.dnBungeeAPI = (DNBungeeAPI) DNBungeeAPI.getInstance();
 
-        addRequestInterceptor(RequestType.BUNGEECORD_REGISTER_SERVER,(message, ctx) -> {
+        addRequestInterceptor(RequestType.PROXY_REGISTER_SERVER,(message, ctx) -> {
             System.out.println("Registering server: " + message.getString("PROCESSNAME"));
             dnBungeeAPI.getDnBungeeServersManager().registerServer(message.getString("PROCESSNAME"),message.getString("REMOTEIP"),message.getInt("PORT"),Mods.valueOf(message.getString("MODS")));
         });
 
-        addRequestInterceptor(RequestType.BUNGEECORD_UNREGISTER_SERVER,(message, ctx) -> {
+        addRequestInterceptor(RequestType.PROXY_UNREGISTER_SERVER,(message, ctx) -> {
             System.out.println("Unregistering server: " + message.getString("PROCESSNAME"));
             dnBungeeAPI.getDnBungeeServersManager().unregisterServer(message.getString("PROCESSNAME"));
         });
 
-        addRequestInterceptor(RequestType.BUNGEECORD_EXECUTE_COMMAND,(message, ctx) -> {
+        addRequestInterceptor(RequestType.PROXY_EXECUTE_COMMAND,(message, ctx) -> {
             DNBungee.getInstance().getProxy().getPluginManager().dispatchCommand(DNBungee.getInstance().getProxy().getConsole(),message.getString("CMD"));
         });
 
-        addRequestInterceptor(RequestType.BUNGEECORD_LOG_MESSAGE,(message, ctx) -> {
+        addRequestInterceptor(RequestType.PROXY_LOG_MESSAGE,(message, ctx) -> {
             dnBungeeAPI.getLogger().info(message.getString("LOG"));
         });
-        addRequestInterceptor(RequestType.BUNGEECORD_WARNING_MESSAGE,(message, ctx) -> {
+        addRequestInterceptor(RequestType.PROXY_WARNING_MESSAGE,(message, ctx) -> {
             dnBungeeAPI.getLogger().info(message.getString("LOG"));
         });
-        addRequestInterceptor(RequestType.BUNGEECORD_ERROR_MESSAGE,(message, ctx) -> {
+        addRequestInterceptor(RequestType.PROXY_ERROR_MESSAGE,(message, ctx) -> {
             dnBungeeAPI.getLogger().info(message.getString("LOG"));
         });
 

@@ -90,9 +90,9 @@
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
-                                        <option>-keep class be.alexandre01.dnplugin.plugins.bungeecord.DNBungee</option>
+                                        <option>-keep class be.alexandre01.dnplugin.plugins.velocity.DNVelocity</option>
                                         <option>-keepclasseswithmembernames class
-                                            be.alexandre01.dnplugin.plugins.bungeecord.DNBungee {
+                                            be.alexandre01.dnplugin.plugins.velocity.DNVelocity {
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
@@ -299,9 +299,9 @@
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
-                                        <option>-keep class be.alexandre01.dnplugin.plugins.bungeecord.DNBungee</option>
+                                        <option>-keep class be.alexandre01.dnplugin.plugins.velocity.DNVelocity</option>
                                         <option>-keepclasseswithmembernames class
-                                            be.alexandre01.dnplugin.plugins.bungeecord.DNBungee {
+                                            be.alexandre01.dnplugin.plugins.velocity.DNVelocity {
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>

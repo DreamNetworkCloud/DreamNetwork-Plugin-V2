@@ -70,7 +70,7 @@ public class NetworkCommand extends Command {
                     sender.sendMessage("§cThe server is not online.");
                     return false;
                 }
-                RequestPacket executecmd = DNSpigot.getAPI().getRequestManager().sendRequest(RequestType.SPIGOT_EXECUTE_COMMAND,args[1],cmd.toString());
+                RequestPacket executecmd = DNSpigot.getAPI().getRequestManager().sendRequest(RequestType.SERVER_EXECUTE_COMMAND,args[1],cmd.toString());
 
                 executecmd.setRequestFutureResponse(message -> {
                     System.out.println(message);

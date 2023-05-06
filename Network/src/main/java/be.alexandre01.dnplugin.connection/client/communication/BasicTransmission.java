@@ -74,7 +74,7 @@ public class BasicTransmission extends ClientResponse {
         if(message.hasRequest()){
             RequestInfo requestInfo = message.getRequest();
 
-            if(requestInfo.equals(RequestType.SPIGOT_HANDSHAKE_SUCCESS)) {
+            if(requestInfo.equals(RequestType.SERVER_HANDSHAKE_SUCCESS)) {
                 final NetworkBaseAPI networkBaseAPI = NetworkBaseAPI.getInstance();
                 String processName = message.getString("PROCESSNAME");
                  networkBaseAPI.setProcessName("s-" + processName);
@@ -87,7 +87,7 @@ public class BasicTransmission extends ClientResponse {
                 System.out.println("The connection has been established on the remote address: " + ctx.channel().remoteAddress());
 
                 NetworkBaseAPI.getInstance().callServerAttachedEvent();
-            }  else if(requestInfo.equals(RequestType.BUNGEECORD_HANDSHAKE_SUCCESS)){
+            }  else if(requestInfo.equals(RequestType.PROXY_HANDSHAKE_SUCCESS)){
                 String processName = message.getString("PROCESSNAME");
                 final NetworkBaseAPI networkBaseAPI = NetworkBaseAPI.getInstance();
                 networkBaseAPI.setProcessName("p-"+processName);

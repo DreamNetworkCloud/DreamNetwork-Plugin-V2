@@ -16,27 +16,27 @@ public class VelocityRequestResponse extends ClientResponse {
     public VelocityRequestResponse(){
         this.dnVelocityAPI = (DNVelocityAPI) DNVelocityAPI.getInstance();
 
-        addRequestInterceptor(RequestType.BUNGEECORD_REGISTER_SERVER,(message, ctx) -> {
+        addRequestInterceptor(RequestType.PROXY_REGISTER_SERVER,(message, ctx) -> {
             System.out.println("Registering server: " + message.getString("PROCESSNAME"));
             dnVelocityAPI.getDnVelocityServersManager().registerServer(message.getString("PROCESSNAME"),message.getString("REMOTEIP"),message.getInt("PORT"),Mods.valueOf(message.getString("MODS")));
         });
 
-        addRequestInterceptor(RequestType.BUNGEECORD_UNREGISTER_SERVER,(message, ctx) -> {
+        addRequestInterceptor(RequestType.PROXY_UNREGISTER_SERVER,(message, ctx) -> {
             System.out.println("Unregistering server: " + message.getString("PROCESSNAME"));
             dnVelocityAPI.getDnVelocityServersManager().unregisterServer(message.getString("PROCESSNAME"));
         });
 
-        addRequestInterceptor(RequestType.BUNGEECORD_EXECUTE_COMMAND,(message, ctx) -> {
+        addRequestInterceptor(RequestType.PROXY_EXECUTE_COMMAND,(message, ctx) -> {
             DNVelocity.getInstance().getServer().getCommandManager().executeAsync(DNVelocity.getInstance().getServer().getConsoleCommandSource(),message.getString("CMD"));
         });
 
-        addRequestInterceptor(RequestType.BUNGEECORD_LOG_MESSAGE,(message, ctx) -> {
+        addRequestInterceptor(RequestType.PROXY_LOG_MESSAGE,(message, ctx) -> {
             dnVelocityAPI.getLogger().info(message.getString("LOG"));
         });
-        addRequestInterceptor(RequestType.BUNGEECORD_WARNING_MESSAGE,(message, ctx) -> {
+        addRequestInterceptor(RequestType.PROXY_WARNING_MESSAGE,(message, ctx) -> {
             dnVelocityAPI.getLogger().info(message.getString("LOG"));
         });
-        addRequestInterceptor(RequestType.BUNGEECORD_ERROR_MESSAGE,(message, ctx) -> {
+        addRequestInterceptor(RequestType.PROXY_ERROR_MESSAGE,(message, ctx) -> {
             dnVelocityAPI.getLogger().info(message.getString("LOG"));
         });
 

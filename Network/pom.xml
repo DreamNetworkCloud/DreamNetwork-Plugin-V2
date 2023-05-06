@@ -80,6 +80,8 @@
                                             <![CDATA[<fields>]]>;
                                             }
                                         </option>
+                                        <option>-keep class be.alexandre01.dnplugin.connection.client.BasicClient</option>
+
                                         <option>-keep class be.alexandre01.dnplugin.api.**</option>
                                         <option>-keepclasseswithmembernames class be.alexandre01.dnplugin.api.** {
                                             <![CDATA[<methods>]]>;

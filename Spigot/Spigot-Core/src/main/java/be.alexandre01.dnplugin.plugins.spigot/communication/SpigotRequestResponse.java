@@ -32,7 +32,7 @@ public class SpigotRequestResponse extends ClientResponse {
         remoteServices = NetworkBaseAPI.getInstance().getServices();
         pluginManager = Bukkit.getPluginManager();
 
-        addRequestInterceptor(RequestType.SPIGOT_EXECUTE_COMMAND,(message, ctx) -> {
+        addRequestInterceptor(RequestType.SERVER_EXECUTE_COMMAND,(message, ctx) -> {
             Bukkit.getScheduler().scheduleSyncDelayedTask(DNSpigot.getInstance(),() -> {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),message.getString("CMD"));
             });
@@ -41,7 +41,7 @@ public class SpigotRequestResponse extends ClientResponse {
         addRequestInterceptor(RequestType.CORE_STOP_SERVER,(message, ctx) -> {
             Bukkit.shutdown();
         });
-        addRequestInterceptor(RequestType.SPIGOT_NEW_SERVERS,(message, ctx) -> {
+        addRequestInterceptor(RequestType.SERVER_NEW_SERVERS,(message, ctx) -> {
             List<String> nServers = (List<String>) message.getList("SERVERS");
             //networkBaseAPI.getServers().addAll(nServers);
             for(String servers : nServers){
@@ -73,7 +73,7 @@ public class SpigotRequestResponse extends ClientResponse {
             }
         });
 
-        addRequestInterceptor(RequestType.SPIGOT_REMOVE_SERVERS,(message, ctx) -> {
+        addRequestInterceptor(RequestType.SERVER_REMOVE_SERVERS,(message, ctx) -> {
             System.out.println("Removing servers");
             System.out.println(message.toString());
             List<String> rServers = (List<String>) message.getList("SERVERS");
@@ -89,7 +89,7 @@ public class SpigotRequestResponse extends ClientResponse {
             System.out.println("Remove servers : "+ rServers);
         });
 
-        addRequestInterceptor(RequestType.SPIGOT_UPDATE_PLAYERS,(message, ctx) ->  {
+        addRequestInterceptor(RequestType.SERVER_UPDATE_PLAYERS,(message, ctx) ->  {
             List<String> upPlayers =  (List<String>) message.getList("P");
             System.out.println(upPlayers);
             for(String p : upPlayers){
@@ -161,7 +161,7 @@ public class SpigotRequestResponse extends ClientResponse {
 
             }
         });
-        addRequestInterceptor(RequestType.SPIGOT_UNREGISTER_PLAYERS,(message, ctx) -> {
+        addRequestInterceptor(RequestType.SERVER_UNREGISTER_PLAYERS,(message, ctx) -> {
             List<Integer> unPlayers =  (List<Integer>) message.getIntegersList("P");
             for(Integer id : unPlayers){
                 DNPlayer dnPlayer = dnPlayerManager.getDnPlayers().get(id);
