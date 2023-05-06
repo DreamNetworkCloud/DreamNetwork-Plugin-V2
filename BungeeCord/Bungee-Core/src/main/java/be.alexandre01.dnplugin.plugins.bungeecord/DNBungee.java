@@ -189,7 +189,7 @@ public class DNBungee extends Plugin {
 
     @Override
     public void onDisable(){
-        DNBungeeAPI.getInstance().getBasicClientHandler().getChannel().close();
+        DNBungeeAPI.getInstance().getClientHandler().getChannel().close();
     }
 
     public void loadConfig(){

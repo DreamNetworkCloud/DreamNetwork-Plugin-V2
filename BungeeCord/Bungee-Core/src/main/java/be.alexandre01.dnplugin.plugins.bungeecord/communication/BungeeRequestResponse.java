@@ -17,12 +17,12 @@ public class BungeeRequestResponse extends ClientResponse {
         this.dnBungeeAPI = (DNBungeeAPI) DNBungeeAPI.getInstance();
 
         addRequestInterceptor(RequestType.BUNGEECORD_REGISTER_SERVER,(message, ctx) -> {
-            System.out.println("Registering server: " + message.getString("serverName"));
+            System.out.println("Registering server: " + message.getString("PROCESSNAME"));
             dnBungeeAPI.getDnBungeeServersManager().registerServer(message.getString("PROCESSNAME"),message.getString("REMOTEIP"),message.getInt("PORT"),Mods.valueOf(message.getString("MODS")));
         });
 
         addRequestInterceptor(RequestType.BUNGEECORD_UNREGISTER_SERVER,(message, ctx) -> {
-            System.out.println("Unregistering server: " + message.getString("serverName"));
+            System.out.println("Unregistering server: " + message.getString("PROCESSNAME"));
             dnBungeeAPI.getDnBungeeServersManager().unregisterServer(message.getString("PROCESSNAME"));
         });
 

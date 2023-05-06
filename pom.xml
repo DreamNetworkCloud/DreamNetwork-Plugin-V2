@@ -39,6 +39,8 @@
                 <module>BungeeCord/Bungee-Core</module>
                 <module>Spigot/Spigot-Core</module>
                 <module>Network</module>
+                <module>Velocity/Velo-API</module>
+                <module>Velocity/Velo-Core</module>
             </modules>
             <build>
                 <plugins>
@@ -96,12 +98,23 @@
                     <artifactId>DreamNetwork-Spigot-Core</artifactId>
                     <version>1.5.0-SNAPSHOT</version>
                 </dependency>
+                <dependency>
+                    <groupId>be.alexandre01.dnplugin</groupId>
+                    <artifactId>DreamNetwork-Velo-API</artifactId>
+                    <version>1.5.0-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>be.alexandre01.dnplugin</groupId>
+                    <artifactId>DreamNetwork-Velo-Core</artifactId>
+                    <version>1.5.0-SNAPSHOT</version>
+                </dependency>
+
             </dependencies>
         </profile>
         <profile>
             <id>API</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
                 <java.version>8</java.version>

@@ -101,9 +101,10 @@ public abstract class NetworkBaseAPI {
         if(isInit){
             throw new RuntimeException("Connection already initialized");
         }
+
         Class<?> clazz = null;
         try {
-            clazz = Class.forName("be.alexandre01.dnplugin.connection.BaseClient");
+            clazz = Class.forName("be.alexandre01.dnplugin.connection.client.BasicClient");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             return false;
@@ -122,7 +123,7 @@ public abstract class NetworkBaseAPI {
             thread.start();
             return isInit = true;
         }
-        throw new RuntimeException("Class be.alexandre01.dnplugin.connection.BaseClient not found or castable");
+        throw new RuntimeException("Class be.alexandre01.dnplugin.connection.client.BasicClient not found or castable");
     }
 
 

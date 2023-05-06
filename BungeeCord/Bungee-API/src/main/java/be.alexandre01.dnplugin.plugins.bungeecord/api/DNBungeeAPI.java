@@ -12,7 +12,7 @@ public interface DNBungeeAPI {
         return (DNBungeeAPI) NetworkBaseAPI.getInstance();
     }
 
-    IClientHandler getBasicClientHandler();
+    IClientHandler getClientHandler();
 
     String getInfo();
 

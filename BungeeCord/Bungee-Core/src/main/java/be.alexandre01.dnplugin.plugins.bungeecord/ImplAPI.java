@@ -30,7 +30,7 @@ public class ImplAPI extends NetworkBaseAPI implements DNBungeeAPI {
         this.dnBungeeServersManager = new BungeeServersManager(this);
     }
     @Override
-    public IClientHandler getBasicClientHandler() {
+    public IClientHandler getClientHandler() {
         return basicClientHandler;
     }
 
@@ -93,12 +93,6 @@ public class ImplAPI extends NetworkBaseAPI implements DNBungeeAPI {
     public void setRequestManager(RequestManager requestManager) {
         dnBungee.setRequestManager(requestManager);
     }
-
-    @Override
-    public IClientHandler getClientHandler() {
-        return null;
-    }
-
     @Override
     public void callServerAttachedEvent() {
 
