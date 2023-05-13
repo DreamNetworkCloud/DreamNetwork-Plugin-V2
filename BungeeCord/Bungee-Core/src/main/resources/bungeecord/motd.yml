@@ -1,0 +1,17 @@
+motd:
+  activated: true
+  custom-version-protocol: true
+  custom-version-message: "&4[&e1.8&c+&4] &e(%online%&c/&e%max%)" #Type none to let it blank
+  auto-slot-increment: false
+  content:
+    line-1: "              &e&l✯ §9§lDreamNetwork §e§l✯ §f§n§l"
+    line-2: "     §e▅▆▇ §6§lBest Network System ▇▆▅"
+  version-hover:
+    line-1: "&7&m--------------------"
+    line-2: "      §9Dream§3Network"
+    line-3: "&7 &4 &c &e"
+    line-4: "&7» &eBEST NETWORK"
+    line-5: ""
+    line-6: "&7 &eSite&7:"
+    line-7: "&7 &b§owww.dreamnetwork.cloud"
+    line-8: "&7&m--------------------"

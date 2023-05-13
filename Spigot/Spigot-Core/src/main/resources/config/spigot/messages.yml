@@ -1,0 +1,7 @@
+messages:
+  console:
+    events:
+      attached: "Server attached with success"
+  server:
+    kick: "You have been kicked from the server"
+    shutdown: "The server is stopping"

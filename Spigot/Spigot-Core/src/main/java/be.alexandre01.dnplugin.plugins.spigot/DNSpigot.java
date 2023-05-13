@@ -91,6 +91,7 @@ public class DNSpigot extends JavaPlugin{
             Bukkit.broadcastMessage("§cLe serveur est entrain de se réactualiser, des lags peuvent être ressentit.");
         }else {
             for(Player player : Bukkit.getOnlinePlayers()){
+                getMessage("server.shutdown");
                 player.kickPlayer("Le serveur est entrain de s'éteindre.");
             }
             getAPI().getClientHandler().getChannel().close();
