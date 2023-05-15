@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="DreamNetwork-API" />
         <module name="DreamNetwork-Network" />
+        <module name="DreamNetwork-Bungee-API" />
         <module name="DreamNetwork-Velo-Core" />
         <module name="DreamNetwork-Spigot-API" />
         <module name="DreamNetwork-Bungee-Core" />
@@ -16,8 +17,6 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="DreamNetwork-Bungee" target="1.8" />
-      <module name="DreamNetwork-Bungee-API" target="1.8" />
       <module name="DreamNetwork-Bungee-API (1)" target="1.8" />
       <module name="DreamNetwork-Bungee-API (2)" target="1.8" />
       <module name="DreamNetwork-Bungee-Core (1)" target="1.8" />
@@ -31,7 +30,6 @@
       <module name="DreamNetwork-Plugin-Spigot-API" target="1.8" />
       <module name="DreamNetwork-Plugin-Spigot-API (1)" target="1.8" />
       <module name="DreamNetwork-Plugin-Spigot-API (2)" target="1.8" />
-      <module name="DreamNetwork-Spigot" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

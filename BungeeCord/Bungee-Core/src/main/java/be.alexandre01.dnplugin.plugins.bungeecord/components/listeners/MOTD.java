@@ -3,6 +3,7 @@ package be.alexandre01.dnplugin.plugins.bungeecord.components.listeners;
 import be.alexandre01.dnplugin.plugins.bungeecord.DNBungee;
 import be.alexandre01.dnplugin.plugins.bungeecord.utils.BaseComponentBuilder;
 import be.alexandre01.dnplugin.utils.Config;
+import lombok.Getter;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -32,12 +33,24 @@ public class MOTD implements Listener {
 
     private boolean slot_max_players_increment;
     private String version = "none";
-    private boolean hasCustomVersionProtocol;
+    private boolean hasCustomVersionProtocol = false;
+    @Getter
+    private boolean activated = true;
+
+    String slotNumber;
 
     public MOTD(){
         dnBungee = DNBungee.getInstance();
         loadConfig();
         readConfig();
+        if(!configuration.getBoolean("motd.activated")){
+            activated = false;
+            return;
+        }
+
+        /*if(dnBungee.slot == -2){
+            slot_max_players_increment = true;
+        }*/
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

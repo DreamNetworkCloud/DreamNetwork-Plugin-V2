@@ -65,7 +65,11 @@ public class DNVelocity {
         this.server = server;
         this.logger = logger;
         instance = this;
-        port = 25565;
+        port = server.getBoundAddress().getPort();
+        System.out.println(server.getConfiguration().getQueryMap());
+        System.out.println(server.getBoundAddress().getPort());
+
+        //port = server.getConfiguration().();
         this.metricsFactory = metricsFactory;
         int pluginId = 18387; // <-- Replace with the id of your plugin!
         System.setProperty("bstats.relocatecheck","false");

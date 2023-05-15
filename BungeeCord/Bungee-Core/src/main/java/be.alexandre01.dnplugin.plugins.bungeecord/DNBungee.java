@@ -70,7 +70,8 @@ public class DNBungee extends Plugin {
         System.out.println(bungeeText.messages.keySet());
         System.out.println(getMessage("connect.noLobby"));
         System.out.println(getMessage("connect.test"));
-        port = 25565;
+        //port = 25565;
+        port = getProxy().getConfig().getListeners().stream().findFirst().get().getHost().getPort();
         loadConfig();
         allowedPlayer = new ArrayList<>();
         if(!getProxy().getConfig().getListeners().isEmpty()){
@@ -167,7 +168,9 @@ public class DNBungee extends Plugin {
         getProxy().getPluginManager().registerListener(this,new RedirectConnection());
         if(autoSendPlayer)
             getProxy().getPluginManager().registerListener(this,new PlayerServerListener());
-        getProxy().getPluginManager().registerListener(this,new MOTD());
+        MOTD motd = new MOTD();
+        if(motd.isActivated())
+            getProxy().getPluginManager().registerListener(this,motd);
 
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Maintenance("maintenance"));
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Slot("slot"));

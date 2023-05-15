@@ -36,8 +36,8 @@
             </properties>
             <modules>
                 <module>API</module>
-                <module>BungeeCord/Bungee-Core</module>
-                <module>Spigot/Spigot-Core</module>
+                <module>BungeeCord</module>
+                <module>Spigot</module>
                 <module>Network</module>
                 <module>Velocity/Velo-API</module>
                 <module>Velocity/Velo-Core</module>

@@ -2,6 +2,7 @@ package be.alexandre01.dnplugin.plugins.spigot.api;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
+import be.alexandre01.dnplugin.api.objects.player.DNPlayerManager;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import be.alexandre01.dnplugin.api.request.RequestManager;
 import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
@@ -64,5 +65,5 @@ public interface DNSpigotAPI {
 
     int hashCode();
 
-    be.alexandre01.dnplugin.api.objects.player.DNPlayerManager getDnPlayerManager();
+    DNPlayerManager getDnPlayerManager();
 }

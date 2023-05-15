@@ -48,7 +48,7 @@ public class BasicClient extends Thread implements IBasicClient {
 
             System.out.println("Retrying to connect...");
             executorService.scheduleAtFixedRate(() -> {
-                System.out.println("Try");
+                System.out.println("...");
                 connect();
                 executorService.shutdown();
             },5,5, TimeUnit.SECONDS);
