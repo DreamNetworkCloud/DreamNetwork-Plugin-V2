@@ -89,7 +89,7 @@ public class DNBungee extends Plugin {
 
 
         if(!configuration.contains("network.lobby")){
-            configuration.set("network.lobby","lobby");
+            configuration.set("network.lobby","main/lobby");
             saveConfig();
         }
 
@@ -140,6 +140,11 @@ public class DNBungee extends Plugin {
         }
         if(!configuration.contains("network.slots.autoSend")){
             configuration.set("network.slots.autoSend",false);
+            saveConfig();
+        }
+
+        if(!configuration.contains("network.slot")){
+            configuration.set("network.slot",1000);
             saveConfig();
         }
 

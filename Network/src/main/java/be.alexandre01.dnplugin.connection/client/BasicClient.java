@@ -26,7 +26,19 @@ public class BasicClient extends Thread implements IBasicClient {
     @Override
     public void connect(){
         String host = "localhost";
+
+
         int port = 14520;
+        //DNHost & DNPort
+        System.out.println("Searching for -DNPort property...");
+        String portProperty = System.getProperty("NPort");
+        System.out.println("NPort: "+portProperty);
+        try {
+            port = Integer.parseInt(portProperty);
+        }catch (Exception e){
+            System.out.println("Can't read -DNPort property or doesn't contain port numbers");
+            System.out.println("Using default port 14520...");
+        }
         System.out.println("Attempt to connect to "+ host+":"+port +"#TRY_"+ trying);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
@@ -57,7 +69,6 @@ public class BasicClient extends Thread implements IBasicClient {
             workerGroup.shutdownGracefully();
             if(trying > 6){
                 NetworkBaseAPI.getInstance().shutdownProcess();
-                return;
             }
 
         }

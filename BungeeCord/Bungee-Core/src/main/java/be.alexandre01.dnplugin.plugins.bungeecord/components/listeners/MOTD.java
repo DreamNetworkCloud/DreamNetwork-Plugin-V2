@@ -61,8 +61,7 @@ public class MOTD implements Listener {
 
 
         players.setSample(hover_final);
-
-        if(slot_max_players_increment){
+        if(slot_max_players_increment){;
             if(dnBungee.slot != -2 && dnBungee.slot <= players.getOnline()){
                 srvPing.setPlayers(new ServerPing.Players(dnBungee.slot,players.getOnline(),players.getSample()));
             }else {
