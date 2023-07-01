@@ -1,6 +1,7 @@
 package be.alexandre01.dnplugin.plugins.bungeecord.utils;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
+import be.alexandre01.dnplugin.api.objects.RemoteBundle;
 import be.alexandre01.dnplugin.api.objects.RemoteService;
 import be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeServersManager;
 import be.alexandre01.dnplugin.plugins.bungeecord.communication.objects.ProxyService;
@@ -29,7 +30,15 @@ public class BungeeServersManager implements DNBungeeServersManager {
             ProxyService proxyService;
             String name = processName.split("-")[0];
             int id = Integer.parseInt(processName.split("-")[1]);
-            networkBaseAPI.getServices().put(name,proxyService = new ProxyService(name, mods,true));
+            String[] splitPath = name.split("/");
+            String serverName = splitPath[splitPath.length - 1];
+            String bundlePath = name.substring(0,(name.length()-serverName.length())-1);
+            //create Bundle
+            if(!networkBaseAPI.getBundles().containsKey(bundlePath)){
+                networkBaseAPI.getBundles().put(bundlePath,new RemoteBundle(bundlePath,false));
+            }
+            RemoteBundle remoteBundle = networkBaseAPI.getBundles().get(bundlePath);
+            networkBaseAPI.getServices().put(name,proxyService = new ProxyService(name, mods,true,remoteBundle));
             proxyService.createServer(name,id);
         }catch (Exception e){
             e.printStackTrace();

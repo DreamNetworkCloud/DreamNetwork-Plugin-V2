@@ -225,6 +225,16 @@ public class NetworkCommand extends Command {
             }
             return optionsType;
         }
+        if(args.length == 2){
+            if(args[1].equalsIgnoreCase("start")){
+                List<String> optionsType = new ArrayList<>();
+                for(String s : NetworkBaseAPI.getInstance().getServices().keySet()){
+                    if(s.startsWith(args[1].toUpperCase()))
+                        optionsType.add(s);
+                }
+                return optionsType;
+            }
+        }
         return null;
     }
 

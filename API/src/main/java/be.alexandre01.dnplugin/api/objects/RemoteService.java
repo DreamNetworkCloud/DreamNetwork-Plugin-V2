@@ -18,12 +18,18 @@ public abstract class RemoteService {
     private Mods mods;
 
     protected boolean isStarted;
+    protected RemoteBundle remoteBundle;
 
-    public RemoteService(String name,Mods mods,boolean isStarted){
+    public RemoteService(String name,Mods mods,boolean isStarted,RemoteBundle remoteBundle){
         this.name = name;
         this.mods = mods;
         this.isStarted = isStarted;
+        this.remoteBundle = remoteBundle;
     }
 
     public abstract void start();
+
+    public RemoteBundle getRemoteBundle(){
+        return remoteBundle;
+    }
 }

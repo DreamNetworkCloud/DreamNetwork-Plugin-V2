@@ -32,5 +32,6 @@ public interface IClientHandler extends ChannelHandler, ChannelInboundHandler {
 
     io.netty.channel.Channel getChannel();
 
+
     void setChannel(io.netty.channel.Channel channel);
 }

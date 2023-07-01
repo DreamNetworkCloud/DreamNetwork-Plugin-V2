@@ -11,8 +11,12 @@ import org.bukkit.entity.Player;
 import java.util.logging.Logger;
 
 public interface DNSpigotAPI {
-    static DNSpigotAPI getInstance() {
+    static DNSpigotAPI getInstance()                                                      {
         return (DNSpigotAPI) NetworkBaseAPI.getInstance();
+    }
+
+    static NetworkBaseAPI getCommon() {
+        return NetworkBaseAPI.getInstance();
     }
 
     IClientHandler getClientHandler();

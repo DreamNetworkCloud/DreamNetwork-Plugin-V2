@@ -9,6 +9,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import lombok.Setter;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -18,6 +19,9 @@ public class BasicClient extends Thread implements IBasicClient {
     ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     public int trying = 0;
 
+    @Setter
+    boolean isRunning = false;
+
     @Override
     public void run(){
         connect();
@@ -26,7 +30,6 @@ public class BasicClient extends Thread implements IBasicClient {
     @Override
     public void connect(){
         String host = "localhost";
-
 
         int port = 14520;
         //DNHost & DNPort
@@ -57,20 +60,24 @@ public class BasicClient extends Thread implements IBasicClient {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-
-            System.out.println("Retrying to connect...");
-            executorService.scheduleAtFixedRate(() -> {
-                System.out.println("...");
-                connect();
-                executorService.shutdown();
-            },5,5, TimeUnit.SECONDS);
-            trying ++;
-
-            workerGroup.shutdownGracefully();
-            if(trying > 6){
+            if(isRunning){
+                System.out.println("Connection lost");
                 NetworkBaseAPI.getInstance().shutdownProcess();
-            }
+            }else {
+                System.out.println("Connection can't be established");
+                System.out.println("Retrying to connect...");
+                executorService.scheduleAtFixedRate(() -> {
+                    System.out.println("...");
+                    connect();
+                    executorService.shutdown();
+                },5,5, TimeUnit.SECONDS);
+                trying ++;
 
+                workerGroup.shutdownGracefully();
+                if(trying > 6){
+                    NetworkBaseAPI.getInstance().shutdownProcess();
+                }
+            }
         }
     }
 }

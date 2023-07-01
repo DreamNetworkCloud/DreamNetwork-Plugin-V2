@@ -1,6 +1,7 @@
 package be.alexandre01.dnplugin.plugins.spigot.communication;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
+import be.alexandre01.dnplugin.api.objects.RemoteBundle;
 import be.alexandre01.dnplugin.api.objects.RemoteService;
 import be.alexandre01.dnplugin.api.objects.player.DNPlayer;
 import be.alexandre01.dnplugin.api.objects.player.DNPlayerManager;
@@ -39,6 +40,7 @@ public class SpigotRequestResponse extends ClientResponse {
         });
 
         addRequestInterceptor(RequestType.CORE_STOP_SERVER,(message, ctx) -> {
+            DNSpigot.getAPI().getClientHandler().getChannel().close();
             Bukkit.shutdown();
         });
         addRequestInterceptor(RequestType.SERVER_NEW_SERVERS,(message, ctx) -> {
@@ -49,12 +51,20 @@ public class SpigotRequestResponse extends ClientResponse {
                 String[] data = servers.split(";");
 
 
-                boolean b;
+                // isStarted
+                boolean isStarted;
+
+                boolean proxy = false;
                 if(data[2].equals("t")){
-                    b = true;
+                    isStarted = true;
                 }else {
-                    b = false;
+                    isStarted = false;
                 }
+
+                if(data[3].equals("p")){
+                    proxy = true;
+                }
+
                 if(!networkBaseAPI.getServices().containsKey(nums[0])){
                     Mods mods;
 
@@ -63,9 +73,20 @@ public class SpigotRequestResponse extends ClientResponse {
                     }else {
                         mods = Mods.DYNAMIC;
                     }
-                    networkBaseAPI.getServices().put(nums[0],new BaseService(nums[0],mods,b));
+                    String[] splitPath = nums[0].split("/");
+                    String serverName = splitPath[splitPath.length - 1];
+                    String bundlePath = nums[0].substring(0,(nums[0].length()-serverName.length())-1);
+                    //create Bundle
+                    if(!networkBaseAPI.getBundles().containsKey(bundlePath)){
+                        networkBaseAPI.getBundles().put(bundlePath,new RemoteBundle(bundlePath,proxy));
+                    }
+                    RemoteBundle remoteBundle = networkBaseAPI.getBundles().get(bundlePath);
+                    networkBaseAPI.getBundles().put(bundlePath,remoteBundle);
+                    BaseService service = new BaseService(nums[0],mods,isStarted,remoteBundle);
+                    remoteBundle.getRemoteServices().put(serverName,service);
+                    networkBaseAPI.getServices().put(nums[0],service);
                 }
-                if(b){
+                if(isStarted){
                     int i = Integer.parseInt(nums[1]);
                     BaseService baseService = (BaseService) networkBaseAPI.getServices().get(nums[0]);
                     baseService.createServer(nums[0],i);

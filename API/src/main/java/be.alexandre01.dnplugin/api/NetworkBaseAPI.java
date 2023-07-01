@@ -2,6 +2,7 @@ package be.alexandre01.dnplugin.api;
 
 import be.alexandre01.dnplugin.api.connection.IBasicClient;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
+import be.alexandre01.dnplugin.api.objects.RemoteBundle;
 import be.alexandre01.dnplugin.api.objects.RemoteService;
 import be.alexandre01.dnplugin.api.request.CustomRequestInfo;
 import be.alexandre01.dnplugin.api.request.RequestManager;
@@ -19,6 +20,7 @@ import java.util.logging.Logger;
 
 public abstract class NetworkBaseAPI {
     @Getter @Setter private HashMap<String,RemoteService> services = new HashMap<>();
+    @Getter @Setter private HashMap<String, RemoteBundle> bundles = new HashMap<>();
 
     private boolean isInit = false;
     private final ArrayList<RequestType> requestTypes = new ArrayList<>();
@@ -54,6 +56,10 @@ public abstract class NetworkBaseAPI {
     }
     public RemoteService getByName(String process){
         return services.get(process);
+    }
+
+    public RemoteBundle getBundleByName(String name){
+        return bundles.get(name);
     }
 
 

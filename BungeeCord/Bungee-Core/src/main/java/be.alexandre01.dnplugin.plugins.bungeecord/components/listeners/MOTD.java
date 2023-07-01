@@ -75,6 +75,7 @@ public class MOTD implements Listener {
         if(hasCustomVersionProtocol){
             version.setProtocol(999);
         }
+
         if(!this.version.equalsIgnoreCase("none")){
            // version.setName("§4[§e1.8§c+§4] §e("+ srvPing.getPlayers().getOnline()+"§c╱§e"+ srvPing.getPlayers().getMax()+")");
             version.setName(this.version

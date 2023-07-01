@@ -1,6 +1,7 @@
 package be.alexandre01.dnplugin.plugins.velocity.utils;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
+import be.alexandre01.dnplugin.api.objects.RemoteBundle;
 import be.alexandre01.dnplugin.plugins.velocity.DNVelocity;
 import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityAPI;
 import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityServersManager;
@@ -38,7 +39,15 @@ public class VelocityServersManager implements DNVelocityServersManager {
             if(networkBaseAPI.getServices().isEmpty()){
                 DNVelocity.getInstance().getServer().unregisterServer(DNVelocity.getInstance().getCoreTemp());
             }
-            networkBaseAPI.getServices().put(name,proxyService = new ProxyService(name, mods,true));
+            String[] splitPath = name.split("/");
+            String serverName = splitPath[splitPath.length - 1];
+            String bundlePath = name.substring(0,(name.length()-serverName.length())-1);
+            //create Bundle
+            if(!networkBaseAPI.getBundles().containsKey(bundlePath)){
+                networkBaseAPI.getBundles().put(bundlePath,new RemoteBundle(bundlePath,false));
+            }
+            RemoteBundle remoteBundle = networkBaseAPI.getBundles().get(bundlePath);
+            networkBaseAPI.getServices().put(name,proxyService = new ProxyService(name, mods,true,remoteBundle));
             proxyService.createServer(name,id);
         }catch (Exception e){
             e.printStackTrace();

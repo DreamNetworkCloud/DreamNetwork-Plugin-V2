@@ -1,6 +1,7 @@
 package be.alexandre01.dnplugin.plugins.spigot.communication.objects;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
+import be.alexandre01.dnplugin.api.objects.RemoteBundle;
 import be.alexandre01.dnplugin.api.objects.RemoteService;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import be.alexandre01.dnplugin.api.request.RequestType;
@@ -11,8 +12,8 @@ import be.alexandre01.dnplugin.utils.Mods;
 import org.bukkit.Bukkit;
 
 public class BaseService extends RemoteService {
-    public BaseService(String name,Mods mods,boolean isStarted) {
-        super(name,mods,isStarted);
+    public BaseService(String name, Mods mods, boolean isStarted, RemoteBundle remoteBundle){
+        super(name,mods,isStarted,remoteBundle);
     }
 
     @Override
