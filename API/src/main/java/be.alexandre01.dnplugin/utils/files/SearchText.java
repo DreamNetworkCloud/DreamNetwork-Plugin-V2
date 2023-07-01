@@ -3,7 +3,7 @@ package be.alexandre01.dnplugin.utils.files;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import org.bukkit.configuration.Configuration;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 public abstract class SearchText {
     public HashMap<String, String> messages = new HashMap<>();
     private ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-    private Configuration configuration;
     private final String path1 = "messages";
     @Setter private distributeText distributeText;
     @Getter private static SearchText old;
