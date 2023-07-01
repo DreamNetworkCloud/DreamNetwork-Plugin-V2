@@ -1,0 +1,10 @@
+be/alexandre01/dnplugin/plugins/velocity/communication/objects/ProxyService.class
+be/alexandre01/dnplugin/plugins/velocity/communication/generated/VelocityGeneratedRequest.class
+be/alexandre01/dnplugin/plugins/velocity/listeners/PlayerListener.class
+be/alexandre01/dnplugin/plugins/velocity/DNVelocity.class
+be/alexandre01/dnplugin/plugins/velocity/ImplAPI.class
+be/alexandre01/dnplugin/plugins/velocity/utils/VelocityServersManager.class
+be/alexandre01/dnplugin/plugins/velocity/objects/PlayerManagement.class
+be/alexandre01/dnplugin/plugins/velocity/communication/VelocityRequestResponse.class
+velocity-plugin.json
+be/alexandre01/dnplugin/plugins/velocity/listeners/RedirectConnection.class
