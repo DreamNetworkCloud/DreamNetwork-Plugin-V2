@@ -1,7 +1,9 @@
 package be.alexandre01.dnplugin.plugins.bungeecord.components.commands;
 
 import be.alexandre01.dnplugin.plugins.bungeecord.DNBungee;
+import be.alexandre01.dnplugin.utils.files.network.NetworkYAML;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Command;
 
 import java.util.Arrays;
@@ -34,52 +36,49 @@ public class Maintenance extends Command {
             return;
         }
         DNBungee dnBungee = DNBungee.getInstance();
+        NetworkYAML configuration = dnBungee.getConfiguration();
 
         switch (SubCommand.valueOf(args[0].toUpperCase())){
             case ON:
-                dnBungee.isMaintenance = true;
-                dnBungee.configuration.set("network.maintenance",true);
+                configuration.setMaintenance(true);
                 dnBungee.saveConfig();
-                sender.sendMessage("§aVous venez d'activer la maintenance.");
+                sender.sendMessage(new TextComponent("§aVous venez d'activer la maintenance."));
                 break;
             case OFF:
-                dnBungee.isMaintenance = false;
-                dnBungee.configuration.set("network.maintenance",false);
+                configuration.setMaintenance(false);
                 dnBungee.saveConfig();
-                sender.sendMessage("§aVous venez de §cdésactiver§a la maintenance.");
+                sender.sendMessage(new TextComponent("§aVous venez de §cdésactiver§a la maintenance."));
                 break;
             case ADD:
                 if(args.length < 2){
-                    sender.sendMessage("§e - §9/maintenance §lADD§9 [Player]");
+                    sender.sendMessage(new TextComponent("§e - §9/maintenance §lADD§9 [Player]"));
                     return;
                 }
                 String playernameadd = args[1].toLowerCase();
 
-                if(!dnBungee.allowedPlayer.contains(playernameadd)){
-                    dnBungee.allowedPlayer.add(playernameadd);
-                    dnBungee.configuration.set("network.allowed-players-maintenance",dnBungee.allowedPlayer);
+                if(!configuration.getMaintenanceAllowedPlayers().contains(playernameadd)){
+                    configuration.getMaintenanceAllowedPlayers().add(playernameadd);
                     dnBungee.saveConfig();
-                    sender.sendMessage("§aVous venez d'ajouter "+ args[1] +" à la liste.");
+                    sender.sendMessage(new TextComponent("§aVous venez d'ajouter "+ args[1] +" à la liste."));
                 }
                 break;
             case REMOVE:
                 if(args.length < 2){
-                    sender.sendMessage("§e - §9/maintenance §lREMOVE§9 [Player]");
+                    sender.sendMessage(new TextComponent("§e - §9/maintenance §lREMOVE§9 [Player]"));
                     return;
                 }
                 String playernamermv = args[1].toLowerCase();
 
-                if(dnBungee.allowedPlayer.contains(playernamermv)){
-                    dnBungee.allowedPlayer.remove(playernamermv);
-                    dnBungee.configuration.set("network.allowed-players-maintenance",dnBungee.allowedPlayer);
+                if(configuration.getMaintenanceAllowedPlayers().contains(playernamermv)){
+                    configuration.getMaintenanceAllowedPlayers().remove(playernamermv);
                     dnBungee.saveConfig();
-                    sender.sendMessage("§aVous venez de retirer "+ args[1] +" de la liste.");
+                    sender.sendMessage(new TextComponent("§aVous venez de retirer "+ args[1] +" de la liste."));
                 }
                 break;
             case LIST:
-                sender.sendMessage("§6Liste de la Maintenance :");
-                for (String allowedPlayer: dnBungee.allowedPlayer){
-                    sender.sendMessage("§e - "+ allowedPlayer);
+                sender.sendMessage(new TextComponent("§6Liste de la Maintenance :"));
+                for (String allowedPlayer: configuration.getMaintenanceAllowedPlayers()){
+                    sender.sendMessage(new TextComponent("§e - "+ allowedPlayer));
                 }
                 break;
         }
@@ -87,12 +86,12 @@ public class Maintenance extends Command {
     }
 
     public void sendHelp(CommandSender sender){
-        sender.sendMessage("§6Maintenance System:");
-        sender.sendMessage("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*");
-        sender.sendMessage("§e - §9/maintenance §lON/OFF§9");
-        sender.sendMessage("§e - §9/maintenance §lADD§9 [Player]");
-        sender.sendMessage("§e - §9/maintenance §lREMOVE§9 [Player]");
-        sender.sendMessage("§e - §9/maintenance §lLIST§9");
-        sender.sendMessage("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*");
+        sender.sendMessage(new TextComponent("§6Maintenance System:"));
+        sender.sendMessage(new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*"));
+        sender.sendMessage(new TextComponent("§e - §9/maintenance §lON/OFF§9"));
+        sender.sendMessage(new TextComponent("§e - §9/maintenance §lADD§9 [Player]"));
+        sender.sendMessage(new TextComponent("§e - §9/maintenance §lREMOVE§9 [Player]"));
+        sender.sendMessage(new TextComponent("§e - §9/maintenance §lLIST§9"));
+        sender.sendMessage(new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*"));
     }
 }

@@ -36,9 +36,9 @@
             </properties>
             <modules>
                 <module>API</module>
+                <module>Network</module>
                 <module>BungeeCord</module>
                 <module>Spigot</module>
-                <module>Network</module>
                 <module>Velocity/Velo-API</module>
                 <module>Velocity/Velo-Core</module>
             </modules>
@@ -76,7 +76,7 @@
                 <dependency>
                     <groupId>be.alexandre01.dnplugin</groupId>
                     <artifactId>DreamNetwork-API</artifactId>
-                    <version>1.5.0-SNAPSHOT</version>
+                    <version>1.6.0-SNAPSHOT</version>
                 </dependency>
                 <dependency>
                     <groupId>be.alexandre01.dnplugin</groupId>
@@ -154,7 +154,7 @@
                 <dependency>
                     <groupId>be.alexandre01.dnplugin</groupId>
                     <artifactId>DreamNetwork-API</artifactId>
-                    <version>1.5.0-SNAPSHOT</version>
+                    <version>1.6.0-SNAPSHOT</version>
                 </dependency>
                 <dependency>
                     <groupId>be.alexandre01.dnplugin</groupId>

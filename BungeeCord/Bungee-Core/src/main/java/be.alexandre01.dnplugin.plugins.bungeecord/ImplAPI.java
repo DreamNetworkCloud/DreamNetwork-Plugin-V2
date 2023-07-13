@@ -2,10 +2,7 @@ package be.alexandre01.dnplugin.plugins.bungeecord;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
-import be.alexandre01.dnplugin.api.objects.player.DNPlayerManager;
-import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import be.alexandre01.dnplugin.api.request.RequestManager;
-import be.alexandre01.dnplugin.api.request.RequestType;
 import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
 import be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeAPI;
 import be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeServersManager;

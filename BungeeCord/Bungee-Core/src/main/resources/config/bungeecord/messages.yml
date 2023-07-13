@@ -1,20 +1,18 @@
 # To create new line \n (only for kick screen)
-messages:
-  general:
-    ip: "&9dream&bnetwork&6.&ecloud"
-  connect:
-    noLobby:
-      header: "&8&m*------&7&m------&7&m-&b&m-----------&7&m-&7&m------&8&m------*"
-      text-1: "&cNo lobbies available :c"
-      text-2: "&ePlease try again later"
-      footer: "&8&m*------&7&m------&7&m-&b&m-----------&7&m-&7&m------&8&m------*"
-    slot-full:
-      header: "&8&m*------&7&m------&7&m-&b&m-----------&7&m-&7&m------&8&m------*"
-      text-1: "&cServer is full"
-      text-2: "&ePlease try again later"
-      footer: "&8&m*------&7&m------&7&m-&b&m-----------&7&m-&7&m------&8&m------*"
-    maintenance:
-      header: "&8&m*------&7&m------&7&m-&b&m-----------&7&m-&7&m------&8&m------*"
-      text-1: "&cServer is in maintenance mode"
-      text-2: "§ePlease try again later"
-      footer: "&8&m*------&7&m------&7&m-&b&m-----------&7&m-&7&m------&8&m------*"
+ip: "&9dream&bnetwork&6.&ecloud"
+connect:
+  noLobby:
+    header: "&8&m*------&7&m------&7&m-&b&m-----------&7&m-&7&m------&8&m------*"
+    text-1: "&cNo lobbies available :c"
+    text-2: "&ePlease try again later"
+    footer: "&8&m*------&7&m------&7&m-&b&m-----------&7&m-&7&m------&8&m------*"
+  slot-full:
+    header: "&8&m*------&7&m------&7&m-&b&m-----------&7&m-&7&m------&8&m------*"
+    text-1: "&cServer is full"
+    text-2: "&ePlease try again later"
+    footer: "&8&m*------&7&m------&7&m-&b&m-----------&7&m-&7&m------&8&m------*"
+  maintenance:
+    header: "&8&m*------&7&m------&7&m-&b&m-----------&7&m-&7&m------&8&m------*"
+    text-1: "&cServer is in maintenance mode"
+    text-2: "&ePlease try again later"
+    footer: "&8&m*------&7&m------&7&m-&b&m-----------&7&m-&7&m------&8&m------*"

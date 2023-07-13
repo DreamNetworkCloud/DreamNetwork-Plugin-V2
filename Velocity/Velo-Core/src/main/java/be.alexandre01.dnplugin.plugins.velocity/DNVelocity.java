@@ -7,8 +7,6 @@ import be.alexandre01.dnplugin.api.request.RequestManager;
 import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
 import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityAPI;
 import be.alexandre01.dnplugin.plugins.velocity.listeners.PlayerListener;
-import be.alexandre01.dnplugin.utils.ASCII;
-import be.alexandre01.dnplugin.utils.Config;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -22,7 +20,6 @@ import lombok.Setter;
 import org.bstats.velocity.Metrics;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;

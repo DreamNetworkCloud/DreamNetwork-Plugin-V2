@@ -2,7 +2,7 @@ package be.alexandre01.dnplugin.plugins.bungeecord.components.listeners;
 
 import be.alexandre01.dnplugin.plugins.bungeecord.DNBungee;
 import be.alexandre01.dnplugin.plugins.bungeecord.utils.BaseComponentBuilder;
-import be.alexandre01.dnplugin.utils.Config;
+//import be.alexandre01.dnplugin.utils.Config;
 import lombok.Getter;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.ServerPing;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class MOTD implements Listener {
+public class MOTD implements Listener {/*
     DNBungee dnBungee;
     private File file;
     private Configuration configuration;
@@ -51,8 +51,9 @@ public class MOTD implements Listener {
         /*if(dnBungee.slot == -2){
             slot_max_players_increment = true;
         }*/
-    }
+    //}
 
+    /*
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerPingTheProxy(final ProxyPingEvent e) {
         final ServerPing srvPing = e.getResponse();
@@ -90,10 +91,11 @@ public class MOTD implements Listener {
         component.addExtra("                     §e§l✯ §9§lInazumaUHC §e§l✯ §f§n§l\n");
        // component.addExtra("            §e▅▆▇ §6§lClassico §f|§9 Inazuma Eleven §f|§a Autres  §e▇▆▅");
         component.addExtra("            §e▅▆▇ §6§lDu lourd arrive ▇▆▅");*/
-        srvPing.setDescriptionComponent(this.content_final);
+        //srvPing.setDescriptionComponent(this.content_final);
 
-        e.setResponse(srvPing);
-    }
+        //e.setResponse(srvPing);
+    //}
+    /*
     public boolean readConfig(){
         try {
             hasCustomVersionProtocol = configuration.getBoolean("motd.custom-version-protocol");
@@ -137,6 +139,8 @@ public class MOTD implements Listener {
 
         return true;
     }
+    */
+    /*
     public void loadConfig(){
         File theDir = new File(ProxyServer.getInstance().getPluginsFolder(), "/DreamNetwork/");
         if(!theDir.exists()){
@@ -171,7 +175,8 @@ public class MOTD implements Listener {
 
 
     }
-
+    */
+/*
     public void saveConfig(){
         try{
             ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, file);
@@ -179,4 +184,5 @@ public class MOTD implements Listener {
             e.printStackTrace();
         }
     }
+*/
 }

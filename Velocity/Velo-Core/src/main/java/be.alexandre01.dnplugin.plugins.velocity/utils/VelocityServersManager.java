@@ -3,7 +3,6 @@ package be.alexandre01.dnplugin.plugins.velocity.utils;
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.objects.RemoteBundle;
 import be.alexandre01.dnplugin.plugins.velocity.DNVelocity;
-import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityAPI;
 import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityServersManager;
 import be.alexandre01.dnplugin.plugins.velocity.communication.objects.ProxyService;
 import be.alexandre01.dnplugin.utils.Mods;
