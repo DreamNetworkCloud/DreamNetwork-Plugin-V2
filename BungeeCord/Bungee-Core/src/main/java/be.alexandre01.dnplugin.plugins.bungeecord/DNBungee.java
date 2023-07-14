@@ -209,12 +209,12 @@ public class DNBungee extends Plugin {
     }
 
     public void loadConfig(){
-        /*File theDir = new File(ProxyServer.getInstance().getPluginsFolder(), "/DreamNetwork/");
+        File theDir = new File(ProxyServer.getInstance().getPluginsFolder(), "/DreamNetwork/");
         if(!theDir.exists()){
             theDir.mkdirs();
         }
 
-        file = new File(ProxyServer.getInstance().getPluginsFolder(), "/DreamNetwork/network.yml");
+        /*file = new File(ProxyServer.getInstance().getPluginsFolder(), "/DreamNetwork/network.yml");
         try{
             if(!file.exists()){
                 file.createNewFile();

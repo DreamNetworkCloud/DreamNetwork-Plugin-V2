@@ -16,34 +16,49 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class ServerPingListener implements Listener {
-    DNBungee dnBungee;
+    private final DNBungee dnBungee;
+    private final NetworkYAML config;
+    private int maxPlayers;
+    private int onlinePlayers;
+
     public ServerPingListener(){
         dnBungee = DNBungee.getInstance();
+        config = dnBungee.getConfiguration();
     }
 
     @EventHandler
     public void onPing(ProxyPingEvent event) throws IOException {
         MOTDYAML motd = dnBungee.getYamlManager().getMotd();
         if(!motd.isActivated()){return;}
-        NetworkYAML config = dnBungee.getYamlManager().getNetwork();
+
+        onlinePlayers = dnBungee.getProxy().getPlayers().size();
+        maxPlayers = (motd.isAutoSlotIncrement() ? onlinePlayers+1 : config.getSlots());
+
         ServerPing s = event.getResponse();
         StringBuilder sb = new StringBuilder();
         for(String l : motd.getContent()){
-            sb.append(l.replace("%online%", String.valueOf(dnBungee.getProxy().getPlayers().size())).replace("%max%", String.valueOf(config.getSlots())).replace("&", "§")).append("\n");
+            sb.append(formatString(l)).append("\n");
         }
         s.setDescriptionComponent(new TextComponent(sb.substring(0, sb.toString().length()-2)));
 
-        ServerPing.PlayerInfo[] hover = new ServerPing.PlayerInfo[motd.getVersionHover().size()];
-        for(int i = 0 ; i != hover.length ; i++){
-            hover[i] = new ServerPing.PlayerInfo(motd.getVersionHover().get(i).replace("%online%", String.valueOf(dnBungee.getProxy().getPlayers().size())).replace("%max%", String.valueOf(config.getSlots())).replace("&", "§"), UUID.fromString("0-0-0-0-0"));
-        }
-        s.getPlayers().setSample(hover);
-        s.setPlayers(new ServerPing.Players(config.getSlots() ,dnBungee.getProxy().getPlayers().size(), s.getPlayers().getSample()));
-
         if(motd.isCustomVersionProtocol()) {
-            s.setVersion(new ServerPing.Protocol(motd.getCustomVersionMessage().replace("%online%", String.valueOf(dnBungee.getProxy().getPlayers().size())).replace("%max%", String.valueOf(config.getSlots())).replace("&", "§"), s.getVersion().getProtocol()));
+            s.setVersion(new ServerPing.Protocol(formatString(motd.getCustomVersionMessage()), s.getVersion().getProtocol()));
+
+            ServerPing.PlayerInfo[] hover = new ServerPing.PlayerInfo[motd.getVersionHover().size()];
+            for(int i = 0 ; i != hover.length ; i++){
+                hover[i] = new ServerPing.PlayerInfo(formatString(motd.getVersionHover().get(i)), UUID.fromString("0-0-0-0-0"));
+            }
+            s.getPlayers().setSample(hover);
+            s.setPlayers(new ServerPing.Players(config.getSlots() ,dnBungee.getProxy().getPlayers().size(), s.getPlayers().getSample()));
+
         }
         s.setFavicon(Favicon.create(ImageIO.read(new File("server-icon.png"))));
         event.setResponse(s);
+    }
+
+    private String formatString(String s){
+        return s.replace("%online%", String.valueOf(onlinePlayers))
+                .replace("%max%", String.valueOf(maxPlayers))
+                .replace("&", "§");
     }
 }

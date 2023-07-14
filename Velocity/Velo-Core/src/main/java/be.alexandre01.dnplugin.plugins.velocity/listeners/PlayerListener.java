@@ -1,6 +1,8 @@
 package be.alexandre01.dnplugin.plugins.velocity.listeners;
 
 import be.alexandre01.dnplugin.plugins.velocity.DNVelocity;
+import be.alexandre01.dnplugin.utils.files.motd.MOTDYAML;
+import be.alexandre01.dnplugin.utils.files.network.NetworkYAML;
 import com.velocitypowered.api.event.ResultedEvent;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.ConnectionHandshakeEvent;
@@ -9,6 +11,8 @@ import com.velocitypowered.api.proxy.server.ServerPing;
 import com.velocitypowered.api.util.Favicon;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,26 +27,8 @@ public class PlayerListener {
     }
 
     @Subscribe
-    public void onPing(ConnectionHandshakeEvent event) {
+    public void onHandshake(ConnectionHandshakeEvent event) {
 
-        System.out.println("test");
-    }
-
-    @Subscribe
-    public void test(ProxyPingEvent event){
-        ServerPing defaultPing = event.getPing();
-
-        ServerPing.Version version = new ServerPing.Version(0, "Bonjour !");
-
-        List<ServerPing.SamplePlayer> sample = Arrays.asList(
-                new ServerPing.SamplePlayer("Test 1", UUID.fromString("0-0-0-0-0")),
-                new ServerPing.SamplePlayer("Test 2", UUID.fromString("0-0-0-0-0"))
-        );
-        ServerPing.Players players = new ServerPing.Players(0, 0, sample);
-
-        //Favicon favicon = new Favicon("URL ?");
-
-        //event.setPing(new ServerPing(version, players, component, favicon));
     }
 
     @Subscribe

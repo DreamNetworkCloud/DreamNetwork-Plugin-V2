@@ -20,7 +20,7 @@ be.alexandre01.dnplugin.plugins.bungeecord.DNBungee -> be.alexandre01.dnplugin.p
     36:64:void <init>() -> <init>
     69:204:void onEnable() -> onEnable
     208:209:void onDisable() -> onDisable
-    231:234:void loadConfig() -> loadConfig
+    212:234:void loadConfig() -> loadConfig
     242:243:void saveConfig() -> saveConfig
     247:263:java.lang.String getMessage(java.lang.String,net.md_5.bungee.api.connection.ProxiedPlayer) -> getMessage
     268:274:java.lang.String completeMessagePart(java.lang.String,net.md_5.bungee.api.connection.ProxiedPlayer) -> completeMessagePart
@@ -202,8 +202,12 @@ be.alexandre01.dnplugin.plugins.bungeecord.components.listeners.MOTD -> be.alexa
     25:25:void <init>() -> <init>
 be.alexandre01.dnplugin.plugins.bungeecord.components.listeners.ServerPingListener -> be.alexandre01.dnplugin.plugins.bungeecord.components.listeners.ServerPingListener:
     be.alexandre01.dnplugin.plugins.bungeecord.DNBungee dnBungee -> a
-    20:22:void <init>() -> <init>
-    26:48:void onPing(net.md_5.bungee.api.event.ProxyPingEvent) -> a
+    be.alexandre01.dnplugin.utils.files.network.NetworkYAML config -> b
+    int maxPlayers -> c
+    int onlinePlayers -> d
+    24:27:void <init>() -> <init>
+    31:57:void onPing(net.md_5.bungee.api.event.ProxyPingEvent) -> a
+    60:62:java.lang.String formatString(java.lang.String) -> a
 be.alexandre01.dnplugin.plugins.bungeecord.listeners.PlayerServerListener -> be.alexandre01.dnplugin.plugins.bungeecord.listeners.PlayerServerListener:
     be.alexandre01.dnplugin.plugins.bungeecord.DNBungee dnBungee -> a
     11:13:void <init>() -> <init>

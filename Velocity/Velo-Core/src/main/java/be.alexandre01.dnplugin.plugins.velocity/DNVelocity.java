@@ -7,6 +7,10 @@ import be.alexandre01.dnplugin.api.request.RequestManager;
 import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
 import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityAPI;
 import be.alexandre01.dnplugin.plugins.velocity.listeners.PlayerListener;
+import be.alexandre01.dnplugin.plugins.velocity.listeners.ServerPingListener;
+import be.alexandre01.dnplugin.utils.files.YAMLManager;
+import be.alexandre01.dnplugin.utils.files.motd.MOTDYAML;
+import be.alexandre01.dnplugin.utils.files.network.NetworkYAML;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -20,9 +24,11 @@ import lombok.Setter;
 import org.bstats.velocity.Metrics;
 
 import java.io.File;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Getter @Setter @Plugin(id = "dreamnetwork-plugin", name = "DreamNetwork Plugin for Velocity", version = "1.0.0-SNAPSHOT",
@@ -39,8 +45,10 @@ public class DNVelocity {
     private int port;
     private RequestManager requestManager;
     public File file;
+    @Getter private YAMLManager yamlManager;
+    @Getter private NetworkYAML configuration;
    // public Configuration configuration;
-    public int slot = -2;
+    /*public int slot = -2;
     public boolean isMaintenance;
     public boolean cancelKick;
     public String kickServerRedirection = null;
@@ -49,10 +57,10 @@ public class DNVelocity {
     public boolean logoStatus;
     public boolean autoSendPlayer;
     public boolean connexionOnLobby;
-    public int maxPerLobby;
+    public int maxPerLobby;*/
 
-    private final ProxyServer server;
-    private final Logger logger;
+    @Getter private final ProxyServer server;
+    @Getter private final Logger logger;
     private final Metrics.Factory metricsFactory;
     //public TablistCustomizer tablistCustomizer;
     //@Getter private final PlayerManagement playerManagement = new PlayerManagement();
@@ -63,20 +71,24 @@ public class DNVelocity {
         this.logger = logger;
         instance = this;
         port = server.getBoundAddress().getPort();
-        System.out.println(server.getConfiguration().getQueryMap());
-        System.out.println(server.getBoundAddress().getPort());
+        getLogger().info(server.getConfiguration().getQueryMap());
+        getLogger().info(String.valueOf(server.getBoundAddress().getPort()));
 
         //port = server.getConfiguration().();
         this.metricsFactory = metricsFactory;
         int pluginId = 18387; // <-- Replace with the id of your plugin!
         System.setProperty("bstats.relocatecheck","false");
 
+        //InputStream is = getClass().getClassLoader().getResourceAsStream("proxies/messages.yml");
+        //getLogger().log(Level.WARNING, is.toString());
+        loadConfig(dataDirectory);
+
       //  Metrics metrics = metricsFactory.make(this,pluginId);
 
         //INIT defaultBungeeText
 
        // loadConfig();
-        allowedPlayer = new ArrayList<>();
+        //allowedPlayer = new ArrayList<>();
        /* if(!getProxy().getConfig().getListeners().isEmpty()){
             ListenerInfo listenerInfo = getProxy().getConfig().getListeners().stream().findFirst().get();
             port = listenerInfo.getHost().getPort();
@@ -113,12 +125,12 @@ public class DNVelocity {
     public void onProxyInitialization(ProxyInitializeEvent event) {
         // Do some operation demanding access to the Velocity API here.
         // For instance, we could register an event:
-        System.out.println("Salut");
         server.getServer("core").ifPresent(serverInfo -> {
             coreTemp = serverInfo.getServerInfo();
         });
 
         getServer().getEventManager().register(this, new PlayerListener());
+        getServer().getEventManager().register(this,new ServerPingListener());
     }
     @Subscribe
     public void onProxyShutDown(ProxyShutdownEvent event) {
@@ -127,6 +139,18 @@ public class DNVelocity {
         DNVelocityAPI.getInstance().getClientHandler().getChannel().close();
     }
 
+    public void loadConfig(Path dataDirectory){
+        File f = new File(String.valueOf(dataDirectory));
+        if(!f.exists()){
+            f.mkdirs();
+        }
+        yamlManager = new YAMLManager(String.valueOf(dataDirectory), "PROXY");
+        configuration = yamlManager.getNetwork();
+    }
+
+    public void saveConfiguration(){
+        yamlManager.saveNetwork();
+    }
 
   /*  public void loadConfig(){
         File theDir = new File(ProxyServer.getInstance().getPluginsFolder(), "/DreamNetwork/");

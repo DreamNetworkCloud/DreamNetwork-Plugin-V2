@@ -61,6 +61,7 @@ public class YAMLManager {
                     (boolean) network.getOrDefault("autoSendSlots", false),
                     (int) network.getOrDefault("slots", 50)
             );
+            saveNetwork();
         }catch (IOException e){
             e.printStackTrace();
             this.network = null;
@@ -125,6 +126,7 @@ public class YAMLManager {
                     content,
                     versionHover
             );
+            saveMOTD();
         }catch (IOException e){
             e.printStackTrace();
             this.motd = null;
@@ -152,7 +154,7 @@ public class YAMLManager {
         if(!f.exists()){
             try {
                 f.createNewFile();
-                CopyFiles.copyRessource("proxies/tablist.yml", f);
+                CopyFiles.copyRessource("proxy/tablist.yml", f);
             }catch (IOException e){
                 e.printStackTrace();
                 return;

@@ -1,6 +1,7 @@
 be\alexandre01\dnplugin\plugins\velocity\objects\PlayerManagement.class
 be\alexandre01\dnplugin\plugins\velocity\listeners\RedirectConnection.class
 be\alexandre01\dnplugin\plugins\velocity\communication\generated\VelocityGeneratedRequest.class
+be\alexandre01\dnplugin\plugins\velocity\listeners\ServerPingListener.class
 velocity-plugin.json
 be\alexandre01\dnplugin\plugins\velocity\ImplAPI.class
 be\alexandre01\dnplugin\plugins\velocity\DNVelocity.class

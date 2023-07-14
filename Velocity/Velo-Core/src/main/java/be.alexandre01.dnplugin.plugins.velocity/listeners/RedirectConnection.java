@@ -21,7 +21,7 @@ public class RedirectConnection  {
     public RedirectConnection(){
         dnVelocity = DNVelocity.getInstance();
         dnBungeeAPI = (DNVelocityAPI) DNVelocityAPI.getInstance();
-        max = dnVelocity.maxPerLobby;
+        max = dnVelocity.getConfiguration().getMaxPlayerPerLobby();
     }
 
     @Subscribe

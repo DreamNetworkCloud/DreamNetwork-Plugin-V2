@@ -1,75 +1,53 @@
 be.alexandre01.dnplugin.plugins.velocity.DNVelocity -> be.alexandre01.dnplugin.plugins.velocity.DNVelocity:
-    be.alexandre01.dnplugin.plugins.velocity.DNVelocity instance -> l
-    be.alexandre01.dnplugin.plugins.velocity.ImplAPI api -> m
-    be.alexandre01.dnplugin.api.connection.IClientHandler clientHandler -> n
-    be.alexandre01.dnplugin.api.request.channels.DNChannelManager dnChannelManager -> o
-    be.alexandre01.dnplugin.api.connection.IBasicClient basicClient -> p
-    java.lang.String version -> q
-    com.velocitypowered.api.proxy.server.ServerInfo coreTemp -> r
-    java.lang.String type -> s
-    int port -> t
-    be.alexandre01.dnplugin.api.request.RequestManager requestManager -> u
+    be.alexandre01.dnplugin.plugins.velocity.DNVelocity instance -> b
+    be.alexandre01.dnplugin.plugins.velocity.ImplAPI api -> c
+    be.alexandre01.dnplugin.api.connection.IClientHandler clientHandler -> d
+    be.alexandre01.dnplugin.api.request.channels.DNChannelManager dnChannelManager -> e
+    be.alexandre01.dnplugin.api.connection.IBasicClient basicClient -> f
+    java.lang.String version -> g
+    com.velocitypowered.api.proxy.server.ServerInfo coreTemp -> h
+    java.lang.String type -> i
+    int port -> j
+    be.alexandre01.dnplugin.api.request.RequestManager requestManager -> k
     java.io.File file -> a
-    int slot -> b
-    boolean isMaintenance -> c
-    boolean cancelKick -> d
-    java.lang.String kickServerRedirection -> e
-    java.util.List allowedPlayer -> f
-    java.lang.String lobby -> g
-    boolean logoStatus -> h
-    boolean autoSendPlayer -> i
-    boolean connexionOnLobby -> j
-    int maxPerLobby -> k
-    com.velocitypowered.api.proxy.ProxyServer server -> v
-    java.util.logging.Logger logger -> w
-    org.bstats.velocity.Metrics$Factory metricsFactory -> x
-    43:110:void <init>(com.velocitypowered.api.proxy.ProxyServer,java.util.logging.Logger,java.nio.file.Path,org.bstats.velocity.Metrics$Factory) -> <init>
-    116:122:void onProxyInitialization(com.velocitypowered.api.event.proxy.ProxyInitializeEvent) -> onProxyInitialization
-    127:128:void onProxyShutDown(com.velocitypowered.api.event.proxy.ProxyShutdownEvent) -> onProxyShutDown
-    33:33:be.alexandre01.dnplugin.api.connection.IClientHandler getClientHandler() -> getClientHandler
-    34:34:be.alexandre01.dnplugin.api.request.channels.DNChannelManager getDnChannelManager() -> getDnChannelManager
-    35:35:be.alexandre01.dnplugin.api.connection.IBasicClient getBasicClient() -> getBasicClient
-    36:36:java.lang.String getVersion() -> getVersion
-    37:37:com.velocitypowered.api.proxy.server.ServerInfo getCoreTemp() -> getCoreTemp
-    38:38:java.lang.String getType() -> getType
-    39:39:int getPort() -> getPort
-    40:40:be.alexandre01.dnplugin.api.request.RequestManager getRequestManager() -> getRequestManager
-    41:41:java.io.File getFile() -> getFile
-    43:43:int getSlot() -> getSlot
-    44:44:boolean isMaintenance() -> isMaintenance
-    45:45:boolean isCancelKick() -> isCancelKick
-    46:46:java.lang.String getKickServerRedirection() -> getKickServerRedirection
-    47:47:java.util.List getAllowedPlayer() -> getAllowedPlayer
-    48:48:java.lang.String getLobby() -> getLobby
-    49:49:boolean isLogoStatus() -> isLogoStatus
-    50:50:boolean isAutoSendPlayer() -> isAutoSendPlayer
-    51:51:boolean isConnexionOnLobby() -> isConnexionOnLobby
-    52:52:int getMaxPerLobby() -> getMaxPerLobby
-    54:54:com.velocitypowered.api.proxy.ProxyServer getServer() -> getServer
-    55:55:java.util.logging.Logger getLogger() -> getLogger
-    56:56:org.bstats.velocity.Metrics$Factory getMetricsFactory() -> getMetricsFactory
-    28:28:void setClientHandler(be.alexandre01.dnplugin.api.connection.IClientHandler) -> setClientHandler
-    28:28:void setDnChannelManager(be.alexandre01.dnplugin.api.request.channels.DNChannelManager) -> setDnChannelManager
-    28:28:void setBasicClient(be.alexandre01.dnplugin.api.connection.IBasicClient) -> setBasicClient
-    28:28:void setVersion(java.lang.String) -> setVersion
-    28:28:void setCoreTemp(com.velocitypowered.api.proxy.server.ServerInfo) -> setCoreTemp
-    28:28:void setType(java.lang.String) -> setType
-    28:28:void setPort(int) -> setPort
-    28:28:void setRequestManager(be.alexandre01.dnplugin.api.request.RequestManager) -> setRequestManager
-    28:28:void setFile(java.io.File) -> setFile
-    28:28:void setSlot(int) -> setSlot
-    28:28:void setMaintenance(boolean) -> setMaintenance
-    28:28:void setCancelKick(boolean) -> setCancelKick
-    28:28:void setKickServerRedirection(java.lang.String) -> setKickServerRedirection
-    28:28:void setAllowedPlayer(java.util.List) -> setAllowedPlayer
-    28:28:void setLobby(java.lang.String) -> setLobby
-    28:28:void setLogoStatus(boolean) -> setLogoStatus
-    28:28:void setAutoSendPlayer(boolean) -> setAutoSendPlayer
-    28:28:void setConnexionOnLobby(boolean) -> setConnexionOnLobby
-    28:28:void setMaxPerLobby(int) -> setMaxPerLobby
-    31:31:be.alexandre01.dnplugin.plugins.velocity.DNVelocity getInstance() -> getInstance
-    32:32:be.alexandre01.dnplugin.plugins.velocity.ImplAPI getApi() -> getApi
-    118:119:void lambda$onProxyInitialization$0(com.velocitypowered.api.proxy.server.RegisteredServer) -> lambda$onProxyInitialization$0
+    be.alexandre01.dnplugin.utils.files.YAMLManager yamlManager -> l
+    be.alexandre01.dnplugin.utils.files.network.NetworkYAML configuration -> m
+    com.velocitypowered.api.proxy.ProxyServer server -> n
+    java.util.logging.Logger logger -> o
+    org.bstats.velocity.Metrics$Factory metricsFactory -> p
+    69:122:void <init>(com.velocitypowered.api.proxy.ProxyServer,java.util.logging.Logger,java.nio.file.Path,org.bstats.velocity.Metrics$Factory) -> <init>
+    128:134:void onProxyInitialization(com.velocitypowered.api.event.proxy.ProxyInitializeEvent) -> onProxyInitialization
+    139:140:void onProxyShutDown(com.velocitypowered.api.event.proxy.ProxyShutdownEvent) -> onProxyShutDown
+    143:149:void loadConfig(java.nio.file.Path) -> loadConfig
+    152:153:void saveConfiguration() -> saveConfiguration
+    39:39:be.alexandre01.dnplugin.api.connection.IClientHandler getClientHandler() -> getClientHandler
+    40:40:be.alexandre01.dnplugin.api.request.channels.DNChannelManager getDnChannelManager() -> getDnChannelManager
+    41:41:be.alexandre01.dnplugin.api.connection.IBasicClient getBasicClient() -> getBasicClient
+    42:42:java.lang.String getVersion() -> getVersion
+    43:43:com.velocitypowered.api.proxy.server.ServerInfo getCoreTemp() -> getCoreTemp
+    44:44:java.lang.String getType() -> getType
+    45:45:int getPort() -> getPort
+    46:46:be.alexandre01.dnplugin.api.request.RequestManager getRequestManager() -> getRequestManager
+    47:47:java.io.File getFile() -> getFile
+    64:64:org.bstats.velocity.Metrics$Factory getMetricsFactory() -> getMetricsFactory
+    34:34:void setClientHandler(be.alexandre01.dnplugin.api.connection.IClientHandler) -> setClientHandler
+    34:34:void setDnChannelManager(be.alexandre01.dnplugin.api.request.channels.DNChannelManager) -> setDnChannelManager
+    34:34:void setBasicClient(be.alexandre01.dnplugin.api.connection.IBasicClient) -> setBasicClient
+    34:34:void setVersion(java.lang.String) -> setVersion
+    34:34:void setCoreTemp(com.velocitypowered.api.proxy.server.ServerInfo) -> setCoreTemp
+    34:34:void setType(java.lang.String) -> setType
+    34:34:void setPort(int) -> setPort
+    34:34:void setRequestManager(be.alexandre01.dnplugin.api.request.RequestManager) -> setRequestManager
+    34:34:void setFile(java.io.File) -> setFile
+    34:34:void setYamlManager(be.alexandre01.dnplugin.utils.files.YAMLManager) -> setYamlManager
+    34:34:void setConfiguration(be.alexandre01.dnplugin.utils.files.network.NetworkYAML) -> setConfiguration
+    37:37:be.alexandre01.dnplugin.plugins.velocity.DNVelocity getInstance() -> getInstance
+    38:38:be.alexandre01.dnplugin.plugins.velocity.ImplAPI getApi() -> getApi
+    48:48:be.alexandre01.dnplugin.utils.files.YAMLManager getYamlManager() -> getYamlManager
+    49:49:be.alexandre01.dnplugin.utils.files.network.NetworkYAML getConfiguration() -> getConfiguration
+    62:62:com.velocitypowered.api.proxy.ProxyServer getServer() -> getServer
+    63:63:java.util.logging.Logger getLogger() -> getLogger
+    129:130:void lambda$onProxyInitialization$0(com.velocitypowered.api.proxy.server.RegisteredServer) -> lambda$onProxyInitialization$0
 be.alexandre01.dnplugin.plugins.velocity.ImplAPI -> be.alexandre01.dnplugin.plugins.velocity.ImplAPI:
     be.alexandre01.dnplugin.api.connection.IClientHandler basicClientHandler -> a
     be.alexandre01.dnplugin.plugins.velocity.DNVelocity dnVelocity -> b
@@ -119,10 +97,11 @@ be.alexandre01.dnplugin.plugins.velocity.communication.objects.ProxyService -> b
     45:49:void removeServer(java.lang.String) -> b
     52:57:void removeServer(int) -> a
 be.alexandre01.dnplugin.plugins.velocity.listeners.PlayerListener -> be.alexandre01.dnplugin.plugins.velocity.listeners.PlayerListener:
-    8:8:void <init>() -> <init>
-    13:14:void onPing(com.velocitypowered.api.event.connection.ConnectionHandshakeEvent) -> a
-    18:19:void onLog(com.velocitypowered.api.event.connection.LoginEvent) -> a
-    22:23:void onLogin(com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent) -> a
+    be.alexandre01.dnplugin.plugins.velocity.DNVelocity dnVelocity -> a
+    25:27:void <init>() -> <init>
+    32:32:void onHandshake(com.velocitypowered.api.event.connection.ConnectionHandshakeEvent) -> a
+    36:37:void onLog(com.velocitypowered.api.event.connection.LoginEvent) -> a
+    40:41:void onLogin(com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent) -> a
 be.alexandre01.dnplugin.plugins.velocity.listeners.RedirectConnection -> be.alexandre01.dnplugin.plugins.velocity.listeners.RedirectConnection:
     boolean connexionOnLobby -> a
     java.util.Set pending -> b
@@ -131,6 +110,14 @@ be.alexandre01.dnplugin.plugins.velocity.listeners.RedirectConnection -> be.alex
     int max -> e
     15:25:void <init>() -> <init>
     29:30:void onPJoin(com.velocitypowered.api.event.connection.LoginEvent) -> a
+be.alexandre01.dnplugin.plugins.velocity.listeners.ServerPingListener -> be.alexandre01.dnplugin.plugins.velocity.listeners.ServerPingListener:
+    be.alexandre01.dnplugin.plugins.velocity.DNVelocity dnVelocity -> a
+    be.alexandre01.dnplugin.utils.files.network.NetworkYAML config -> b
+    int maxPlayers -> c
+    int onlinePlayers -> d
+    18:21:void <init>() -> <init>
+    24:63:void onPing(com.velocitypowered.api.event.proxy.ProxyPingEvent) -> a
+    66:68:java.lang.String formatString(java.lang.String) -> a
 be.alexandre01.dnplugin.plugins.velocity.objects.PlayerManagement -> be.alexandre01.dnplugin.plugins.velocity.objects.PlayerManagement:
     java.util.HashMap proxiedPlayers -> a
     java.util.ArrayList removedIds -> b
