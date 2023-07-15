@@ -2,26 +2,38 @@ package be.alexandre01.dnplugin.plugins.velocity.objects;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.request.RequestType;
+import be.alexandre01.dnplugin.plugins.velocity.DNVelocity;
 import be.alexandre01.dnplugin.utils.messages.Message;
 import com.velocitypowered.api.proxy.Player;
+import com.velocitypowered.api.proxy.server.ServerInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PlayerManagement {
-    private final HashMap<Player, Integer> proxiedPlayers = new HashMap<>();
+    private final HashMap<Player, Integer> players = new HashMap<>();
     private final ArrayList<Integer> removedIds = new ArrayList<>();
     private int currentID = 0;
 
-    public void updatePlayer(Player proxiedPlayer){
+    public void updatePlayer(Player player){
         int id;
-        if(proxiedPlayers.containsKey(proxiedPlayer)){
-            id = proxiedPlayers.get(proxiedPlayer);
-            NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_UPDATE_PLAYER,id,proxiedPlayer.getCurrentServer().get().getServer().getServerInfo().getName());
+        if(players.containsKey(player)){
+            id = players.get(player);
+            NetworkBaseAPI.getInstance().getRequestManager().sendRequest(
+                    RequestType.CORE_UPDATE_PLAYER,
+                    id,
+                    player.getCurrentServer().get().getServer().getServerInfo().getName()
+            );
         }else {
             id = createId();
-            proxiedPlayers.put(proxiedPlayer,id);
-            NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_UPDATE_PLAYER,id,proxiedPlayer.getCurrentServer().get().getServer().getServerInfo().getName(),proxiedPlayer.getGameProfile().getName());
+            players.put(player,id);
+
+            NetworkBaseAPI.getInstance().getRequestManager().sendRequest(
+                    RequestType.CORE_UPDATE_PLAYER,
+                    id,
+                    player.getCurrentServer().get().getServer().getServerInfo().getName(),
+                    player.getGameProfile().getName()
+            );
         }
     }
 
@@ -37,13 +49,13 @@ public class PlayerManagement {
     }
 
     public void removePlayer(Player proxiedPlayer){
-        if(!proxiedPlayers.containsKey(proxiedPlayer)){
+        if(!players.containsKey(proxiedPlayer)){
               return;
         }
-        int id = proxiedPlayers.get(proxiedPlayer);
+        int id = players.get(proxiedPlayer);
         NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_REMOVE_PLAYER,new Message(),future -> {
             removedIds.add(id);
         },id);
-        proxiedPlayers.remove(proxiedPlayer);
+        players.remove(proxiedPlayer);
     }
 }

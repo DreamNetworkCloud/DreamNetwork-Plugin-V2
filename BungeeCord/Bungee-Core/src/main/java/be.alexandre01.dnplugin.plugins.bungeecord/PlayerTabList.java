@@ -74,8 +74,8 @@ public class PlayerTabList {
 
             for(ProxiedPlayer player : dnBungee.getProxy().getPlayers()){
                 player.setTabHeader(
-                        new TextComponent(convertToValidString(sbH.substring(0, sbH.toString().length()-1), player)),
-                        new TextComponent(convertToValidString(sbF.substring(0, sbF.toString().length()-1), player))
+                        new TextComponent(stringFormat(sbH.substring(0, sbH.toString().length()-1), player)),
+                        new TextComponent(stringFormat(sbF.substring(0, sbF.toString().length()-1), player))
                 );
             }
             hIterationLeft--;
@@ -83,10 +83,10 @@ public class PlayerTabList {
         }, 0L, tabList.getDelay()/20, TimeUnit.SECONDS);
     }
 
-    private String convertToValidString(String s, ProxiedPlayer player){
+    private String stringFormat(String s, ProxiedPlayer player){
         return s.replace("&", "§")
                 .replace("%online%", String.valueOf(dnBungee.getProxy().getPlayers().size()))
-                .replace("%max%", String.valueOf(dnBungee.getYamlManager().getNetwork().getSlots()))
+                .replace("%max%", String.valueOf(dnBungee.getConfiguration().getSlots()))
                 .replace("%ping%", String.valueOf(player.getPing()));
     }
 

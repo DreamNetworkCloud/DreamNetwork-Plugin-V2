@@ -25,8 +25,8 @@ public class Slot extends Command {
             return;
         }
 
-        dnBungee.yamlManager.getNetwork().setSlots(i);
-        dnBungee.yamlManager.saveNetwork();
+        dnBungee.getConfiguration().setSlots(i);
+        dnBungee.saveConfig();
 
         sender.sendMessage(new TextComponent("§aVous venez de changer le nombre de slot à "+ i));
     }

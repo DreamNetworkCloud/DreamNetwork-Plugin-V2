@@ -3,11 +3,18 @@ package be.alexandre01.dnplugin.plugins.velocity.listeners;
 
 import be.alexandre01.dnplugin.plugins.velocity.DNVelocity;
 import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityAPI;
+import be.alexandre01.dnplugin.utils.files.network.NetworkYAML;
 import com.velocitypowered.api.event.ResultedEvent;
 import com.velocitypowered.api.event.Subscribe;
+import com.velocitypowered.api.event.connection.PostLoginEvent;
+import com.velocitypowered.api.event.player.ServerConnectedEvent;
+import com.velocitypowered.api.proxy.Player;
+import com.velocitypowered.api.proxy.server.RegisteredServer;
+import net.kyori.adventure.text.Component;
 
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -15,18 +22,72 @@ public class RedirectConnection  {
     public boolean connexionOnLobby = true;
     private final Set<UUID> pending = new HashSet<>();
     private final DNVelocity dnVelocity;
-    private final DNVelocityAPI dnBungeeAPI;
+    private final DNVelocityAPI dnVelocityAPI;
     private final int max;
 
     public RedirectConnection(){
         dnVelocity = DNVelocity.getInstance();
-        dnBungeeAPI = (DNVelocityAPI) DNVelocityAPI.getInstance();
+        dnVelocityAPI = (DNVelocityAPI) DNVelocityAPI.getInstance();
         max = dnVelocity.getConfiguration().getMaxPlayerPerLobby();
     }
 
     @Subscribe
     public void onPJoin(com.velocitypowered.api.event.connection.LoginEvent e){
         e.setResult(ResultedEvent.ComponentResult.allowed());
+    }
+
+    @Subscribe
+    public void onJoin(ServerConnectedEvent event){
+        Player player = event.getPlayer();
+        RegisteredServer server = event.getServer();
+        Optional<RegisteredServer> pastServer = event.getPreviousServer();
+
+        NetworkYAML config = dnVelocity.getConfiguration();
+
+        if(config.getSlots() != -2){
+            if(dnVelocity.getServer().getPlayerCount()-1 >= config.getSlots()){
+                if(!player.hasPermission("network.slot.bypass")){
+                    if(config.isMaintenance() && !config.getMaintenanceAllowedPlayers().contains(player.getGameProfile().getName().toLowerCase())){
+                        player.disconnect(
+                                Component.text(dnVelocity.getMessage("connect.maintenance.header", player) + "\n")
+                                        .append(Component.text(dnVelocity.getMessage("connect.maintenance.text-1", player) + "\n"))
+                                        .append(Component.text("\n\n" + dnVelocity.getMessage("connect.maintenance.text-2", player) + "\n"))
+                                        .append(Component.text(dnVelocity.getMessage("connect.maintenance.footer", player) + "\n"))
+                                        .append(Component.text(dnVelocity.getMessage("general.ip", player)))
+                        );
+                        return;
+                    }
+                    player.disconnect(
+                            Component.text(dnVelocity.getMessage("connect.slot-full.header", player) + "\n")
+                                    .append(Component.text(dnVelocity.getMessage("connect.slot-full.text-1", player) + "\n"))
+                                    .append(Component.text("\n\n" + dnVelocity.getMessage("connect.slot-full.text-2", player) + "\n"))
+                                    .append(Component.text(dnVelocity.getMessage("connect.slot-full.footer", player) + "\n"))
+                                    .append(Component.text(dnVelocity.getMessage("connect.slot-full.footer", player) + "\n"))
+                                    .append(Component.text(dnVelocity.getMessage("general.ip", player)))
+                    );
+                    return;
+                }
+            }
+
+            if(config.isMaintenance()){
+                if(!config.getMaintenanceAllowedPlayers().contains(player.getGameProfile().getName().toLowerCase()) && !player.hasPermission("network.maintenance.bypass")){
+                    player.disconnect(
+                            Component.text(dnVelocity.getMessage("connect.maintenance.header",player) + "\n")
+                                    .append(Component.text(dnVelocity.getMessage("connect.maintenance.text-1",player) + "\n"))
+                                    .append(Component.text("\n\n"+ dnVelocity.getMessage("connect.maintenance.text-2",player) + "\n"))
+                                    .append(Component.text(dnVelocity.getMessage("connect.maintenance.footer",player) + "\n"))
+                                    .append(Component.text(dnVelocity.getMessage("general.ip",player))));
+                }
+            }
+        }
+    }
+
+    @Subscribe
+    public void onPlayerConnect(PostLoginEvent event){
+        if(dnVelocity.getConfiguration().isConnexionOnLobby()){
+            dnVelocity.getLogger().info("[DNBungee] Redirecting player to lobby server");
+            pending.add(event.getPlayer().getGameProfile().getId());
+        }
     }
 
  /*   @EventHandler

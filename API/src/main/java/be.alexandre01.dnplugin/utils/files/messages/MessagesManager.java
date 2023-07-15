@@ -24,7 +24,8 @@ public class MessagesManager {
         String[] p = path.split("\\.");
         LinkedHashMap<String, Object> m = messages;
         for(int i = 0 ; i != p.length ; i++){
-            m = (LinkedHashMap<String, Object>) m.get(p[i]);
+            if(m == null){return null;}
+            m = (LinkedHashMap<String, Object>) m.getOrDefault(p[i], null);
         }
         List<String> paths = new ArrayList<>();
         m.keySet().forEach(k -> {

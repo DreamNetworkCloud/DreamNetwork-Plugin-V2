@@ -62,7 +62,7 @@ public class DNBungee extends Plugin {
 
     public TablistCustomizer tablistCustomizer;
     @Getter private final PlayerManagement playerManagement = new PlayerManagement();
-    private BungeeText bungeeText;
+    //private BungeeText bungeeText;
 
     @Override
     public void onEnable(){
@@ -248,16 +248,17 @@ public class DNBungee extends Plugin {
         if(msg == null){
             return "";
         }
-        msg = msg
-                .replace("%player%", player.getName())
+        msg = msg.replace("%player%", player.getName())
                 .replace("%ping%", String.valueOf(player.getPing()))
                 .replace("%max%", String.valueOf(getConfiguration().getSlots()))
                 .replace("%online%", String.valueOf(getProxy().getPlayers().size()));
         List<String> generals = messagesManager.getPaths("general");
 
-        for(String p : generals){
-            String[] cut = p.split("\\.");
-            msg = msg.replace("%" + cut[cut.length-1] + "%", messagesManager.getString(p));
+        if(generals != null) {
+            for (String p : generals) {
+                String[] cut = p.split("\\.");
+                msg = msg.replace("%" + cut[cut.length - 1] + "%", messagesManager.getString(p));
+            }
         }
 
        return msg.replace("&", "§");

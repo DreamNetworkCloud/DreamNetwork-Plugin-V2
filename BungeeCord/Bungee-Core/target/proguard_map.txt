@@ -16,14 +16,13 @@ be.alexandre01.dnplugin.plugins.bungeecord.DNBungee -> be.alexandre01.dnplugin.p
     boolean cancelKick -> f
     be.alexandre01.dnplugin.plugins.bungeecord.components.TablistCustomizer tablistCustomizer -> g
     be.alexandre01.dnplugin.plugins.bungeecord.objects.PlayerManagement playerManagement -> q
-    be.alexandre01.dnplugin.plugins.bungeecord.utils.BungeeText bungeeText -> r
     36:64:void <init>() -> <init>
     69:204:void onEnable() -> onEnable
     208:209:void onDisable() -> onDisable
     212:234:void loadConfig() -> loadConfig
     242:243:void saveConfig() -> saveConfig
-    247:263:java.lang.String getMessage(java.lang.String,net.md_5.bungee.api.connection.ProxiedPlayer) -> getMessage
-    268:274:java.lang.String completeMessagePart(java.lang.String,net.md_5.bungee.api.connection.ProxiedPlayer) -> completeMessagePart
+    247:264:java.lang.String getMessage(java.lang.String,net.md_5.bungee.api.connection.ProxiedPlayer) -> getMessage
+    269:275:java.lang.String completeMessagePart(java.lang.String,net.md_5.bungee.api.connection.ProxiedPlayer) -> completeMessagePart
     39:39:be.alexandre01.dnplugin.api.connection.IClientHandler getClientHandler() -> getClientHandler
     40:40:be.alexandre01.dnplugin.api.request.channels.DNChannelManager getDnChannelManager() -> getDnChannelManager
     41:41:be.alexandre01.dnplugin.api.connection.IBasicClient getBasicClient() -> getBasicClient
@@ -38,7 +37,6 @@ be.alexandre01.dnplugin.plugins.bungeecord.DNBungee -> be.alexandre01.dnplugin.p
     51:51:be.alexandre01.dnplugin.plugins.bungeecord.PlayerTabList getPlayerTabList() -> getPlayerTabList
     54:54:boolean isCancelKick() -> isCancelKick
     63:63:be.alexandre01.dnplugin.plugins.bungeecord.components.TablistCustomizer getTablistCustomizer() -> getTablistCustomizer
-    65:65:be.alexandre01.dnplugin.plugins.bungeecord.utils.BungeeText getBungeeText() -> getBungeeText
     35:35:void setClientHandler(be.alexandre01.dnplugin.api.connection.IClientHandler) -> setClientHandler
     35:35:void setDnChannelManager(be.alexandre01.dnplugin.api.request.channels.DNChannelManager) -> setDnChannelManager
     35:35:void setBasicClient(be.alexandre01.dnplugin.api.connection.IBasicClient) -> setBasicClient
@@ -53,7 +51,6 @@ be.alexandre01.dnplugin.plugins.bungeecord.DNBungee -> be.alexandre01.dnplugin.p
     35:35:void setPlayerTabList(be.alexandre01.dnplugin.plugins.bungeecord.PlayerTabList) -> setPlayerTabList
     35:35:void setCancelKick(boolean) -> setCancelKick
     35:35:void setTablistCustomizer(be.alexandre01.dnplugin.plugins.bungeecord.components.TablistCustomizer) -> setTablistCustomizer
-    35:35:void setBungeeText(be.alexandre01.dnplugin.plugins.bungeecord.utils.BungeeText) -> setBungeeText
     37:37:be.alexandre01.dnplugin.plugins.bungeecord.DNBungee getInstance() -> getInstance
     38:38:be.alexandre01.dnplugin.plugins.bungeecord.ImplAPI getApi() -> getApi
     64:64:be.alexandre01.dnplugin.plugins.bungeecord.objects.PlayerManagement getPlayerManagement() -> getPlayerManagement
@@ -93,7 +90,7 @@ be.alexandre01.dnplugin.plugins.bungeecord.PlayerTabList -> be.alexandre01.dnplu
     int fNumber -> h
     13:17:void <init>() -> <init>
     27:84:void start() -> a
-    87:90:java.lang.String convertToValidString(java.lang.String,net.md_5.bungee.api.connection.ProxiedPlayer) -> a
+    87:90:java.lang.String stringFormat(java.lang.String,net.md_5.bungee.api.connection.ProxiedPlayer) -> a
     94:98:void stop() -> b
     101:103:void restart() -> c
     38:83:void lambda$start$2(be.alexandre01.dnplugin.utils.files.tablist.TabListYAML,be.alexandre01.dnplugin.utils.files.tablist.TabList,be.alexandre01.dnplugin.utils.files.tablist.TabList) -> a

@@ -6,29 +6,34 @@ import be.alexandre01.dnplugin.api.request.RequestFile;
 import be.alexandre01.dnplugin.api.request.RequestManager;
 import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
 import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityAPI;
-import be.alexandre01.dnplugin.plugins.velocity.listeners.PlayerListener;
-import be.alexandre01.dnplugin.plugins.velocity.listeners.ServerPingListener;
+import be.alexandre01.dnplugin.plugins.velocity.components.commands.Maintenance;
+import be.alexandre01.dnplugin.plugins.velocity.components.commands.Slot;
+import be.alexandre01.dnplugin.plugins.velocity.listeners.PlayerServerListener;
+import be.alexandre01.dnplugin.plugins.velocity.components.listeners.ServerPingListener;
+import be.alexandre01.dnplugin.plugins.velocity.objects.PlayerManagement;
 import be.alexandre01.dnplugin.utils.files.YAMLManager;
-import be.alexandre01.dnplugin.utils.files.motd.MOTDYAML;
+import be.alexandre01.dnplugin.utils.files.messages.MessagesManager;
 import be.alexandre01.dnplugin.utils.files.network.NetworkYAML;
 import com.google.inject.Inject;
+import com.velocitypowered.api.command.CommandManager;
+import com.velocitypowered.api.command.CommandMeta;
+import com.velocitypowered.api.event.EventManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
+import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.velocitypowered.api.proxy.server.ServerInfo;
 import lombok.Getter;
 import lombok.Setter;
 import org.bstats.velocity.Metrics;
 
 import java.io.File;
-import java.io.InputStream;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Getter @Setter @Plugin(id = "dreamnetwork-plugin", name = "DreamNetwork Plugin for Velocity", version = "1.0.0-SNAPSHOT",
@@ -47,6 +52,8 @@ public class DNVelocity {
     public File file;
     @Getter private YAMLManager yamlManager;
     @Getter private NetworkYAML configuration;
+    @Getter private MessagesManager messagesManager;
+    @Getter private PlayerTabList playerTabList;
    // public Configuration configuration;
     /*public int slot = -2;
     public boolean isMaintenance;
@@ -63,6 +70,7 @@ public class DNVelocity {
     @Getter private final Logger logger;
     private final Metrics.Factory metricsFactory;
     //public TablistCustomizer tablistCustomizer;
+    @Getter private final PlayerManagement playerManagement = new PlayerManagement();
     //@Getter private final PlayerManagement playerManagement = new PlayerManagement();
   //  private BungeeText bungeeText;
     @Inject
@@ -125,12 +133,25 @@ public class DNVelocity {
     public void onProxyInitialization(ProxyInitializeEvent event) {
         // Do some operation demanding access to the Velocity API here.
         // For instance, we could register an event:
+
+        // JAMAIS PRESENT
         server.getServer("core").ifPresent(serverInfo -> {
             coreTemp = serverInfo.getServerInfo();
         });
 
-        getServer().getEventManager().register(this, new PlayerListener());
-        getServer().getEventManager().register(this,new ServerPingListener());
+        playerTabList = new PlayerTabList(server);
+        playerTabList.start();
+
+        EventManager eventManager = getServer().getEventManager();
+        CommandManager commandManager = getServer().getCommandManager();
+
+        eventManager.register(this, new PlayerServerListener());
+        eventManager.register(this,new ServerPingListener());
+
+        CommandMeta slotCommandMeta = commandManager.metaBuilder("slot").aliases("slots").plugin(this).build();
+        commandManager.register(slotCommandMeta, new Slot());
+        CommandMeta maintenanceCommandMeta = commandManager.metaBuilder("maintenance").plugin(this).build();
+        commandManager.register(maintenanceCommandMeta, new Maintenance());
     }
     @Subscribe
     public void onProxyShutDown(ProxyShutdownEvent event) {
@@ -146,10 +167,34 @@ public class DNVelocity {
         }
         yamlManager = new YAMLManager(String.valueOf(dataDirectory), "PROXY");
         configuration = yamlManager.getNetwork();
+        messagesManager = yamlManager.getMessagesManager();
     }
 
-    public void saveConfiguration(){
+    public void saveConfig(){
         yamlManager.saveNetwork();
+    }
+
+    public String getMessage(String path, Player player){
+        String msg = messagesManager.getString(path);
+        if(msg == null){
+            return "";
+        }
+
+        msg = msg.replace("%player%", player.getGameProfile().getName())
+                .replace("%ping%", String.valueOf(player.getPing()))
+                .replace("%max%", String.valueOf(getConfiguration().getSlots()))
+                .replace("%online%", String.valueOf(getServer().getPlayerCount()));
+
+        List<String> generals = messagesManager.getPaths("general");
+
+        if(generals != null){
+            for(String p : generals){
+                String[] cut = p.split("\\.");
+                msg = msg.replace("%" + cut[cut.length - 1] + "%", messagesManager.getString(p));
+            }
+        }
+
+        return msg.replace("&", "§");
     }
 
   /*  public void loadConfig(){
