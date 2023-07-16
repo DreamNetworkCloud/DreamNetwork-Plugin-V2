@@ -8,6 +8,7 @@ import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
 import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityAPI;
 import be.alexandre01.dnplugin.plugins.velocity.components.commands.Maintenance;
 import be.alexandre01.dnplugin.plugins.velocity.components.commands.Slot;
+import be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList;
 import be.alexandre01.dnplugin.plugins.velocity.listeners.PlayerServerListener;
 import be.alexandre01.dnplugin.plugins.velocity.components.listeners.ServerPingListener;
 import be.alexandre01.dnplugin.plugins.velocity.objects.PlayerManagement;
@@ -152,6 +153,8 @@ public class DNVelocity {
         commandManager.register(slotCommandMeta, new Slot());
         CommandMeta maintenanceCommandMeta = commandManager.metaBuilder("maintenance").plugin(this).build();
         commandManager.register(maintenanceCommandMeta, new Maintenance());
+        CommandMeta tablistCommandMeta = commandManager.metaBuilder("tablist").plugin(this).build();
+        commandManager.register(tablistCommandMeta, new TabList());
     }
     @Subscribe
     public void onProxyShutDown(ProxyShutdownEvent event) {
