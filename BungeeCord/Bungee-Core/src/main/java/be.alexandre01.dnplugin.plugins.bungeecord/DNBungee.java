@@ -14,7 +14,6 @@ import be.alexandre01.dnplugin.plugins.bungeecord.listeners.PlayerServerListener
 import be.alexandre01.dnplugin.plugins.bungeecord.listeners.RedirectConnection;
 import be.alexandre01.dnplugin.plugins.bungeecord.components.listeners.ServerPingListener;
 import be.alexandre01.dnplugin.plugins.bungeecord.objects.PlayerManagement;
-import be.alexandre01.dnplugin.plugins.bungeecord.utils.BungeeText;
 import be.alexandre01.dnplugin.utils.ASCII;
 import be.alexandre01.dnplugin.utils.Config;
 import be.alexandre01.dnplugin.utils.files.YAMLManager;
@@ -29,7 +28,6 @@ import net.md_5.bungee.api.plugin.Plugin;
 import org.bstats.bungeecord.Metrics;
 
 import java.io.File;
-import java.util.Date;
 import java.util.List;
 
 @Getter @Setter
@@ -232,6 +230,12 @@ public class DNBungee extends Plugin {
         }*/
 
         yamlManager = new YAMLManager(getProxy().getPluginsFolder().getPath() + "/DreamNetwork", "PROXY");
+
+        //Test t = new Test("bonjour.yml");
+        //t.setBonjour("Coucou");
+        //t.loading();
+        //t.save();
+
         configuration = yamlManager.getNetwork();
         messagesManager = yamlManager.getMessagesManager();
     }

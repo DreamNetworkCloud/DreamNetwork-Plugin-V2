@@ -3,6 +3,8 @@ be\alexandre01\dnplugin\utils\Config$1.class
 be\alexandre01\dnplugin\api\request\channels\DNChannelInterceptor.class
 be\alexandre01\dnplugin\api\request\RequestBuilder.class
 be\alexandre01\dnplugin\utils\files\messages\MessagesManager.class
+be\alexandre01\dnplugin\utils\files\yaml\tablist\TabListYAML.class
+be\alexandre01\dnplugin\utils\files\yaml\YamlFileUtils.class
 be\alexandre01\dnplugin\api\request\channels\RegisterListener.class
 be\alexandre01\dnplugin\api\request\CustomRequestInfo.class
 be\alexandre01\dnplugin\api\request\channels\AskedData$1.class
@@ -15,6 +17,7 @@ be\alexandre01\dnplugin\utils\ASCII.class
 be\alexandre01\dnplugin\api\universal\player\server\DNServerPlayer.class
 be\alexandre01\dnplugin\api\universal\player\UniversalPlayer.class
 be\alexandre01\dnplugin\api\request\communication\ResponseManager.class
+be\alexandre01\dnplugin\utils\files\tablist\Test.class
 be\alexandre01\dnplugin\utils\files\tablist\TabListYAML.class
 be\alexandre01\dnplugin\utils\messages\Message$MapDeserializerDoubleAsIntFix.class
 be\alexandre01\dnplugin\utils\Config.class
@@ -30,6 +33,7 @@ be\alexandre01\dnplugin\api\request\channels\GetDataThread.class
 be\alexandre01\dnplugin\api\universal\player\UniversalPlayer$PlayerJoinListener.class
 be\alexandre01\dnplugin\api\request\communication\ClientResponse.class
 be\alexandre01\dnplugin\utils\files\SearchText.class
+be\alexandre01\dnplugin\utils\files\yaml\Ignore.class
 be\alexandre01\dnplugin\api\request\RequestBuilder$RequestData.class
 be\alexandre01\dnplugin\api\objects\player\DNPlayer.class
 be\alexandre01\dnplugin\api\objects\player\DNPlayerManager.class
@@ -43,6 +47,7 @@ be\alexandre01\dnplugin\utils\Config$1$1.class
 be\alexandre01\dnplugin\utils\messages\Message$1.class
 be\alexandre01\dnplugin\utils\files\YAMLManager.class
 be\alexandre01\dnplugin\api\request\channels\DNChannel.class
+be\alexandre01\dnplugin\utils\files\yaml\CustomRepresenter.class
 be\alexandre01\dnplugin\api\request\RequestManager.class
 be\alexandre01\dnplugin\api\request\channels\DataListener.class
 be\alexandre01\dnplugin\api\request\RequestInfo.class
