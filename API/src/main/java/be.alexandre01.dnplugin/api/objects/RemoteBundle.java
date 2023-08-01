@@ -4,6 +4,8 @@ import lombok.Getter;
 
 import java.util.HashMap;
 
+
+@Getter
 public class RemoteBundle {
 
     @Getter private final HashMap<String,RemoteService> remoteServices = new HashMap<>();

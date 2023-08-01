@@ -2,15 +2,18 @@ package be.alexandre01.dnplugin.plugins.spigot;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
+import be.alexandre01.dnplugin.api.objects.player.DNPlayer;
 import be.alexandre01.dnplugin.api.objects.player.DNPlayerManager;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import be.alexandre01.dnplugin.api.request.RequestManager;
 import be.alexandre01.dnplugin.api.request.RequestType;
 import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
+import be.alexandre01.dnplugin.api.universal.player.UniversalPlayer;
 import be.alexandre01.dnplugin.plugins.spigot.api.DNSpigotAPI;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.server.ServerAttachedEvent;
 import be.alexandre01.dnplugin.plugins.spigot.communication.SpigotRequestResponse;
 import be.alexandre01.dnplugin.plugins.spigot.communication.generated.SpigotGeneratedRequest;
+import be.alexandre01.dnplugin.plugins.spigot.communication.objects.SpigotPlayer;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import lombok.Getter;
@@ -48,6 +51,14 @@ public class ImplAPI extends NetworkBaseAPI implements DNSpigotAPI {
     @Override
     public String getProcessName() {
         return processName;
+    }
+
+    @Override
+    public SpigotPlayer getUniversalPlayer(String name) {
+        if(dnPlayerManager.getDnPlayersByName().containsKey(name)){
+            return (SpigotPlayer) dnPlayerManager.getDnPlayersByName().get(name).getUniversalPlayer();
+        }
+        return null;
     }
 
     @Override

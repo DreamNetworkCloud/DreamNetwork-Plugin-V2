@@ -4,12 +4,14 @@ import be.alexandre01.dnplugin.api.connection.IBasicClient;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
 import be.alexandre01.dnplugin.api.objects.RemoteBundle;
 import be.alexandre01.dnplugin.api.objects.RemoteService;
+import be.alexandre01.dnplugin.api.objects.player.DNPlayer;
 import be.alexandre01.dnplugin.api.request.CustomRequestInfo;
 import be.alexandre01.dnplugin.api.request.RequestManager;
 import be.alexandre01.dnplugin.api.request.RequestType;
 import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
 import be.alexandre01.dnplugin.api.request.communication.ResponseManager;
 import be.alexandre01.dnplugin.api.request.exception.IDNotFoundException;
+import be.alexandre01.dnplugin.api.universal.player.UniversalPlayer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -67,6 +69,7 @@ public abstract class NetworkBaseAPI {
 
     public abstract String getProcessName();
 
+    public abstract UniversalPlayer getUniversalPlayer(String name);
     public abstract void setProcessName(String processName);
 
 
@@ -132,6 +135,24 @@ public abstract class NetworkBaseAPI {
         throw new RuntimeException("Class be.alexandre01.dnplugin.connection.client.BasicClient not found or castable");
     }
 
+    public boolean isSpigot(){
+        if(getInfo().startsWith("SPIGOT")){
+            return true;
+        }
+        return false;
+    }
 
+    public boolean isBungee(){
+        if(getInfo().startsWith("BUNGEE")){
+            return true;
+        }
+        return false;
+    }
 
+    public boolean isVelocity(){
+        if(getInfo().startsWith("VELOCITY")){
+            return true;
+        }
+        return false;
+    }
 }

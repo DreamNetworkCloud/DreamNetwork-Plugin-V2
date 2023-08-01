@@ -3,6 +3,8 @@ package be.alexandre01.dnplugin.api.objects.server;
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.objects.RemoteService;
 import be.alexandre01.dnplugin.api.objects.player.DNPlayer;
+import be.alexandre01.dnplugin.api.request.RequestInfo;
+import be.alexandre01.dnplugin.api.request.RequestPacket;
 import be.alexandre01.dnplugin.api.request.RequestType;
 import be.alexandre01.dnplugin.utils.messages.Message;
 import lombok.Getter;
@@ -30,6 +32,10 @@ public class DNServer {
 
     public void sendMessage(Message message){
         networkBaseAPI.getRequestManager().sendRequest(RequestType.CORE_RETRANSMISSION,message,name+"-"+id);
+    }
+    public void sendRequest(RequestInfo requestInfo, Object... object){
+        RequestPacket requestPacket = networkBaseAPI.getRequestManager().getRequestPacket(requestInfo, new Message(), null, object);
+        sendMessage(requestPacket.getMessage());
     }
     public void stop(){
         networkBaseAPI.getRequestManager().sendRequest(RequestType.CORE_STOP_SERVER,name+"-"+id);

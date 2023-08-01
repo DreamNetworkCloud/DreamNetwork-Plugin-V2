@@ -85,7 +85,8 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter implements 
         try {
             Message message = Message.createFromJsonString(s_to_decode);
             if(!responses.isEmpty()){
-                for(ClientResponse iBasicClientResponse : responses){
+                for(int i = 0; i < responses.size(); i++){
+                    ClientResponse iBasicClientResponse = responses.get(i);
                     try {
                         iBasicClientResponse.onAutoResponse(message,ctx);
                     } catch (Exception e) {

@@ -8,9 +8,11 @@ import be.alexandre01.dnplugin.utils.files.tablist.LineState;
 import be.alexandre01.dnplugin.utils.files.tablist.TabList;
 import be.alexandre01.dnplugin.utils.files.tablist.TabListYAML;
 import lombok.Getter;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,15 +52,14 @@ public class YAMLManager {
             assert network != null;
             this.network = new NetworkYAML(
                     (String) network.getOrDefault("lobby", "main/lobby"),
-                    (boolean) network.getOrDefault("connexionOnLobby", true),
+                    (boolean) network.getOrDefault("connexionOnLobby", false),
                     (int) network.getOrDefault("maxPlayerPerLobby", 15),
                     (boolean) network.getOrDefault("maintenance", false),
                     (boolean) network.getOrDefault("enableRedirectionKick", true),
                     (String) network.getOrDefault("redirectionKickServer", "lobby"),
                     (boolean) network.getOrDefault("statusLogo", false),
                     (List<String>) network.getOrDefault("maintenanceAllowedPlayers", new ArrayList<String>()),
-                    (boolean) network.getOrDefault("autoSendPlayers", false),
-                    (boolean) network.getOrDefault("autoSendSlots", false),
+                    (boolean) network.getOrDefault("autoSendPlayers", true),
                     (int) network.getOrDefault("slots", 50)
             );
             saveNetwork();
@@ -79,7 +80,6 @@ public class YAMLManager {
         network.put("statusLogo", this.network.isStatusLogo());
         network.put("maintenanceAllowedPlayers", this.network.getMaintenanceAllowedPlayers());
         network.put("autoSendPlayers", this.network.isAutoSendPlayers());
-        network.put("autoSendSlots", this.network.isAutoSendSlots());
         network.put("slots", this.network.getSlots());
 
         try {
@@ -99,8 +99,8 @@ public class YAMLManager {
         try {
             LinkedHashMap<String, Object> motd = read(f);
             List<String> defaultC = new ArrayList<>();
-            defaultC.add("              §e§l✯ §9§lDreamNetwork §e§l✯ §f§n§l");
-            defaultC.add("     §e▅▆▇ §6§lBest Network System ▇▆▅");
+            defaultC.add("              &e&l✯ &9&lDreamNetwork &e&l✯ &f&r&n");
+            defaultC.add("     &e▅▆▇ &6&lBest Network System ▇▆▅");
             List<String> hm = (List<String>) motd.getOrDefault("content", defaultC);
 
             List<String> content = new ArrayList<>(hm);
@@ -153,7 +153,7 @@ public class YAMLManager {
         File f = new File(pluginFolder + "/tablist.yml");
         if(!f.exists()){
             try {
-                f.createNewFile();
+               //f.createNewFile();
                 CopyFiles.copyRessource("proxy/tablist.yml", f);
             }catch (IOException e){
                 e.printStackTrace();
@@ -162,6 +162,7 @@ public class YAMLManager {
         }
         try {
             LinkedHashMap<String, Object> tabList = read(f);
+            System.out.println("Tablist => "+tabList);
             int ticks = (int) tabList.getOrDefault("delay", 1);
             TabList header = readAnimation(Animations.HEADER, tabList);
             TabList footer = readAnimation(Animations.FOOTER, tabList);
@@ -292,8 +293,9 @@ public class YAMLManager {
         if(file.length() == 0){
             return new LinkedHashMap<>();
         }
+        BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8);
 
-        return (LinkedHashMap<String, Object>) new Yaml().load(new FileInputStream(file));
+        return (LinkedHashMap<String, Object>) new Yaml().load(reader);
     }
 
     public static void saveYAML(String file, LinkedHashMap<String, Object> yamlContent) throws IOException {
@@ -303,10 +305,17 @@ public class YAMLManager {
         if(!file.exists()){
             file.createNewFile();
         }
-        BufferedWriter bw = Files.newBufferedWriter(file.toPath());
-        StringWriter sw = new StringWriter();
-        new Yaml().dump(yamlContent, sw);
-        bw.write(new Yaml().dump(yamlContent));
+        DumperOptions options = new DumperOptions();
+        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+        //options.setWidth(99999999);
+        options.setAllowUnicode(true);
+     //   BufferedWriter writer = new BufferedWriter(utf8Writer);
+         BufferedWriter bw = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8);
+     //   StringWriter sw = new StringWriter();
+        // force utf-8 in yaml
+       // new Yaml().dump(yamlContent, sw);
+        System.out.println(yamlContent);
+        bw.write(new Yaml(options).dump(yamlContent));
         bw.flush();
         bw.close();
     }

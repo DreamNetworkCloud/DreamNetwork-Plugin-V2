@@ -70,6 +70,8 @@ public abstract class RequestType {
     public final static RequestInfo PROXY_WARNING_MESSAGE = new RequestInfo(69,"PROXY_WARNING_MESSAGE");
     public final static RequestInfo PROXY_ERROR_MESSAGE = new RequestInfo(70,"PROXY_ERROR_MESSAGE");
 
+    public static final RequestInfo PROXY_PLAYER_INSTRUCTION = new RequestInfo(71,"PROXY_PLAYER_INSTRUCTION");
+
     /*
     DEV TOOLS REQUESTS (SCREEN VIEWER)
      */
@@ -79,7 +81,6 @@ public abstract class RequestType {
     public final static RequestInfo DEV_TOOLS_SEND_COMMAND = new RequestInfo(94,"DEV_TOOLS_SEND_COMMAND");
     public final static RequestInfo DEV_TOOLS_NEW_SERVERS = new RequestInfo(95,"DEV_TOOLS_NEW_SERVERS");
     public final static RequestInfo DEV_TOOLS_REMOVE_SERVERS = new RequestInfo(96,"DEV_TOOLS_REMOVE_SERVERS");
-
 
 
 

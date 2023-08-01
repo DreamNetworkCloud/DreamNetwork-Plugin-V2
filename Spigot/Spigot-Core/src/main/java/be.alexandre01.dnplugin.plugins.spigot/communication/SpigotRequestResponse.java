@@ -13,6 +13,7 @@ import be.alexandre01.dnplugin.plugins.spigot.DNSpigot;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.player.NetworkDisconnectEvent;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.player.NetworkJoinEvent;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.player.NetworkSwitchServerEvent;
+import be.alexandre01.dnplugin.plugins.spigot.communication.objects.SpigotPlayer;
 import be.alexandre01.dnplugin.utils.Mods;
 import com.google.gson.internal.LinkedTreeMap;
 import org.bukkit.Bukkit;
@@ -95,7 +96,6 @@ public class SpigotRequestResponse extends ClientResponse {
         });
 
         addRequestInterceptor(RequestType.SERVER_REMOVE_SERVERS,(message, ctx) -> {
-            System.out.println("Removing servers");
             System.out.println(message.toString());
             List<String> rServers = (List<String>) message.getList("SERVERS");
             if(rServers.size() > 0){
@@ -107,7 +107,6 @@ public class SpigotRequestResponse extends ClientResponse {
                 }
             }
             //networkBaseAPI.getServers().removeAll(rServers);
-            System.out.println("Remove servers : "+ rServers);
         });
 
         addRequestInterceptor(RequestType.SERVER_UPDATE_PLAYERS,(message, ctx) ->  {
@@ -125,7 +124,7 @@ public class SpigotRequestResponse extends ClientResponse {
 
                 for (int i = 0; i < split.length; i++) {
                     System.out.println(split[i]);
-                    if(i== 0) {
+                    if(i == 0) {
                         id = Integer.parseInt(split[i]);
                         if (dnPlayerManager.getDnPlayers().containsKey(id)) {
                             dnPlayer = dnPlayerManager.getDnPlayers().get(id);
@@ -136,17 +135,21 @@ public class SpigotRequestResponse extends ClientResponse {
                         String serverName = server[0];
                         int serverId = Integer.parseInt(server[1]);
                         if (!remoteServices.containsKey(serverName)) {
+                            System.out.println("Remote service doesn't exist");
                             continue;
                         }
                         service = remoteServices.get(serverName);
                         if (service.getServers().containsKey(serverId)) {
+                           // System.out.println("Retreaving server");
                             dnServer = service.getServers().get(serverId);
                         } else {
+                           // System.out.println("Creating server");
                             dnServer = new DNServer(serverName, serverId, service);
                             service.getServers().put(serverId, dnServer);
                         }
                     }
                     if(i == 2) {
+                       // System.out.println("Player name : "+split[i]);
                         playerName = split[i];
                     }
                     if(i == 3) {
@@ -155,13 +158,12 @@ public class SpigotRequestResponse extends ClientResponse {
                 }
 
                 if(dnPlayer == null){
+                  //  System.out.println(playerName + " and "+ dnServer);
                     if(playerName == null || dnServer == null)
                         return;
 
-
-                    dnPlayer = new DNPlayer(playerName,uuid,dnServer,id);
-                    dnServer.getPlayers().add(dnPlayer);
-                    dnPlayerManager.getDnPlayers().put(id, dnPlayer);
+                    dnPlayer = new DNPlayer(playerName, uuid, dnServer, id,new SpigotPlayer());
+                    dnPlayerManager.addPlayer(dnPlayer);
 
                     NetworkJoinEvent event = new NetworkJoinEvent(dnPlayer.getServer(),dnPlayer);
                     Bukkit.getScheduler().scheduleSyncDelayedTask(DNSpigot.getInstance(), () -> {
@@ -169,10 +171,9 @@ public class SpigotRequestResponse extends ClientResponse {
                     });
                 }else {
                     if(dnServer != null){
-                        System.out.println("Change Server Ouwa "+ dnServer.getName()+" to "+ dnPlayer.getServer().getName());
-                        dnPlayer.getServer().getRemoteService().getPlayers().remove(dnPlayer);
-                        dnPlayer.updateServer(dnServer);
-                        dnServer.getPlayers().add(dnPlayer);
+                        System.out.println("Change Server "+dnPlayer.getServer().getFullName()+ " to "+ dnServer.getFullName());
+                        dnPlayerManager.updatePlayer(dnPlayer,dnServer);
+
                         NetworkSwitchServerEvent event = new NetworkSwitchServerEvent(dnPlayer.getServer(),dnPlayer);
                         Bukkit.getScheduler().scheduleSyncDelayedTask(DNSpigot.getInstance(), () -> {
                             pluginManager.callEvent(event);
@@ -183,11 +184,11 @@ public class SpigotRequestResponse extends ClientResponse {
             }
         });
         addRequestInterceptor(RequestType.SERVER_UNREGISTER_PLAYERS,(message, ctx) -> {
+            System.out.println("Removing players");
             List<Integer> unPlayers =  (List<Integer>) message.getIntegersList("P");
             for(Integer id : unPlayers){
                 DNPlayer dnPlayer = dnPlayerManager.getDnPlayers().get(id);
-                dnPlayerManager.getDnPlayers().remove(id);
-                dnPlayer.getServer().getRemoteService().getPlayers().remove(dnPlayer);
+                dnPlayerManager.removePlayer(dnPlayer);
                 Bukkit.getScheduler().scheduleSyncDelayedTask(DNSpigot.getInstance(),()->{
                     NetworkDisconnectEvent event = new NetworkDisconnectEvent(dnPlayer.getServer(),dnPlayer);
                     pluginManager.callEvent(event);

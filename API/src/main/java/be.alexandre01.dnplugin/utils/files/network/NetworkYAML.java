@@ -19,6 +19,5 @@ public class NetworkYAML {
     private boolean statusLogo;
     private List<String> maintenanceAllowedPlayers;
     private boolean autoSendPlayers;
-    private boolean autoSendSlots;
     private int slots;
 }

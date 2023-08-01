@@ -6,10 +6,10 @@ tablist:
     default: #Lines you don't wan't make changes
       line-3: "&7Joueurs en ligne: %playercount%"
     "1":
-      line-1: "   &9▰▰▰▰▰▰▰▰▰▰▰ &b&lDreamNetwork &9▰▰▰▰▰▰▰▰▰▰▰"
+      line-1: " &9▰▰▰▰▰▰▰▰▰▰▰ &b&lDreamNetwork &9▰▰▰▰▰▰▰▰▰▰▰ "
       repeat: 5
     "2":
-      line-1: "   &3▰▰▰▰▰▰▰▰▰▰▰ &b&lDreamNetwork &3▰▰▰▰▰▰▰▰▰▰▰"
+      line-1: " &3▰▰▰▰▰▰▰▰▰▰▰ &b&lDreamNetwork &3▰▰▰▰▰▰▰▰▰▰▰ "
       repeat: 5
   footer-animation:
     override_lines: 7 #Number of lines you want (optional). It created blanks lines automatically.

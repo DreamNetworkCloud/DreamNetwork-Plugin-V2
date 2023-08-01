@@ -17,12 +17,12 @@ be.alexandre01.dnplugin.plugins.bungeecord.DNBungee -> be.alexandre01.dnplugin.p
     be.alexandre01.dnplugin.plugins.bungeecord.components.TablistCustomizer tablistCustomizer -> g
     be.alexandre01.dnplugin.plugins.bungeecord.objects.PlayerManagement playerManagement -> q
     36:64:void <init>() -> <init>
-    69:204:void onEnable() -> onEnable
-    208:209:void onDisable() -> onDisable
-    212:234:void loadConfig() -> loadConfig
-    242:243:void saveConfig() -> saveConfig
-    247:264:java.lang.String getMessage(java.lang.String,net.md_5.bungee.api.connection.ProxiedPlayer) -> getMessage
-    269:275:java.lang.String completeMessagePart(java.lang.String,net.md_5.bungee.api.connection.ProxiedPlayer) -> completeMessagePart
+    69:207:void onEnable() -> onEnable
+    211:212:void onDisable() -> onDisable
+    215:237:void loadConfig() -> loadConfig
+    245:246:void saveConfig() -> saveConfig
+    250:267:java.lang.String getMessage(java.lang.String,net.md_5.bungee.api.connection.ProxiedPlayer) -> getMessage
+    272:278:java.lang.String completeMessagePart(java.lang.String,net.md_5.bungee.api.connection.ProxiedPlayer) -> completeMessagePart
     39:39:be.alexandre01.dnplugin.api.connection.IClientHandler getClientHandler() -> getClientHandler
     40:40:be.alexandre01.dnplugin.api.request.channels.DNChannelManager getDnChannelManager() -> getDnChannelManager
     41:41:be.alexandre01.dnplugin.api.connection.IBasicClient getBasicClient() -> getBasicClient
@@ -61,24 +61,25 @@ be.alexandre01.dnplugin.plugins.bungeecord.ImplAPI -> be.alexandre01.dnplugin.pl
     java.lang.String serverName -> d
     int id -> e
     java.lang.String processName -> f
-    24:28:void <init>(be.alexandre01.dnplugin.plugins.bungeecord.DNBungee) -> <init>
-    31:31:be.alexandre01.dnplugin.api.connection.IClientHandler getClientHandler() -> getClientHandler
-    36:36:java.lang.String getInfo() -> getInfo
-    41:41:java.lang.String getProcessName() -> getProcessName
-    46:47:void setProcessName(java.lang.String) -> setProcessName
-    51:51:java.lang.String getServerName() -> getServerName
-    56:57:void setServerName(java.lang.String) -> setServerName
-    61:61:int getID() -> getID
-    66:67:void setID(int) -> setID
-    71:71:int getPort() -> getPort
-    76:76:java.util.logging.Logger getLogger() -> getLogger
-    81:81:be.alexandre01.dnplugin.api.request.RequestManager getRequestManager() -> getRequestManager
-    86:86:be.alexandre01.dnplugin.api.request.channels.DNChannelManager getChannelManager() -> getChannelManager
-    91:92:void setRequestManager(be.alexandre01.dnplugin.api.request.RequestManager) -> setRequestManager
-    96:96:void callServerAttachedEvent() -> callServerAttachedEvent
-    100:104:void setClientHandler(be.alexandre01.dnplugin.api.connection.IClientHandler) -> setClientHandler
-    108:109:void shutdownProcess() -> shutdownProcess
-    19:19:be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeServersManager getDnBungeeServersManager() -> getDnBungeeServersManager
+    25:29:void <init>(be.alexandre01.dnplugin.plugins.bungeecord.DNBungee) -> <init>
+    32:32:be.alexandre01.dnplugin.api.connection.IClientHandler getClientHandler() -> getClientHandler
+    37:37:java.lang.String getInfo() -> getInfo
+    42:42:java.lang.String getProcessName() -> getProcessName
+    47:47:be.alexandre01.dnplugin.api.universal.player.UniversalPlayer getUniversalPlayer(java.lang.String) -> getUniversalPlayer
+    52:53:void setProcessName(java.lang.String) -> setProcessName
+    57:57:java.lang.String getServerName() -> getServerName
+    62:63:void setServerName(java.lang.String) -> setServerName
+    67:67:int getID() -> getID
+    72:73:void setID(int) -> setID
+    77:77:int getPort() -> getPort
+    82:82:java.util.logging.Logger getLogger() -> getLogger
+    87:87:be.alexandre01.dnplugin.api.request.RequestManager getRequestManager() -> getRequestManager
+    92:92:be.alexandre01.dnplugin.api.request.channels.DNChannelManager getChannelManager() -> getChannelManager
+    97:98:void setRequestManager(be.alexandre01.dnplugin.api.request.RequestManager) -> setRequestManager
+    102:102:void callServerAttachedEvent() -> callServerAttachedEvent
+    106:110:void setClientHandler(be.alexandre01.dnplugin.api.connection.IClientHandler) -> setClientHandler
+    114:115:void shutdownProcess() -> shutdownProcess
+    20:20:be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeServersManager getDnBungeeServersManager() -> getDnBungeeServersManager
 be.alexandre01.dnplugin.plugins.bungeecord.PlayerTabList -> be.alexandre01.dnplugin.plugins.bungeecord.PlayerTabList:
     be.alexandre01.dnplugin.plugins.bungeecord.DNBungee dnBungee -> a
     boolean end -> b
@@ -94,8 +95,8 @@ be.alexandre01.dnplugin.plugins.bungeecord.PlayerTabList -> be.alexandre01.dnplu
     94:98:void stop() -> b
     101:103:void restart() -> c
     38:83:void lambda$start$2(be.alexandre01.dnplugin.utils.files.tablist.TabListYAML,be.alexandre01.dnplugin.utils.files.tablist.TabList,be.alexandre01.dnplugin.utils.files.tablist.TabList) -> a
-    72:73:void lambda$null$1(java.lang.StringBuilder,java.lang.Integer,java.lang.String) -> a
-    67:68:void lambda$null$0(java.lang.StringBuilder,java.lang.Integer,java.lang.String) -> b
+    72:73:void lambda$start$1(java.lang.StringBuilder,java.lang.Integer,java.lang.String) -> a
+    67:68:void lambda$start$0(java.lang.StringBuilder,java.lang.Integer,java.lang.String) -> b
 be.alexandre01.dnplugin.plugins.bungeecord.communication.BungeeRequestResponse -> be.alexandre01.dnplugin.plugins.bungeecord.communication.BungeeRequestResponse:
     be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeAPI dnBungeeAPI -> a
     16:56:void <init>() -> <init>
@@ -172,6 +173,7 @@ be.alexandre01.dnplugin.plugins.bungeecord.components.commands.Maintenance$SubCo
     19:19:be.alexandre01.dnplugin.plugins.bungeecord.components.commands.Maintenance$SubCommand[] values() -> values
     19:19:be.alexandre01.dnplugin.plugins.bungeecord.components.commands.Maintenance$SubCommand valueOf(java.lang.String) -> valueOf
     19:19:void <init>(java.lang.String,int) -> <init>
+    19:19:be.alexandre01.dnplugin.plugins.bungeecord.components.commands.Maintenance$SubCommand[] $values() -> a
     19:20:void <clinit>() -> <clinit>
 be.alexandre01.dnplugin.plugins.bungeecord.components.commands.Slot -> be.alexandre01.dnplugin.plugins.bungeecord.components.commands.Slot:
     10:11:void <init>(java.lang.String) -> <init>
@@ -194,6 +196,7 @@ be.alexandre01.dnplugin.plugins.bungeecord.components.commands.TabList$Options -
     12:12:be.alexandre01.dnplugin.plugins.bungeecord.components.commands.TabList$Options valueOf(java.lang.String) -> valueOf
     12:12:void <init>(java.lang.String,int) -> <init>
     19:24:be.alexandre01.dnplugin.plugins.bungeecord.components.commands.TabList$Options get(java.lang.String) -> a
+    12:12:be.alexandre01.dnplugin.plugins.bungeecord.components.commands.TabList$Options[] $values() -> a
     12:16:void <clinit>() -> <clinit>
 be.alexandre01.dnplugin.plugins.bungeecord.components.listeners.MOTD -> be.alexandre01.dnplugin.plugins.bungeecord.components.listeners.MOTD:
     25:25:void <init>() -> <init>

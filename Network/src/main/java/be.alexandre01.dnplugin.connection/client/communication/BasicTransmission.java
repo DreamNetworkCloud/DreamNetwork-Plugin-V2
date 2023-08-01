@@ -17,58 +17,64 @@ public class BasicTransmission extends ClientResponse {
     @Override
     public void onResponse(Message message, ChannelHandlerContext ctx) throws Exception {
         ChannelPacket receivedPacket = new ChannelPacket(message);
-        if(message.getHeader().equals("channel")) {
-        DNChannel dnChannel = NetworkBaseAPI.getInstance().getChannelManager().getChannel(message.getChannel());
-        if(dnChannel != null){
-                if(!dnChannel.getDnChannelInterceptors().isEmpty()){
-                    for (DNChannelInterceptor dnChannelInterceptor : dnChannel.getDnChannelInterceptors()){
-                        dnChannelInterceptor.received(receivedPacket);
+        if(message.getHeader() != null){
+            if(message.getHeader().equals("channel")) {
+                DNChannel dnChannel = NetworkBaseAPI.getInstance().getChannelManager().getChannel(message.getChannel());
+                if(dnChannel != null){
+                    if(!dnChannel.getDnChannelInterceptors().isEmpty()){
+                        for (DNChannelInterceptor dnChannelInterceptor : dnChannel.getDnChannelInterceptors()){
+                            dnChannelInterceptor.received(receivedPacket);
+                        }
                     }
+                    return;
                 }
-                return;
             }
-        }
-        if(message.getHeader().equals("cData")) {
-            DNChannel dnChannel = NetworkBaseAPI.getInstance().getChannelManager().getChannel(message.getChannel());
-            if(dnChannel != null){
-               String key = message.getString("key");
-               Object value = message.get("value");
+            if(message.getHeader().equals("cData")) {
+                DNChannel dnChannel = NetworkBaseAPI.getInstance().getChannelManager().getChannel(message.getChannel());
+                if(dnChannel != null){
+                    String key = message.getString("key");
+                    Object value = message.get("value");
                 /*System.out.println("key: " + key + " value: " + value);
 
                 System.out.println(dnChannel.getDataListener().keySet());
                 System.out.println(dnChannel.getDataListener().values());*/
-                if(dnChannel.getDataListener().containsKey(key)){
-                    dnChannel.getDataListener().get(key).onUpdateData(value);
-                }
+                    if(dnChannel.getDataListener().containsKey(key)){
+                        dnChannel.getDataListener().get(key).onUpdateData(value);
+                    }
              /*   System.out.println(dnChannel.getName());
                 System.out.println(dnChannel);*/
-                dnChannel.getObjects().put(key,value);
+                    dnChannel.getObjects().put(key,value);
                 /*System.out.println(dnChannel.getObjects().keySet());
                 System.out.println(dnChannel.getObjects().values());*/
 
-            }
-            return;
-        }
-        if(message.getHeader().equals("cAsk")) {
-            DNChannel dnChannel = NetworkBaseAPI.getInstance().getChannelManager().getChannel(message.getChannel());
-            if(dnChannel != null){
-                String key = message.getString("key");
-                Object value = message.get("value");
-
-                if(dnChannel.getDataListener().containsKey(key)){
-                    dnChannel.getDataListener().get(key).onUpdateData(value);
                 }
-                dnChannel.getCompletables().get(key).supplyAsync(() -> value).complete(value);
-
-                dnChannel.getObjects().put(key,value);
+                return;
             }
-            return;
+            if(message.getHeader().equals("cAsk")) {
+                DNChannel dnChannel = NetworkBaseAPI.getInstance().getChannelManager().getChannel(message.getChannel());
+                if(dnChannel != null){
+                    String key = message.getString("key");
+                    Object value = message.get("value");
+
+                    if(dnChannel.getDataListener().containsKey(key)){
+                        dnChannel.getDataListener().get(key).onUpdateData(value);
+                    }
+                    dnChannel.getCompletables().get(key).supplyAsync(() -> value).complete(value);
+
+                    dnChannel.getObjects().put(key,value);
+                }
+                return;
+            }
         }
+
         if(message.hasProvider()){
             if(message.getProvider().equals(NetworkBaseAPI.getInstance().getProcessName()) && message.hasRequestID()){
                 RequestPacket request = NetworkBaseAPI.getInstance().getRequestManager().getRequest(message.getMessageID());
-                if(request != null)
-                    request.getRequestFutureResponse().onReceived(receivedPacket);
+                if(request != null){
+                    if(request.getRequestFutureResponse() != null)
+                        request.getRequestFutureResponse().onReceived(receivedPacket);
+                }
+
             }
         }
         if(message.hasRequest()){
@@ -77,7 +83,7 @@ public class BasicTransmission extends ClientResponse {
             if(requestInfo.equals(RequestType.SERVER_HANDSHAKE_SUCCESS)) {
                 final NetworkBaseAPI networkBaseAPI = NetworkBaseAPI.getInstance();
                 String processName = message.getString("PROCESSNAME");
-                 networkBaseAPI.setProcessName("s-" + processName);
+                networkBaseAPI.setProcessName(processName);
                 networkBaseAPI.setServerName(processName.split("-")[0]);
                 try{
                     networkBaseAPI.setID(Integer.parseInt(processName.split("-")[1]));
@@ -90,7 +96,7 @@ public class BasicTransmission extends ClientResponse {
             }  else if(requestInfo.equals(RequestType.PROXY_HANDSHAKE_SUCCESS)){
                 String processName = message.getString("PROCESSNAME");
                 final NetworkBaseAPI networkBaseAPI = NetworkBaseAPI.getInstance();
-                networkBaseAPI.setProcessName("p-"+processName);
+                networkBaseAPI.setProcessName(processName);
                 networkBaseAPI.setServerName(processName.split("-")[0]);
                 try{
                     networkBaseAPI.setID(Integer.parseInt(processName.split("-")[1]));

@@ -55,6 +55,16 @@ be.alexandre01.dnplugin.plugins.velocity.components.commands.Maintenance$SubComm
 be.alexandre01.dnplugin.plugins.velocity.components.commands.Maintenance$SubCommand: be.alexandre01.dnplugin.plugins.velocity.components.commands.Maintenance$SubCommand[] values()
 be.alexandre01.dnplugin.plugins.velocity.components.commands.Maintenance$SubCommand: be.alexandre01.dnplugin.plugins.velocity.components.commands.Maintenance$SubCommand valueOf(java.lang.String)
 be.alexandre01.dnplugin.plugins.velocity.components.commands.Slot
+be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList
+be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList$1
+be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList$Options
+be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList$Options: be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList$Options ENABLE
+be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList$Options: be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList$Options DISABLE
+be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList$Options: be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList$Options RELOAD
+be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList$Options: be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList$Options DELAY
+be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList$Options: be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList$Options[] $VALUES
+be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList$Options: be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList$Options[] values()
+be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList$Options: be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList$Options valueOf(java.lang.String)
 be.alexandre01.dnplugin.plugins.velocity.components.listeners.ServerPingListener
 be.alexandre01.dnplugin.plugins.velocity.listeners.PlayerServerListener
 be.alexandre01.dnplugin.plugins.velocity.listeners.RedirectConnection

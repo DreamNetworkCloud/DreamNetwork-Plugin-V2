@@ -7,6 +7,7 @@ import be.alexandre01.dnplugin.api.request.RequestFile;
 import be.alexandre01.dnplugin.api.request.RequestManager;
 import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
 import be.alexandre01.dnplugin.plugins.spigot.command.NetworkCommand;
+import be.alexandre01.dnplugin.plugins.spigot.command.StatsCommand;
 import be.alexandre01.dnplugin.plugins.spigot.listeners.ReloadListener;
 import be.alexandre01.dnplugin.plugins.spigot.utils.SpigotText;
 import be.alexandre01.dnplugin.utils.ASCII;
@@ -77,6 +78,7 @@ public class DNSpigot extends JavaPlugin{
         }
 
         registerCommand("network",new NetworkCommand("network"));
+        registerCommand("dnstats",new StatsCommand("dnstats"));
         getServer().getPluginManager().registerEvents(new ReloadListener(),this);
         //getServer().getPluginManager().registerEvents(new TestChannelListener(),this);
 

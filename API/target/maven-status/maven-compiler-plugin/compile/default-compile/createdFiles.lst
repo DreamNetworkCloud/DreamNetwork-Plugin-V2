@@ -10,7 +10,10 @@ be\alexandre01\dnplugin\api\request\communication\ClientResponse$RequestIntercep
 be\alexandre01\dnplugin\utils\colors\Colors.class
 be\alexandre01\dnplugin\utils\messages\Message.class
 be\alexandre01\dnplugin\api\connection\IClientHandler.class
+be\alexandre01\dnplugin\api\universal\player\proxy\DNProxyPlayer.class
 be\alexandre01\dnplugin\utils\ASCII.class
+be\alexandre01\dnplugin\api\universal\player\server\DNServerPlayer.class
+be\alexandre01\dnplugin\api\universal\player\UniversalPlayer.class
 be\alexandre01\dnplugin\api\request\communication\ResponseManager.class
 be\alexandre01\dnplugin\utils\files\tablist\TabListYAML.class
 be\alexandre01\dnplugin\utils\messages\Message$MapDeserializerDoubleAsIntFix.class
@@ -22,7 +25,9 @@ be\alexandre01\dnplugin\api\objects\player\exceptions\OnlineModeException.class
 be\alexandre01\dnplugin\utils\files\motd\MOTDYAML.class
 be\alexandre01\dnplugin\utils\files\tablist\LineState.class
 be\alexandre01\dnplugin\utils\messages\Message$2.class
+be\alexandre01\dnplugin\api\universal\player\UniversalPlayer$PlayerQuitListener.class
 be\alexandre01\dnplugin\api\request\channels\GetDataThread.class
+be\alexandre01\dnplugin\api\universal\player\UniversalPlayer$PlayerJoinListener.class
 be\alexandre01\dnplugin\api\request\communication\ClientResponse.class
 be\alexandre01\dnplugin\utils\files\SearchText.class
 be\alexandre01\dnplugin\api\request\RequestBuilder$RequestData.class
@@ -58,3 +63,4 @@ be\alexandre01\dnplugin\api\request\events\MessageHandler.class
 be\alexandre01\dnplugin\api\request\clients\ClientManager.class
 be\alexandre01\dnplugin\utils\files\CopyFiles.class
 be\alexandre01\dnplugin\api\request\RequestFile.class
+be\alexandre01\dnplugin\api\universal\player\UniversalPlayer$PlayerUpdateServer.class

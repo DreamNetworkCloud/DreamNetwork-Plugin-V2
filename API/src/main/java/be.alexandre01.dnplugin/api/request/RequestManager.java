@@ -33,26 +33,30 @@ public class RequestManager {
         return request;
     }
 
-    public RequestPacket sendRequest(RequestInfo requestType, Message message, GenericFutureListener<? extends Future<? super Void>> listener, Object... args){
-         if(!requestBuilder.requestData.containsKey(requestType)){
-             try {
-                 throw new RequestNotFoundException();
-             } catch (RequestNotFoundException e) {
-                 e.printStackTrace();
-             }
-         }
+    public RequestPacket sendRequest(RequestInfo requestInfo, Message message, GenericFutureListener<? extends Future<? super Void>> listener, Object... args){
+         RequestPacket request = getRequestPacket(requestInfo,message,listener,args);
 
-         RequestBuilder.RequestData requestData = requestBuilder.requestData.get(requestType);
-         message.setHeader("RI");
-         message.setRequestInfo(requestType);
-
-         RequestPacket request = new RequestPacket(requestType,requestData.write(message,args),listener);
-
-         request.setClientHandler(clientHandler);
          clientHandler.writeAndFlush(request.getMessage(),listener);
-        requests.put(request.getRequestID(),request);
+         requests.put(request.getRequestID(),request);
          return request;
         // NetworkBaseAPI.getInstance().getBasicClientHandler().writeAndFlush(requestData.write(message,args),listener);
+    }
+    public RequestPacket getRequestPacket(RequestInfo requestType, Message message, GenericFutureListener<? extends Future<? super Void>> listener, Object... args){
+        if(!requestBuilder.requestData.containsKey(requestType)){
+            try {
+                throw new RequestNotFoundException();
+            } catch (RequestNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        RequestBuilder.RequestData requestData = requestBuilder.requestData.get(requestType);
+        message.setHeader("RI");
+        message.setRequestInfo(requestType);
+
+        RequestPacket request = new RequestPacket(requestType,requestData.write(message,args),listener);
+        request.setClientHandler(clientHandler);
+        return request;
     }
 
     public RequestPacket sendRequest(RequestInfo requestType, Object... args){

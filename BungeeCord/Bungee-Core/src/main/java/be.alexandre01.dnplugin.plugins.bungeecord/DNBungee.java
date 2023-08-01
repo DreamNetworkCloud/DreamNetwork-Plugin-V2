@@ -178,8 +178,11 @@ public class DNBungee extends Plugin {
 
 
         getProxy().getPluginManager().registerListener(this,new RedirectConnection());
-        if(configuration.isAutoSendPlayers())
+        if(configuration.isAutoSendPlayers()){
+            System.out.println("AutoSendPlayers is enabled");
             getProxy().getPluginManager().registerListener(this,new PlayerServerListener());
+        }
+
         /*MOTD motd = new MOTD();
         if(motd.isActivated())
             getProxy().getPluginManager().registerListener(this,motd);*/
