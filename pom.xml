@@ -65,7 +65,43 @@
                             </execution>
                         </executions>
                     </plugin>
-                </plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-shade-plugin</artifactId>
+                            <version>3.2.4</version>
+                            <executions>
+                                <execution>
+                                    <phase>package</phase>
+                                    <goals>
+                                        <goal>shade</goal>
+                                    </goals>
+                                    <configuration>
+                                        <createDependencyReducedPom>false</createDependencyReducedPom>
+                                        <outputFile>${project.basedir}/target/${project.artifactId}.jar</outputFile>
+                                        <minimizeJar>true</minimizeJar>
+                                        <relocations>
+                                            <relocation>
+                                                <pattern>io.netty</pattern>
+                                                <shadedPattern>be.alexandre01.dnplugin.netty</shadedPattern>
+                                            </relocation>
+                                            <relocation>
+                                                <pattern>com.google.gson</pattern>
+                                                <shadedPattern>be.alexandre01.dnplugin.gson</shadedPattern>
+                                            </relocation>
+                                            <relocation>
+                                                <pattern>org.bstats</pattern>
+                                                <shadedPattern>be.alexandre01.dnplugin.bstats</shadedPattern>
+                                            </relocation>
+                                            <relocation>
+                                                <pattern>org.yaml</pattern>
+                                                <shadedPattern>be.alexandre01.dnplugin.snakeyaml</shadedPattern>
+                                            </relocation>
+                                        </relocations>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
             </build>
             <dependencies>
                 <dependency>
@@ -125,31 +161,6 @@
                 <module>BungeeCord/Bungee-API</module>
                 <module>Spigot/Spigot-API</module>
             </modules>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-assembly-plugin</artifactId>
-                        <version>3.3.0</version>
-                        <configuration>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
-                            <finalName>DreamNetwork-Plugin-API</finalName>
-                            <appendAssemblyId>false</appendAssemblyId>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>make-assembly</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>single</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
             <dependencies>
                 <dependency>
                     <groupId>be.alexandre01.dnplugin</groupId>
