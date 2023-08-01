@@ -40,39 +40,6 @@
                         <filtering>true</filtering>
                     </resource>
                 </resources>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-shade-plugin</artifactId>
-                        <version>3.2.4</version>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                                <configuration>
-                                    <outputFile>${project.basedir}/target/${project.artifactId}.jar</outputFile>
-                                    <minimizeJar>true</minimizeJar>
-                                    <relocations>
-                                        <relocation>
-                                            <pattern>io.netty</pattern>
-                                            <shadedPattern>be.alexandre01.dnplugin.netty</shadedPattern>
-                                        </relocation>
-                                        <relocation>
-                                            <pattern>com.google.gson</pattern>
-                                            <shadedPattern>be.alexandre01.dnplugin.gson</shadedPattern>
-                                        </relocation>
-                                        <relocation>
-                                            <pattern>org.bstats</pattern>
-                                            <shadedPattern>be.alexandre01.dnplugin.bstats</shadedPattern>
-                                        </relocation>
-                                    </relocations>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
             </build>
         </profile>
         <profile>
@@ -136,95 +103,6 @@
                 <java.version>8</java.version>
                 <outputPath>${project.basedir}/target/</outputPath>
             </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-shade-plugin</artifactId>
-                        <version>3.2.4</version>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-
-                                <configuration>
-                                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <outputFile>${project.basedir}/target/${project.artifactId}-api.jar</outputFile>
-                                    <minimizeJar>true</minimizeJar>
-                                    <filters>
-                                        <filter>
-                                            <artifact>be.alexandre01.dnplugin:DreamNetwork-Plugin</artifact>
-                                            <excludes>
-                                                <exclude>be/alexandre01/dnplugin/connection/**</exclude>
-                                            </excludes>
-                                        </filter>
-                                        <filter>
-                                            <artifact>be.alexandre01.dnplugin:DreamNetwork-Plugin</artifact>
-                                            <excludes>
-                                                <exclude>be/alexandre01/dnplugin/plugins/bungeecord/utils/**</exclude>
-                                            </excludes>
-                                        </filter>
-                                        <filter>
-                                            <artifact>be.alexandre01.dnplugin:DreamNetwork-Plugin</artifact>
-                                            <excludes>
-                                                <exclude>be/alexandre01/dnplugin/plugins/bungeecord/communication/**</exclude>
-                                            </excludes>
-                                        </filter>
-                                        <filter>
-                                            <artifact>be.alexandre01.dnplugin:DreamNetwork-Plugin</artifact>
-                                            <excludes>
-                                                <exclude>be/alexandre01/dnplugin/plugins/bungeecord/components/**</exclude>
-                                            </excludes>
-                                        </filter>
-                                        <filter>
-                                            <artifact>be.alexandre01.dnplugin:DreamNetwork-Plugin</artifact>
-                                            <excludes>
-                                                <exclude>be/alexandre01/dnplugin/plugins/bungeecord/listeners/**</exclude>
-                                            </excludes>
-                                        </filter>
-                                        <filter>
-                                            <artifact>be.alexandre01.dnplugin:DreamNetwork-Plugin</artifact>
-                                            <excludes>
-                                                <exclude>be/alexandre01/dnplugin/plugins/spigot/command/**</exclude>
-                                            </excludes>
-                                        </filter>
-                                        <filter>
-                                            <artifact>be.alexandre01.dnplugin:DreamNetwork-Plugin</artifact>
-                                            <excludes>
-                                                <exclude>be/alexandre01/dnplugin/plugins/spigot/communication/**</exclude>
-                                            </excludes>
-                                        </filter>
-                                        <filter>
-                                            <artifact>be.alexandre01.dnplugin:DreamNetwork-Plugin</artifact>
-                                            <excludes>
-                                                <exclude>be/alexandre01/dnplugin/plugins/spigot/listeners/**</exclude>
-                                            </excludes>
-                                        </filter>
-                                        <filter>
-                                            <artifact>be.alexandre01.dnplugin:DreamNetwork-Plugin</artifact>
-                                            <excludes>
-                                                <exclude>be/alexandre01/dnplugin/plugins/sponge/communication/**</exclude>
-                                            </excludes>
-                                        </filter>
-                                    </filters>
-                                    <relocations>
-                                        <relocation>
-                                            <pattern>io.netty</pattern>
-                                            <shadedPattern>be.alexandre01.dnplugin.netty</shadedPattern>
-                                        </relocation>
-                                        <relocation>
-                                            <pattern>com.google.gson</pattern>
-                                            <shadedPattern>be.alexandre01.dnplugin.gson</shadedPattern>
-                                        </relocation>
-                                    </relocations>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
     </profiles>
 
