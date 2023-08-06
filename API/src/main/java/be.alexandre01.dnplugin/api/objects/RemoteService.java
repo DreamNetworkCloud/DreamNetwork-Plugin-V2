@@ -2,7 +2,7 @@ package be.alexandre01.dnplugin.api.objects;
 
 import be.alexandre01.dnplugin.api.objects.player.DNPlayer;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
-import be.alexandre01.dnplugin.utils.Mods;
+import be.alexandre01.dnplugin.api.utils.Mods;
 import lombok.Getter;
 import lombok.Setter;
 

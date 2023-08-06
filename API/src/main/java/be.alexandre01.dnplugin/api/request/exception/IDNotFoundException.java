@@ -1,7 +1,6 @@
 package be.alexandre01.dnplugin.api.request.exception;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
-import be.alexandre01.dnplugin.utils.colors.Colors;
 
 public class IDNotFoundException extends Exception{
     public IDNotFoundException(String name){

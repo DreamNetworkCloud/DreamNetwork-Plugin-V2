@@ -2,7 +2,7 @@ package be.alexandre01.dnplugin.api.request;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
-import be.alexandre01.dnplugin.utils.messages.Message;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Data;

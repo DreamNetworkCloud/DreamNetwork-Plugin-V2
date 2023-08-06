@@ -1,7 +1,7 @@
 package be.alexandre01.dnplugin.api.request.channels;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
-import be.alexandre01.dnplugin.utils.messages.Message;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
 import com.google.gson.internal.LinkedTreeMap;
 import lombok.AccessLevel;
 import lombok.Getter;

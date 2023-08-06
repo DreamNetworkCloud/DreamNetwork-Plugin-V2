@@ -1,7 +1,7 @@
 package be.alexandre01.dnplugin.api.connection;
 
 import be.alexandre01.dnplugin.api.request.communication.ClientResponse;
-import be.alexandre01.dnplugin.utils.messages.Message;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandler;

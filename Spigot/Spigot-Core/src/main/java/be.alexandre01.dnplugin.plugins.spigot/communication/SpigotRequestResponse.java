@@ -14,7 +14,7 @@ import be.alexandre01.dnplugin.plugins.spigot.api.events.player.NetworkDisconnec
 import be.alexandre01.dnplugin.plugins.spigot.api.events.player.NetworkJoinEvent;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.player.NetworkSwitchServerEvent;
 import be.alexandre01.dnplugin.plugins.spigot.communication.objects.SpigotPlayer;
-import be.alexandre01.dnplugin.utils.Mods;
+import be.alexandre01.dnplugin.api.utils.Mods;
 import com.google.gson.internal.LinkedTreeMap;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;

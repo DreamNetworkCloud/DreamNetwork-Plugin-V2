@@ -1,6 +1,6 @@
 package be.alexandre01.dnplugin.plugins.bungeecord.utils;
 
-import be.alexandre01.dnplugin.utils.files.SearchText;
+import be.alexandre01.dnplugin.api.utils.files.SearchText;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;

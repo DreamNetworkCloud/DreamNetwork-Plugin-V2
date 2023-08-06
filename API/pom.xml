@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>be.alexandre01.dnplugin</groupId>
     <artifactId>DreamNetwork-API</artifactId>
-    <version>1.6.0-SNAPSHOT</version>
+    <version>1.6.2-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <url>https://repo.dreamnetwork.cloud/repository/maven-releases</url>
+        </repository>
+    </distributionManagement>
+    <scm>
+        <connection>scm:git:https://github.com/DreamNetworkCloud/DreamNetwork-Plugin.git</connection>
+        <url>http://github.com/DreamNetworkCloud/DreamNetwork-Plugin</url>
+        <developerConnection>scm:git:https://github.com/DreamNetworkCloud/DreamNetwork-Plugin.git</developerConnection>
+      <tag>HEAD</tag>
+  </scm>
     <repositories>
         <repository>
             <id>sponge-repo</id>
@@ -38,24 +48,32 @@
                 </resources>
             </build>
         </profile>
-        <profile>
-            <id>Dev-1</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <java.version>8</java.version>
-                <outputPath>${project.basedir}/target/</outputPath>
-            </properties>
-            <build>
-                <resources>
-                    <resource>
-                        <directory>src/main/resources</directory>
-                        <filtering>true</filtering>
-                    </resource>
-                </resources>
-            </build>
-        </profile>
+            <profile>
+                <id>releases</id>
+                <build>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.sonatype.plugins</groupId>
+                            <artifactId>nexus-staging-maven-plugin</artifactId>
+                            <version>1.6.13</version>
+                            <executions>
+                                <execution>
+                                    <id>default-deploy</id>
+                                    <phase>deploy</phase>
+                                    <goals>
+                                        <goal>deploy</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                            <configuration>
+                                <serverId>nexus-releases</serverId>
+                                <nexusUrl>https://repo.dreamnetwork.cloud/</nexusUrl>
+                                <skipStaging>true</skipStaging>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </build>
+            </profile>
         <profile>
             <id>API</id>
             <activation>
@@ -104,7 +122,18 @@
         </dependency>
     </dependencies>
     <!-- https://mvnrepository.com/artifact/net.md-5/bungeecord-api -->
-
-
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.4.2</version>
+                <configuration>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <releaseProfiles>releases</releaseProfiles>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

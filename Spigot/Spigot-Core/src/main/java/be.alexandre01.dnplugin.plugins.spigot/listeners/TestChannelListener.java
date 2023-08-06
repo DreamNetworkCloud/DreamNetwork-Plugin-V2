@@ -16,7 +16,7 @@ import be.alexandre01.dnplugin.plugins.spigot.api.events.player.NetworkSwitchSer
 import be.alexandre01.dnplugin.plugins.spigot.api.events.server.ServerAttachedEvent;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.server.ServerStartedEvent;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.server.ServerStoppedEvent;
-import be.alexandre01.dnplugin.utils.messages.Message;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
 import com.google.gson.internal.LinkedTreeMap;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

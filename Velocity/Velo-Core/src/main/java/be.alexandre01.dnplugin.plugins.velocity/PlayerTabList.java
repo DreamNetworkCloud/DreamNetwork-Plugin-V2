@@ -1,7 +1,7 @@
 package be.alexandre01.dnplugin.plugins.velocity;
 
-import be.alexandre01.dnplugin.utils.files.tablist.TabList;
-import be.alexandre01.dnplugin.utils.files.tablist.TabListYAML;
+import be.alexandre01.dnplugin.api.utils.files.tablist.TabList;
+import be.alexandre01.dnplugin.api.utils.files.tablist.TabListYAML;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.Component;

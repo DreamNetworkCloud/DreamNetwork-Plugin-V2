@@ -8,7 +8,7 @@ import be.alexandre01.dnplugin.api.request.RequestType;
 import be.alexandre01.dnplugin.api.request.channels.DNChannel;
 import be.alexandre01.dnplugin.api.request.channels.DNChannelInterceptor;
 import be.alexandre01.dnplugin.api.request.communication.ClientResponse;
-import be.alexandre01.dnplugin.utils.messages.Message;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
 import io.netty.channel.ChannelHandlerContext;
 
 

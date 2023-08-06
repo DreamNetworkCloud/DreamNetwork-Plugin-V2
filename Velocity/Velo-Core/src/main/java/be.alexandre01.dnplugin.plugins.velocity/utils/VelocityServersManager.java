@@ -5,7 +5,7 @@ import be.alexandre01.dnplugin.api.objects.RemoteBundle;
 import be.alexandre01.dnplugin.plugins.velocity.DNVelocity;
 import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityServersManager;
 import be.alexandre01.dnplugin.plugins.velocity.communication.objects.ProxyService;
-import be.alexandre01.dnplugin.utils.Mods;
+import be.alexandre01.dnplugin.api.utils.Mods;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.velocitypowered.api.proxy.server.ServerInfo;
 import lombok.Getter;
