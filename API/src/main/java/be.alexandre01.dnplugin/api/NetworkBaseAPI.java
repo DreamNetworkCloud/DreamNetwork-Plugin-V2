@@ -28,6 +28,8 @@ public abstract class NetworkBaseAPI {
     private final ArrayList<RequestType> requestTypes = new ArrayList<>();
     private static NetworkBaseAPI instance;
 
+    @Getter private boolean isExternal = false;
+
     public static NetworkBaseAPI getInstance() {
         return instance;
     }
@@ -128,6 +130,8 @@ public abstract class NetworkBaseAPI {
         }
         if(o instanceof IBasicClient){
             IBasicClient basicClient = (IBasicClient) o;
+            isExternal = basicClient.isExternal();
+
             Thread thread = new Thread(basicClient);
             thread.start();
             return isInit = true;

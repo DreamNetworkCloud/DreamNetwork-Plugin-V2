@@ -5,4 +5,6 @@ public interface IBasicClient extends Runnable {
     void run();
 
     void connect();
+
+    boolean isExternal();
 }

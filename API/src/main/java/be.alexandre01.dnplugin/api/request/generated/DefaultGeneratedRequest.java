@@ -5,11 +5,24 @@ import be.alexandre01.dnplugin.api.request.RequestBuilder;
 import be.alexandre01.dnplugin.api.request.RequestType;
 
 public class DefaultGeneratedRequest extends RequestBuilder {
+    /**
+     * DefaultGeneratedRequest is a class that initializes the requestData map with default values for various request types.
+     * Each request type is associated with a lambda expression that defines the behavior when the request is executed.
+     *
+     * The requestData map is of type Map<RequestType, BiFunction<Message, Object[], Message>>.
+     * The key is a RequestType enum that represents the type of the request.
+     * The value is a BiFunction that takes in a Message object and an array of objects as arguments, and returns a Message object.
+     * The Message object represents the request message that will be sent.
+     *
+     * The DefaultGeneratedRequest constructor initializes the requestData map by associating each request type with its corresponding lambda expression.
+     * The lambda expressions define how the request message should be constructed based on the provided arguments.
+     */
     public DefaultGeneratedRequest(){
         requestData.put(RequestType.CORE_HANDSHAKE,(message,args) ->{
             message.set("INFO", NetworkBaseAPI.getInstance().getInfo());
             message.set("PORT", NetworkBaseAPI.getInstance().getPort());
-            message.set("PASSWORD", "NULL");
+            if(NetworkBaseAPI.getInstance().isExternal())
+                message.set("EXTERNAL",true);
             return message;
         });
 

@@ -11,6 +11,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.Setter;
 
+import java.util.Arrays;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -22,6 +23,34 @@ public class BasicClient extends Thread implements IBasicClient {
     @Setter
     boolean isRunning = false;
 
+    boolean isExternal = false;
+
+    String host;
+    int port;
+
+    public BasicClient(){
+        host = "localhost";
+        port = 14520;
+        //DNHost & DNPort
+        System.out.println("Searching for -DNHost property...");
+        System.out.println(System.getProperty("NHost"));
+        String[] hostProperty = System.getProperty("NHost").split(":");
+        System.out.println("NHost: "+ Arrays.toString(hostProperty));
+        String remoteIP = hostProperty[0];
+        if(!remoteIP.equals("this")){
+            host = remoteIP;
+            isExternal = true;
+        }
+
+
+        try {
+            port = Integer.parseInt(hostProperty[1]);
+        }catch (Exception e){
+            System.out.println("Can't read -DNPort property or doesn't contain port numbers");
+            System.out.println("Using default port 14520...");
+        }
+    }
+
     @Override
     public void run(){
         connect();
@@ -29,19 +58,6 @@ public class BasicClient extends Thread implements IBasicClient {
 
     @Override
     public void connect(){
-        String host = "localhost";
-
-        int port = 14520;
-        //DNHost & DNPort
-        System.out.println("Searching for -DNPort property...");
-        String portProperty = System.getProperty("NPort");
-        System.out.println("NPort: "+portProperty);
-        try {
-            port = Integer.parseInt(portProperty);
-        }catch (Exception e){
-            System.out.println("Can't read -DNPort property or doesn't contain port numbers");
-            System.out.println("Using default port 14520...");
-        }
         System.out.println("Attempt to connect to "+ host+":"+port +"#TRY_"+ trying);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
@@ -79,5 +95,10 @@ public class BasicClient extends Thread implements IBasicClient {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean isExternal() {
+        return isExternal;
     }
 }
