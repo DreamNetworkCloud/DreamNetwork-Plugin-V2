@@ -3,7 +3,7 @@ package be.alexandre01.dnplugin.plugins.velocity.listeners;
 
 import be.alexandre01.dnplugin.plugins.velocity.DNVelocity;
 import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityAPI;
-import be.alexandre01.dnplugin.utils.files.network.NetworkYAML;
+import be.alexandre01.dnplugin.api.utils.files.network.NetworkYAML;
 import com.velocitypowered.api.event.ResultedEvent;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.PostLoginEvent;

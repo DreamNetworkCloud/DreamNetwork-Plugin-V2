@@ -50,42 +50,42 @@
                     </resource>
                 </resources>
                 <plugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-shade-plugin</artifactId>
-                            <version>3.2.4</version>
-                            <executions>
-                                <execution>
-                                    <phase>package</phase>
-                                    <goals>
-                                        <goal>shade</goal>
-                                    </goals>
-                                    <configuration>
-                                        <createDependencyReducedPom>false</createDependencyReducedPom>
-                                        <outputFile>${project.basedir}/target/${project.build.finalName}.jar</outputFile>
-                                        <minimizeJar>true</minimizeJar>
-                                        <relocations>
-                                            <relocation>
-                                                <pattern>io.netty</pattern>
-                                                <shadedPattern>be.alexandre01.dnplugin.shaded.netty</shadedPattern>
-                                            </relocation>
-                                            <relocation>
-                                                <pattern>com.google.gson</pattern>
-                                                <shadedPattern>be.alexandre01.dnplugin.shaded.gson</shadedPattern>
-                                            </relocation>
-                                            <relocation>
-                                                <pattern>org.bstats</pattern>
-                                                <shadedPattern>be.alexandre01.dnplugin.shaded.bstats</shadedPattern>
-                                            </relocation>
-                                            <relocation>
-                                                <pattern>org.yaml</pattern>
-                                                <shadedPattern>be.alexandre01.dnplugin.shaded</shadedPattern>
-                                            </relocation>
-                                        </relocations>
-                                    </configuration>
-                                </execution>
-                            </executions>
-                        </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.2.4</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <outputFile>${project.basedir}/target/${project.build.finalName}.jar</outputFile>
+                                    <minimizeJar>true</minimizeJar>
+                                    <relocations>
+                                        <relocation>
+                                            <pattern>io.netty</pattern>
+                                            <shadedPattern>be.alexandre01.dnplugin.shaded.netty</shadedPattern>
+                                        </relocation>
+                                        <relocation>
+                                            <pattern>com.google.gson</pattern>
+                                            <shadedPattern>be.alexandre01.dnplugin.shaded.gson</shadedPattern>
+                                        </relocation>
+                                        <relocation>
+                                            <pattern>org.bstats</pattern>
+                                            <shadedPattern>be.alexandre01.dnplugin.shaded.bstats</shadedPattern>
+                                        </relocation>
+                                        <relocation>
+                                            <pattern>org.yaml</pattern>
+                                            <shadedPattern>be.alexandre01.dnplugin.shaded</shadedPattern>
+                                        </relocation>
+                                    </relocations>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <plugin>
                         <groupId>com.github.wvengen</groupId>
                         <artifactId>proguard-maven-plugin</artifactId>
@@ -199,7 +199,7 @@
                             </dependency>
                         </dependencies>
                     </plugin>
-                    </plugins>
+                </plugins>
             </build>
             <dependencies>
                 <dependency>
@@ -245,6 +245,33 @@
 
             </dependencies>
         </profile>
+            <profile>
+                <id>releases</id>
+                <build>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.sonatype.plugins</groupId>
+                            <artifactId>nexus-staging-maven-plugin</artifactId>
+                            <version>1.5.1</version>
+                            <executions>
+                                <execution>
+                                    <id>default-deploy</id>
+                                    <phase>deploy</phase>
+                                    <goals>
+                                        <goal>deploy</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                            <configuration>
+                                <serverId>nexus-releases</serverId>
+                                <nexusUrl>http://localhost:8081/nexus/</nexusUrl>
+                                <skipStaging>true</skipStaging>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </build>
+            </profile>
+
         <profile>
             <id>API</id>
             <activation>

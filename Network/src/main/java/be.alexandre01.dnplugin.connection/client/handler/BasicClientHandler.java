@@ -6,7 +6,7 @@ import be.alexandre01.dnplugin.api.request.RequestType;
 import be.alexandre01.dnplugin.connection.client.BasicClient;
 import be.alexandre01.dnplugin.api.request.communication.ClientResponse;
 import be.alexandre01.dnplugin.connection.client.communication.BasicTransmission;
-import be.alexandre01.dnplugin.utils.messages.Message;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;

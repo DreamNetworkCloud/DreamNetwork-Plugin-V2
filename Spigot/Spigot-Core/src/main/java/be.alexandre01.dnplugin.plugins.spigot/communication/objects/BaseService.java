@@ -8,7 +8,7 @@ import be.alexandre01.dnplugin.api.request.RequestType;
 import be.alexandre01.dnplugin.plugins.spigot.DNSpigot;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.server.ServerStartedEvent;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.server.ServerStoppedEvent;
-import be.alexandre01.dnplugin.utils.Mods;
+import be.alexandre01.dnplugin.api.utils.Mods;
 import org.bukkit.Bukkit;
 
 public class BaseService extends RemoteService {

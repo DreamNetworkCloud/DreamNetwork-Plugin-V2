@@ -6,7 +6,7 @@ import be.alexandre01.dnplugin.api.request.RequestPacket;
 import be.alexandre01.dnplugin.api.request.RequestType;
 import be.alexandre01.dnplugin.api.request.channels.DNChannel;
 import be.alexandre01.dnplugin.plugins.spigot.DNSpigot;
-import be.alexandre01.dnplugin.utils.Mods;
+import be.alexandre01.dnplugin.api.utils.Mods;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import lombok.var;

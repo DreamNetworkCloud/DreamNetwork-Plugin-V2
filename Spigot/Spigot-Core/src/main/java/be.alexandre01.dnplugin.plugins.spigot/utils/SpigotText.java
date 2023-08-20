@@ -1,8 +1,8 @@
 package be.alexandre01.dnplugin.plugins.spigot.utils;
 
 import be.alexandre01.dnplugin.plugins.spigot.DNSpigot;
-import be.alexandre01.dnplugin.utils.Config;
-import be.alexandre01.dnplugin.utils.files.SearchText;
+import be.alexandre01.dnplugin.api.utils.Config;
+import be.alexandre01.dnplugin.api.utils.files.SearchText;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;

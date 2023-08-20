@@ -1,7 +1,7 @@
 package be.alexandre01.dnplugin.api.request.communication;
 
 import be.alexandre01.dnplugin.api.request.RequestInfo;
-import be.alexandre01.dnplugin.utils.messages.Message;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.util.LinkedHashMap;

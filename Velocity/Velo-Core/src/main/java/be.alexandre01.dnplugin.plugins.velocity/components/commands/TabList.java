@@ -1,7 +1,7 @@
 package be.alexandre01.dnplugin.plugins.velocity.components.commands;
 
 import be.alexandre01.dnplugin.plugins.velocity.DNVelocity;
-import be.alexandre01.dnplugin.utils.files.tablist.TabListYAML;
+import be.alexandre01.dnplugin.api.utils.files.tablist.TabListYAML;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.command.SimpleCommand;
 import net.kyori.adventure.text.Component;

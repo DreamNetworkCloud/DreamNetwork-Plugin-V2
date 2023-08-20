@@ -1,8 +1,8 @@
 package be.alexandre01.dnplugin.plugins.velocity.components.listeners;
 
 import be.alexandre01.dnplugin.plugins.velocity.DNVelocity;
-import be.alexandre01.dnplugin.utils.files.motd.MOTDYAML;
-import be.alexandre01.dnplugin.utils.files.network.NetworkYAML;
+import be.alexandre01.dnplugin.api.utils.files.motd.MOTDYAML;
+import be.alexandre01.dnplugin.api.utils.files.network.NetworkYAML;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyPingEvent;
 import com.velocitypowered.api.proxy.server.ServerPing;

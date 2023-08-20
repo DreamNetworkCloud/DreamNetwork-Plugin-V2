@@ -1,8 +1,8 @@
 package be.alexandre01.dnplugin.plugins.bungeecord.components.listeners;
 
 import be.alexandre01.dnplugin.plugins.bungeecord.DNBungee;
-import be.alexandre01.dnplugin.utils.files.motd.MOTDYAML;
-import be.alexandre01.dnplugin.utils.files.network.NetworkYAML;
+import be.alexandre01.dnplugin.api.utils.files.motd.MOTDYAML;
+import be.alexandre01.dnplugin.api.utils.files.network.NetworkYAML;
 import net.md_5.bungee.api.Favicon;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.chat.TextComponent;

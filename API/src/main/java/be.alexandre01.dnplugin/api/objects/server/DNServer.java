@@ -6,7 +6,7 @@ import be.alexandre01.dnplugin.api.objects.player.DNPlayer;
 import be.alexandre01.dnplugin.api.request.RequestInfo;
 import be.alexandre01.dnplugin.api.request.RequestPacket;
 import be.alexandre01.dnplugin.api.request.RequestType;
-import be.alexandre01.dnplugin.utils.messages.Message;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
 import lombok.Getter;
 
 import java.util.ArrayList;

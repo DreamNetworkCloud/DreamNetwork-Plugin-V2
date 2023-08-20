@@ -1,6 +1,6 @@
 package be.alexandre01.dnplugin.api.request;
 
-import be.alexandre01.dnplugin.utils.messages.Message;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
 import lombok.Data;
 
 import java.util.HashMap;

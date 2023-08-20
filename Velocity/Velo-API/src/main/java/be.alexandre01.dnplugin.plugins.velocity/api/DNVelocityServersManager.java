@@ -1,6 +1,6 @@
 package be.alexandre01.dnplugin.plugins.velocity.api;
 
-import be.alexandre01.dnplugin.utils.Mods;
+import be.alexandre01.dnplugin.api.utils.Mods;
 
 import java.util.ArrayList;
 

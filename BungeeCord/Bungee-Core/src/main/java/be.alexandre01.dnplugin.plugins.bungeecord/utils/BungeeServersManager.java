@@ -5,7 +5,7 @@ import be.alexandre01.dnplugin.api.objects.RemoteBundle;
 import be.alexandre01.dnplugin.api.objects.RemoteService;
 import be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeServersManager;
 import be.alexandre01.dnplugin.plugins.bungeecord.communication.objects.ProxyService;
-import be.alexandre01.dnplugin.utils.Mods;
+import be.alexandre01.dnplugin.api.utils.Mods;
 import lombok.Getter;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;

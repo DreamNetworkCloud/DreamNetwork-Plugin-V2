@@ -2,7 +2,7 @@ package be.alexandre01.dnplugin.plugins.bungeecord.listeners;
 
 import be.alexandre01.dnplugin.plugins.bungeecord.DNBungee;
 import be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeAPI;
-import be.alexandre01.dnplugin.utils.files.network.NetworkYAML;
+import be.alexandre01.dnplugin.api.utils.files.network.NetworkYAML;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;

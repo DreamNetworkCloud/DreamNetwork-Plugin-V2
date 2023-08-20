@@ -1,6 +1,6 @@
 package be.alexandre01.dnplugin.api.request.channels;
 
-import be.alexandre01.dnplugin.utils.messages.Message;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
 import lombok.Setter;
 
 import java.util.concurrent.CompletableFuture;
