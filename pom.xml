@@ -156,6 +156,17 @@
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
+
+                                        <option>-keepclasseswithmembernames class
+                                            be.alexandre01.dnplugin.plugins.spigot.command.** {
+                                            <![CDATA[<methods>]]>;
+                                            }
+                                        </option>
+                                        <option>-keepclasseswithmembernames class
+                                            be.alexandre01.dnplugin.plugins.bungee.components.command.** {
+                                            <![CDATA[<methods>]]>;
+                                            }
+                                        </option>
                                         <option>-keep class be.alexandre01.dnplugin.plugins.spigot.DNSpigot</option>
                                         <option>-keepclasseswithmembernames class
                                             be.alexandre01.dnplugin.plugins.spigot.DNSpigot {
@@ -210,7 +221,7 @@
                 <dependency>
                     <groupId>be.alexandre01.dnplugin</groupId>
                     <artifactId>DreamNetwork-API</artifactId>
-                    <version>1.6.0-SNAPSHOT</version>
+                    <version>1.6.2-SNAPSHOT</version>
                 </dependency>
                 <dependency>
                     <groupId>be.alexandre01.dnplugin</groupId>

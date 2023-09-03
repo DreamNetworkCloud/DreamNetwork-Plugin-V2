@@ -47,4 +47,7 @@ public interface DNBungeeAPI {
     int hashCode();
 
     DNBungeeServersManager getDnBungeeServersManager();
+
+    public void isManagingConnections(boolean isManagingConnections);
+    public boolean isManagingConnections();
 }

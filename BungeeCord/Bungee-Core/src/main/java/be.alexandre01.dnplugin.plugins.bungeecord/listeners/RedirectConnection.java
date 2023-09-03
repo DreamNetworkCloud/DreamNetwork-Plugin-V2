@@ -15,6 +15,8 @@ import java.util.Set;
 import java.util.UUID;
 
 public class RedirectConnection implements Listener {
+
+
     private final Set<UUID> pending = new HashSet<>();
     private final DNBungee dnBungee;
     private final DNBungeeAPI dnBungeeAPI;
@@ -78,9 +80,11 @@ public class RedirectConnection implements Listener {
 
     @EventHandler
     public void onServerConnect(ServerConnectEvent event) {
+        if(!dnBungeeAPI.isManagingConnections()){
+            return;
+        }
         NetworkYAML config = dnBungee.getConfiguration();
-        if(config.isConnexionOnLobby()){
-            ProxiedPlayer player = event.getPlayer();
+        ProxiedPlayer player = event.getPlayer();
             if (!isPending(player.getUniqueId())) {
                 return;
             }
@@ -101,7 +105,6 @@ public class RedirectConnection implements Listener {
             }
             event.setTarget(info);
             pending.remove(player.getUniqueId());
-        }
     }
     private boolean isPending(UUID uuid) {
         return pending.contains(uuid);

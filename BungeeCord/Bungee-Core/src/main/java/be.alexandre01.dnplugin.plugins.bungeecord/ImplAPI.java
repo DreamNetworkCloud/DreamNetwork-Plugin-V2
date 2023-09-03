@@ -11,6 +11,7 @@ import be.alexandre01.dnplugin.plugins.bungeecord.communication.BungeeRequestRes
 import be.alexandre01.dnplugin.plugins.bungeecord.communication.generated.BungeeGeneratedRequest;
 import be.alexandre01.dnplugin.plugins.bungeecord.utils.BungeeServersManager;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.logging.Logger;
 
@@ -19,6 +20,8 @@ public class ImplAPI extends NetworkBaseAPI implements DNBungeeAPI {
     DNBungee dnBungee;
     @Getter
     DNBungeeServersManager dnBungeeServersManager;
+
+    boolean isManagingConnections = true;
 
     String serverName;
     int id;
@@ -112,5 +115,14 @@ public class ImplAPI extends NetworkBaseAPI implements DNBungeeAPI {
     @Override
     public void shutdownProcess() {
         dnBungee.getProxy().stop();
+    }
+
+    @Override
+    public void isManagingConnections(boolean isManagingConnections) {
+        this.isManagingConnections = isManagingConnections;
+    }
+    @Override
+    public boolean isManagingConnections() {
+        return isManagingConnections;
     }
 }
