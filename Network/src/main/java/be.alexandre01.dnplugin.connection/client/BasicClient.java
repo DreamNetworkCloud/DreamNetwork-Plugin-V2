@@ -33,21 +33,22 @@ public class BasicClient extends Thread implements IBasicClient {
         port = 14520;
         //DNHost & DNPort
         System.out.println("Searching for -DNHost property...");
-        System.out.println(System.getProperty("NHost"));
-        String[] hostProperty = System.getProperty("NHost").split(":");
-        System.out.println("NHost: "+ Arrays.toString(hostProperty));
-        String remoteIP = hostProperty[0];
-        if(!remoteIP.equals("this")){
-            host = remoteIP;
-            isExternal = true;
-        }
-
-
-        try {
-            port = Integer.parseInt(hostProperty[1]);
-        }catch (Exception e){
-            System.out.println("Can't read -DNPort property or doesn't contain port numbers");
-            System.out.println("Using default port 14520...");
+        String hProp = System.getProperty("NHost");
+        if(hProp != null){
+            //System.out.println(System.getProperty("NHost"));
+            String[] hostProperty = hProp.split(":");
+            System.out.println("NHost: "+ Arrays.toString(hostProperty));
+            String remoteIP = hostProperty[0];
+            if(!remoteIP.equals("this")){
+                this.host = remoteIP;
+                isExternal = true;
+            }
+            try {
+                port = Integer.parseInt(hostProperty[1]);
+            }catch (Exception e){
+                System.out.println("Can't read -DNPort property or doesn't contain port numbers");
+                System.out.println("Using default port 14520...");
+            }
         }
     }
 
