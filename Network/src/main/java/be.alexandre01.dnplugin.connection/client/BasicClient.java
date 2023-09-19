@@ -49,6 +49,9 @@ public class BasicClient extends Thread implements IBasicClient {
                 System.out.println("Can't read -DNPort property or doesn't contain port numbers");
                 System.out.println("Using default port 14520...");
             }
+        }else {
+            System.out.println("Can't read -DNHost property");
+            System.out.println("Using default host localhost...");
         }
     }
 
