@@ -2,8 +2,8 @@ package be.alexandre01.dnplugin.plugins.bungeecord;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
-import be.alexandre01.dnplugin.api.request.RequestManager;
-import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
+import be.alexandre01.dnplugin.api.connection.request.RequestManager;
+import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
 import be.alexandre01.dnplugin.api.universal.player.UniversalPlayer;
 import be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeAPI;
 import be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeServersManager;
@@ -11,7 +11,6 @@ import be.alexandre01.dnplugin.plugins.bungeecord.communication.BungeeRequestRes
 import be.alexandre01.dnplugin.plugins.bungeecord.communication.generated.BungeeGeneratedRequest;
 import be.alexandre01.dnplugin.plugins.bungeecord.utils.BungeeServersManager;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.logging.Logger;
 

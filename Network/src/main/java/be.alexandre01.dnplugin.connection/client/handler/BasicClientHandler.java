@@ -2,9 +2,9 @@ package be.alexandre01.dnplugin.connection.client.handler;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
-import be.alexandre01.dnplugin.api.request.RequestType;
+import be.alexandre01.dnplugin.api.connection.request.RequestType;
 import be.alexandre01.dnplugin.connection.client.BasicClient;
-import be.alexandre01.dnplugin.api.request.communication.ClientResponse;
+import be.alexandre01.dnplugin.api.connection.request.communication.ClientResponse;
 import be.alexandre01.dnplugin.connection.client.communication.BasicTransmission;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
 import io.netty.buffer.ByteBuf;
@@ -23,12 +23,14 @@ import java.util.HashMap;
 
 public class BasicClientHandler extends ChannelInboundHandlerAdapter implements IClientHandler {
     @Getter private ArrayList<ClientResponse> responses = new ArrayList<>();
+    @Getter private CallbackManager callbackManager;
     private HashMap<Message, GenericFutureListener<? extends Future<? super Void>>> queue = new HashMap<>();
     private BasicClient basicClient;
     @Getter @Setter private Channel channel;
 
     public BasicClientHandler(BasicClient basicClient){
         this.basicClient = basicClient;
+        callbackManager = new CallbackManager();
         responses.add(new BasicTransmission());
 
         NetworkBaseAPI.getInstance().setClientHandler(this);
@@ -76,14 +78,16 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter implements 
 
         //TO DECODE STRING IF ENCODED AS AES
 
-        if(!Message.isJSONValid(s_to_decode))
-            return;
+       /* No need to check if json is valid if(!Message.isJSONValid(s_to_decode))
+            return;*/
 
 
         //System.out.println("TO message");
 
         try {
             Message message = Message.createFromJsonString(s_to_decode);
+            if(message == null) // New check of validity of JSON
+                return;
             if(!responses.isEmpty()){
                 for(int i = 0; i < responses.size(); i++){
                     ClientResponse iBasicClientResponse = responses.get(i);
@@ -102,8 +106,6 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter implements 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("Channel inactive try to reconnect...");
-
-
     }
 
     @Override

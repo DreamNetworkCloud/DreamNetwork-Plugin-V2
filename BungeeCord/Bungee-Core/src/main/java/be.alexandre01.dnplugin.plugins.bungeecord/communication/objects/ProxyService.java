@@ -4,7 +4,7 @@ import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.objects.RemoteBundle;
 import be.alexandre01.dnplugin.api.objects.RemoteService;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
-import be.alexandre01.dnplugin.api.request.RequestType;
+import be.alexandre01.dnplugin.api.connection.request.RequestType;
 import be.alexandre01.dnplugin.api.utils.Mods;
 
 public class ProxyService extends RemoteService {

@@ -2,9 +2,9 @@ package be.alexandre01.dnplugin.plugins.velocity;
 
 import be.alexandre01.dnplugin.api.connection.IBasicClient;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
-import be.alexandre01.dnplugin.api.request.RequestFile;
-import be.alexandre01.dnplugin.api.request.RequestManager;
-import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
+import be.alexandre01.dnplugin.api.connection.request.RequestFile;
+import be.alexandre01.dnplugin.api.connection.request.RequestManager;
+import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
 import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityAPI;
 import be.alexandre01.dnplugin.plugins.velocity.components.commands.Maintenance;
 import be.alexandre01.dnplugin.plugins.velocity.components.commands.Slot;
@@ -26,7 +26,6 @@ import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
-import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.velocitypowered.api.proxy.server.ServerInfo;
 import lombok.Getter;
 import lombok.Setter;
@@ -112,7 +111,7 @@ public class DNVelocity {
         api = new ImplAPI(this);
 
         this.dnChannelManager = new DNChannelManager();
-        this.requestManager = new RequestManager();
+        this.requestManager = new RequestManager(api);
 
         RequestFile requestFile = new RequestFile();
 
@@ -136,7 +135,7 @@ public class DNVelocity {
         // For instance, we could register an event:
 
         // JAMAIS PRESENT
-        server.getServer("core").ifPresent(serverInfo -> {
+        server.getServer("be.alexandre01.dnplugin/api/objects/core").ifPresent(serverInfo -> {
             coreTemp = serverInfo.getServerInfo();
         });
 

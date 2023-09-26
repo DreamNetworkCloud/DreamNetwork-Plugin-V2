@@ -4,8 +4,9 @@ import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.objects.RemoteBundle;
 import be.alexandre01.dnplugin.api.objects.RemoteService;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
-import be.alexandre01.dnplugin.api.request.RequestType;
+import be.alexandre01.dnplugin.api.connection.request.RequestType;
 import be.alexandre01.dnplugin.api.utils.Mods;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
 
 public class ProxyService extends RemoteService {
     public ProxyService(String name, Mods mods, boolean isStarted, RemoteBundle remoteBundle) {
@@ -19,14 +20,12 @@ public class ProxyService extends RemoteService {
 
     @Deprecated
     public void createServer(String serverName){
-        System.out.println(serverName);
-        String[] data = serverName.split(";");
+        //System.out.println(serverName);
+       // String[] data = serverName.split(";");
 
         String[] numSearch = serverName.split("-");
         int i = Integer.parseInt(numSearch[numSearch.length-1]);
-
         DNServer dnServer = new DNServer(numSearch[0],i,this);
-
         if(!isStarted())
             isStarted = true;
 

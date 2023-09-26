@@ -2,16 +2,21 @@ package be.alexandre01.dnplugin.api;
 
 import be.alexandre01.dnplugin.api.connection.IBasicClient;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
+import be.alexandre01.dnplugin.api.connection.request.Packet;
+import be.alexandre01.dnplugin.api.connection.request.RequestManager;
 import be.alexandre01.dnplugin.api.objects.RemoteBundle;
 import be.alexandre01.dnplugin.api.objects.RemoteService;
-import be.alexandre01.dnplugin.api.objects.player.DNPlayer;
-import be.alexandre01.dnplugin.api.request.CustomRequestInfo;
-import be.alexandre01.dnplugin.api.request.RequestManager;
-import be.alexandre01.dnplugin.api.request.RequestType;
-import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
-import be.alexandre01.dnplugin.api.request.communication.ResponseManager;
-import be.alexandre01.dnplugin.api.request.exception.IDNotFoundException;
+import be.alexandre01.dnplugin.api.connection.request.CustomRequestInfo;
+import be.alexandre01.dnplugin.api.connection.request.RequestType;
+import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
+import be.alexandre01.dnplugin.api.connection.request.communication.ResponseManager;
+import be.alexandre01.dnplugin.api.connection.request.exception.IDNotFoundException;
+import be.alexandre01.dnplugin.api.objects.core.NetCore;
+import be.alexandre01.dnplugin.api.objects.server.NetEntity;
 import be.alexandre01.dnplugin.api.universal.player.UniversalPlayer;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-public abstract class NetworkBaseAPI {
+public abstract class NetworkBaseAPI extends NetCore{
     @Getter @Setter private HashMap<String,RemoteService> services = new HashMap<>();
     @Getter @Setter private HashMap<String, RemoteBundle> bundles = new HashMap<>();
 
@@ -30,10 +35,12 @@ public abstract class NetworkBaseAPI {
 
     @Getter private boolean isExternal = false;
 
+
     public static NetworkBaseAPI getInstance() {
         return instance;
     }
     public NetworkBaseAPI(){
+        super();
         instance = this;
     }
 
@@ -91,7 +98,6 @@ public abstract class NetworkBaseAPI {
 
     public abstract DNChannelManager getChannelManager();
 
-    public abstract void setRequestManager(RequestManager requestManager);
 
     public abstract IClientHandler getClientHandler();
 
@@ -108,11 +114,11 @@ public abstract class NetworkBaseAPI {
 
     @Deprecated
     public boolean initConnection(){
-        //check if class be.alexandre01.dnplugin.connection.BaseClient exist
+
         if(isInit){
             throw new RuntimeException("Connection already initialized");
         }
-
+        //check if class be.alexandre01.dnplugin.connection.BaseClient exist
         Class<?> clazz = null;
         try {
             clazz = Class.forName("be.alexandre01.dnplugin.connection.client.BasicClient");
@@ -158,5 +164,31 @@ public abstract class NetworkBaseAPI {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Packet writeAndFlush(Message message) {
+        return writeAndFlush(message, null);
+    }
+
+    @Override
+    public Packet writeAndFlush(Message message, GenericFutureListener<? extends Future<? super Void>> listener) {
+        getClientHandler().writeAndFlush(message,listener);
+        return new Packet() {
+            @Override
+            public Message getMessage() {
+                return message;
+            }
+
+            @Override
+            public String getProvider() {
+                return getProcessName();
+            }
+
+            @Override
+            public NetEntity getReceiver() {
+                return NetworkBaseAPI.this;
+            }
+        };
     }
 }

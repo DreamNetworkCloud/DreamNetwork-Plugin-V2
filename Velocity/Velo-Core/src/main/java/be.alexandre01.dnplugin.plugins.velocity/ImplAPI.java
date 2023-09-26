@@ -2,9 +2,9 @@ package be.alexandre01.dnplugin.plugins.velocity;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
-import be.alexandre01.dnplugin.api.request.RequestManager;
+import be.alexandre01.dnplugin.api.connection.request.RequestManager;
 
-import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
+import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
 import be.alexandre01.dnplugin.api.universal.player.UniversalPlayer;
 import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityAPI;
 import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityServersManager;

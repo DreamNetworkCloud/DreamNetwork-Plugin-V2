@@ -1,10 +1,11 @@
 package be.alexandre01.dnplugin.plugins.bungeecord;
 
+import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.IBasicClient;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
-import be.alexandre01.dnplugin.api.request.RequestFile;
-import be.alexandre01.dnplugin.api.request.RequestManager;
-import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
+import be.alexandre01.dnplugin.api.connection.request.RequestFile;
+import be.alexandre01.dnplugin.api.connection.request.RequestManager;
+import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
 import be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeAPI;
 import be.alexandre01.dnplugin.plugins.bungeecord.components.TablistCustomizer;
 import be.alexandre01.dnplugin.plugins.bungeecord.components.commands.Maintenance;
@@ -25,7 +26,6 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ListenerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.protocol.packet.Title;
 import org.bstats.bungeecord.Metrics;
 
 import java.io.File;
@@ -191,7 +191,7 @@ public class DNBungee extends Plugin {
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Slot("slot"));
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new TabList("tablist"));
         this.dnChannelManager = new DNChannelManager();
-        this.requestManager = new RequestManager();
+        this.requestManager = new RequestManager(api);
 
         RequestFile requestFile = new RequestFile();
         requestFile.loadFile(  Config.getPath(ProxyServer.getInstance().getPluginsFolder() + "/DreamNetwork/requests.dream"));

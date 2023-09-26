@@ -1,7 +1,7 @@
 package be.alexandre01.dnplugin.plugins.bungeecord.objects;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
-import be.alexandre01.dnplugin.api.request.RequestType;
+import be.alexandre01.dnplugin.api.connection.request.RequestType;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 

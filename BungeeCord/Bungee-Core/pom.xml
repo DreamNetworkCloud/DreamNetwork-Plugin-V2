@@ -132,15 +132,16 @@
                                         <option>-dontnote</option>
                                         <option>-dontwarn</option> <!-- added option to ignore com.sun missing classes -->
                                         <option>-keepattributes Signature,InnerClasses,SourceFile,LineNumberTable,*Annotations*,LocalVariableTable</option>
-                                        <option>-keep class be.alexandre01.dnplugin.client.Launcher</option>
+                                        <option>-keep class be.alexandre01.dnplugin.netEntity.Launcher</option>
                                         <option>-keep class be.alexandre01.dnplugin.**</option>
                                         <option>-keepclasseswithmembernames class
-                                            be.alexandre01.dnplugin.client.Launcher {
+                                            be.alexandre01.dnplugin.netEntity.Launcher {
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
-                                        <option>-keep class be.alexandre01.dnplugin.api.request.RequestType</option>
-                                        <option>-keepclasseswithmembernames class be.alexandre01.dnplugin.api.request.RequestType {
+                                        <option>-keep class be.alexandre01.dnplugin.api.connection.request.RequestType</option>
+                                        <option>-keepclasseswithmembernames class
+                                            be.alexandre01.dnplugin.api.connection.request.RequestType {
                                             <![CDATA[<methods>]]>;
                                             <![CDATA[<fields>]]>;
                                             }

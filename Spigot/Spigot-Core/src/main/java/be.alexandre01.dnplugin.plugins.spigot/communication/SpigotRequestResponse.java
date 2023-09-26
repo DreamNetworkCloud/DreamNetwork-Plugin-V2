@@ -6,8 +6,8 @@ import be.alexandre01.dnplugin.api.objects.RemoteService;
 import be.alexandre01.dnplugin.api.objects.player.DNPlayer;
 import be.alexandre01.dnplugin.api.objects.player.DNPlayerManager;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
-import be.alexandre01.dnplugin.api.request.RequestType;
-import be.alexandre01.dnplugin.api.request.communication.ClientResponse;
+import be.alexandre01.dnplugin.api.connection.request.RequestType;
+import be.alexandre01.dnplugin.api.connection.request.communication.ClientResponse;
 import be.alexandre01.dnplugin.plugins.spigot.communication.objects.BaseService;
 import be.alexandre01.dnplugin.plugins.spigot.DNSpigot;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.player.NetworkDisconnectEvent;
@@ -185,7 +185,7 @@ public class SpigotRequestResponse extends ClientResponse {
         });
         addRequestInterceptor(RequestType.SERVER_UNREGISTER_PLAYERS,(message, ctx) -> {
             System.out.println("Removing players");
-            List<Integer> unPlayers =  (List<Integer>) message.getIntegersList("P");
+            List<Integer> unPlayers =  (List<Integer>) message.get("P");
             for(Integer id : unPlayers){
                 DNPlayer dnPlayer = dnPlayerManager.getDnPlayers().get(id);
                 dnPlayerManager.removePlayer(dnPlayer);

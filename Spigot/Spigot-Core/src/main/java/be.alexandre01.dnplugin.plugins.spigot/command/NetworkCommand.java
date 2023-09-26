@@ -1,10 +1,12 @@
 package be.alexandre01.dnplugin.plugins.spigot.command;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
+import be.alexandre01.dnplugin.api.connection.request.DNCallback;
+import be.alexandre01.dnplugin.api.connection.request.TaskHandler;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
-import be.alexandre01.dnplugin.api.request.RequestPacket;
-import be.alexandre01.dnplugin.api.request.RequestType;
-import be.alexandre01.dnplugin.api.request.channels.DNChannel;
+import be.alexandre01.dnplugin.api.connection.request.RequestPacket;
+import be.alexandre01.dnplugin.api.connection.request.RequestType;
+import be.alexandre01.dnplugin.api.connection.request.channels.DNChannel;
 import be.alexandre01.dnplugin.plugins.spigot.DNSpigot;
 import be.alexandre01.dnplugin.api.utils.Mods;
 import com.google.common.io.ByteArrayDataOutput;
@@ -18,6 +20,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class NetworkCommand extends Command {
@@ -70,8 +73,31 @@ public class NetworkCommand extends Command {
                     sender.sendMessage("§cThe server is not online.");
                     return false;
                 }
-                RequestPacket executecmd = DNSpigot.getAPI().getRequestManager().sendRequest(RequestType.SERVER_EXECUTE_COMMAND,args[1],cmd.toString());
 
+
+                RequestPacket executecmd = DNSpigot.getAPI().getRequestManager().getRequest(RequestType.SERVER_EXECUTE_COMMAND,args[1],cmd.toString());
+
+                DNCallback.multiple(executecmd, new TaskHandler() {
+                    @Override
+                    public void onCallback() {
+                        if(hasType(TaskType.CUSTOM)){
+                            if(getCustomType().equals("STARTED")){
+                                sender.sendMessage("§aThe server is STARTED");
+                                return;
+                            }
+                            if(getCustomType().equals("LINKED")){
+                                sender.sendMessage("§aThe server is CONNECTED");
+                                destroy();
+                                return;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailed() {
+                        sender.sendMessage("§cThere is a problem with the server.");
+                    }
+                }).send();
                 executecmd.setRequestFutureResponse(message -> {
                     System.out.println(message);
                 });
@@ -118,7 +144,36 @@ public class NetworkCommand extends Command {
                             sender.sendMessage("§cPlease put another server name because this one is invalid.");
                             return false;
                         }
-                        RequestPacket start = DNSpigot.getAPI().getRequestManager().sendRequest(RequestType.CORE_START_SERVER,args[1]);
+                        AtomicReference<String> serverName = new AtomicReference<>(args[1]);
+                        RequestPacket start = DNSpigot.getAPI().getRequestManager().getRequest(RequestType.CORE_START_SERVER,serverName);
+                        DNCallback.multiple(start, new TaskHandler() {
+                            @Override
+                            public int getTimeOut() {
+                                return 600;
+                            }
+
+                            @Override
+                            public void onCallback() {
+                                if(hasType(TaskType.CUSTOM)){
+                                    if(getCustomType().equals("STARTED")){
+                                        if(getResponse().containsKey("name")){
+                                            serverName.set(getResponse().getString("name"));
+                                        }
+                                        sender.sendMessage("§aThe server "+ serverName.get()+" has been started");
+                                    }
+                                    if(getCustomType().equals("LINKED")){
+                                        sender.sendMessage("§aThe server "+ serverName.get()+" is CONNECTED");
+                                        destroy();
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailed() {
+                                sender.sendMessage("§cThere is a problem to start the service "+ serverName.get());
+                            }
+                        }).send();
+
                         sender.sendMessage("§aThe request to start the server §l"+args[1]+"§a has been sent. Please wait.");
                         start.setRequestFutureResponse(message -> {
                             System.out.println(message);

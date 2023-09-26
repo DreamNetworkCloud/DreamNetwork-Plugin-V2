@@ -1,12 +1,12 @@
 package be.alexandre01.dnplugin.plugins.spigot;
 
+import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.IBasicClient;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
-import be.alexandre01.dnplugin.api.request.RequestFile;
-import be.alexandre01.dnplugin.api.request.RequestManager;
-import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
-import be.alexandre01.dnplugin.plugins.spigot.api.DNSpigotAPI;
+import be.alexandre01.dnplugin.api.connection.request.RequestFile;
+import be.alexandre01.dnplugin.api.connection.request.RequestManager;
+import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
 import be.alexandre01.dnplugin.plugins.spigot.command.NetworkCommand;
 import be.alexandre01.dnplugin.plugins.spigot.command.StatsCommand;
 import be.alexandre01.dnplugin.plugins.spigot.listeners.ReloadListener;
@@ -66,7 +66,7 @@ public class DNSpigot extends JavaPlugin{
         api = new ImplAPI(this);
 
 
-        this.requestManager = new RequestManager();
+        this.requestManager = new RequestManager(api);
         this.dnChannelManager = new DNChannelManager();
 
         RequestFile requestFile = new RequestFile();

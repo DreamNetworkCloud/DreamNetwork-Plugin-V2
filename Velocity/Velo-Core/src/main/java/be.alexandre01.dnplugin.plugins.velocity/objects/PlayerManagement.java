@@ -1,11 +1,9 @@
 package be.alexandre01.dnplugin.plugins.velocity.objects;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
-import be.alexandre01.dnplugin.api.request.RequestType;
-import be.alexandre01.dnplugin.plugins.velocity.DNVelocity;
+import be.alexandre01.dnplugin.api.connection.request.RequestType;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
 import com.velocitypowered.api.proxy.Player;
-import com.velocitypowered.api.proxy.server.ServerInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,7 +1,7 @@
 package be.alexandre01.dnplugin.plugins.spigot.communication.generated;
 
-import be.alexandre01.dnplugin.api.request.RequestBuilder;
-import be.alexandre01.dnplugin.api.request.RequestType;
+import be.alexandre01.dnplugin.api.connection.request.RequestBuilder;
+import be.alexandre01.dnplugin.api.connection.request.RequestType;
 
 public class SpigotGeneratedRequest extends RequestBuilder {
     public SpigotGeneratedRequest(){

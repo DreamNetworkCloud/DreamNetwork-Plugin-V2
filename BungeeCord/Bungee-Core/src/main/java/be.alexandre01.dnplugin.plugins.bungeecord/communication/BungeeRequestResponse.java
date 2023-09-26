@@ -1,7 +1,7 @@
 package be.alexandre01.dnplugin.plugins.bungeecord.communication;
 
-import be.alexandre01.dnplugin.api.request.RequestType;
-import be.alexandre01.dnplugin.api.request.communication.ClientResponse;
+import be.alexandre01.dnplugin.api.connection.request.RequestType;
+import be.alexandre01.dnplugin.api.connection.request.communication.ClientResponse;
 import be.alexandre01.dnplugin.plugins.bungeecord.DNBungee;
 import be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeAPI;
 import be.alexandre01.dnplugin.api.utils.Mods;

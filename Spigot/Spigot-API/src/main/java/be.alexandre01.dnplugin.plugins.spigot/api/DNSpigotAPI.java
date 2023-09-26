@@ -5,7 +5,7 @@ import be.alexandre01.dnplugin.api.connection.IClientHandler;
 import be.alexandre01.dnplugin.api.objects.player.DNPlayerManager;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import be.alexandre01.dnplugin.api.request.RequestManager;
-import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
+
 import org.bukkit.entity.Player;
 
 import java.util.logging.Logger;
@@ -39,11 +39,10 @@ public interface DNSpigotAPI {
 
     Logger getLogger();
 
-    RequestManager getRequestManager();
+    /*RequestManager getRequestManager();
 
-    DNChannelManager getChannelManager();
+    DNChannelManager getChannelManager();*/
 
-    void setRequestManager(RequestManager requestManager);
 
     void setClientHandler(IClientHandler basicClientHandler);
 

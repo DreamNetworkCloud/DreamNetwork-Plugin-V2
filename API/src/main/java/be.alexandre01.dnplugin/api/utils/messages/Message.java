@@ -1,127 +1,332 @@
 package be.alexandre01.dnplugin.api.utils.messages;
-import be.alexandre01.dnplugin.api.request.RequestInfo;
-import be.alexandre01.dnplugin.api.request.RequestType;
+
+
+import be.alexandre01.dnplugin.api.NetworkBaseAPI;
+import be.alexandre01.dnplugin.api.connection.request.DNCallbackReceiver;
+import be.alexandre01.dnplugin.api.connection.request.Packet;
+import be.alexandre01.dnplugin.api.objects.RemoteService;
+import be.alexandre01.dnplugin.api.objects.server.DNServer;
+import be.alexandre01.dnplugin.api.objects.server.NetEntity;
+import be.alexandre01.dnplugin.api.connection.request.RequestInfo;
+import be.alexandre01.dnplugin.api.connection.request.RequestType;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.gson.*;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
+import lombok.Getter;
 
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
+@Getter
 public class Message extends LinkedHashMap<String, Object> {
-    private static final Type HASH_MAP_TYPE = new TypeToken<Map<String, Object>>() {
-    }.getType();
+    ObjectMapper mapper;
+
+    final char prefix = '$';
+
     public Message(Map<String, Object> map) {
+        this(map, createMapper());
+    }
+
+    public Message(Map<String, Object> map, ObjectMapper mapper) {
         super(map);
+        this.mapper = mapper;
     }
+
     public Message() {
-        super(new LinkedHashMap<>());
+        this(new LinkedHashMap<>(), createMapper());
     }
-    public Message set(String id,Object value){
-        super.put("DN-"+id,value);
+
+    public static Gson createGson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        //   gsonBuilder.setLenient();
+        gsonBuilder.registerTypeAdapter(Integer.class, new JsonSerializer<Integer>() {
+            @Override
+            public JsonElement serialize(Integer src, Type typeOfSrc, JsonSerializationContext context) {
+                return new JsonPrimitive(src);
+            }
+        });
+
+        gsonBuilder.registerTypeAdapter(Integer.class, new JsonDeserializer<Integer>() {
+            @Override
+            public Integer deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                try {
+                    return json.getAsInt();
+                } catch (NumberFormatException e) {
+                    throw new JsonParseException(e);
+                }
+            }
+        });
+
+        gsonBuilder.setLongSerializationPolicy(LongSerializationPolicy.STRING);
+
+
+        return gsonBuilder.create();
+    }
+
+    public static ObjectMapper createMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+        mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        return mapper;
+    }
+
+    public static Message createFromJsonString(String json) {
+        try {
+            ObjectMapper mapper = createMapper();
+            mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+            JavaType type = mapper.getTypeFactory().
+                    constructMapType(Map.class, String.class, Object.class);
+
+            return new Message(mapper.readValue(json, type), mapper);
+            //return new Message(createGson().fromJson(json, HASH_MAP_TYPE));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
+    public Message set(String id, Object value, Class<?>... overrideChild) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+
+        if (overrideChild.length != 0) {
+            List<Class<?>> classes = Arrays.asList(overrideChild);
+            gsonBuilder.setExclusionStrategies(new ExclusionStrategy() {
+                public boolean shouldSkipField(FieldAttributes field) {
+                    return classes.stream().noneMatch(field.getDeclaringClass()::equals);
+                }
+
+                @Override
+                public boolean shouldSkipClass(Class<?> aClass) {
+                    return false;
+                }
+            });
+            value = gsonBuilder.create().toJson(value);
+        }
+        super.put(prefix + id, value);
+        System.out.println("Value to be set " + value);
         return this;
     }
 
-    @Override
-    public Object put(String id, Object value){
-        return super.put("DN-"+id,value);
-    }
+    public Message setCustomObject(String id, Object value, Class<?> tClass) {
+        System.out.println("Test2");
 
-    public Object setInRoot(String id, Object value){
-        return super.put(id,value);
-    }
-    public boolean contains(String key){
-        return containsKey("DN-"+key);
-    }
 
-    public HashMap<String, Object> getObjectData(){
+        ObjectMapper mapper = new ObjectMapper();
+        //mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        try {
+            System.out.println(value);
+            mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            String json = mapper.writer().forType(tClass).writeValueAsString(value);
+            System.out.println(json);
+            super.put(prefix + id, json);
+        } catch (JsonProcessingException e) {
+            System.out.println("Error with custom object");
+            e.printStackTrace();
+        }
+        //super.put(prefix+id, value);
+        System.out.println("Value to be set " + value);
         return this;
     }
-    public boolean hasRequestID(){
-        return super.containsKey("MID");
+
+
+
+    public Message setList(String id, List<?> value, Class<?>... overrideChild) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+
+        if (overrideChild.length != 0) {
+
+            List<Class<?>> classes = Arrays.asList(overrideChild);
+            gsonBuilder.setExclusionStrategies(new ExclusionStrategy() {
+                public boolean shouldSkipField(FieldAttributes field) {
+                    return classes.stream().noneMatch(field.getDeclaringClass()::equals);
+                }
+
+                @Override
+                public boolean shouldSkipClass(Class<?> aClass) {
+                    return false;
+                }
+            });
+        }
+        String json = gsonBuilder.create().toJson(value);
+        super.put(prefix + id, json);
+        return this;
     }
-    public int getMessageID(){
+
+    /*public Message setMap(String id, Map<?, ?> value) {
+        return setMap(id, value, null);
+    }
+
+    public Message setMap(String id, Map<?, ?> value, Class<?> toOverride) {
+
+        return null;
+    }*/
+
+    public Message setInRoot(String id, Object value) {
+        super.put(id, value);
+        return this;
+    }
+
+    public boolean contains(String key) {
+        return super.containsKey(prefix + key);
+    }
+    public boolean containsKey(String key) {
+        return super.containsKey(prefix + key);
+    }
+    public boolean containsValue(String key) {
+        return super.containsValue(prefix + key);
+    }
+
+    public boolean containsKeyInRoot(String key) {
+        return super.containsKey(key);
+    }
+
+    public boolean containsValueInRoot(String key) {
+        return super.containsValue(key);
+    }
+
+    public Message remove(String key) {
+        super.remove(prefix + key);
+        return this;
+    }
+
+    public Message removeInRoot(String key) {
+        super.remove(key);
+        return this;
+    }
+    public HashMap<String, Object> getObjectData() {
+        return this;
+    }
+
+    public int getMessageID() {
         return (int) super.get("MID");
     }
+
     @Override
     public Object get(Object key) {
-        return super.get("DN-"+key);
+        return super.get(Character.toString(prefix) + key);
     }
 
-    public Object getInRoot(Object key){
+    public Object getInRoot(Object key) {
         return super.get(key);
     }
 
-    public <T> T get(String key,Class<T> tClass){
-        return (T) super.get("DN-"+key);
+    public Object get(String key, JavaType type) {
+        Object o = super.get(prefix + key);
+        if (o instanceof String) {
+            try {
+                return mapper.readValue((String) o, type);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+            //return gson.fromJson((String) o,tClass);
+        }
+        if (o == null) {
+            return null;
+        }
+        return super.get(prefix + key);
+    }
+    public <T> T get(String key, Class<T> tClass){
+        return (T) get(key, mapper.getTypeFactory().constructType(tClass));
     }
 
-    public Message setChannel(String channel){
-        super.put("channel",channel);
+
+    public String getChannel() {
+        return super.containsKey("channel") ? (String) super.get("channel") : "be.alexandre01.dnplugin/api/objects/core";
+    }
+
+    public Message setChannel(String channel) {
+        super.put("channel", channel);
         return this;
     }
 
-    public String getChannel(){
-        return containsKey("channel") ? (String) super.get("channel") : "core";
+    public Optional<NetEntity> getProvider() {
+        String provider = (String) super.get("from");
+        if (provider == null) {
+            return Optional.empty();
+        }
+        if(provider.contains("core")){
+            return Optional.of(NetworkBaseAPI.getInstance());
+        }
+        String[] split = provider.split("-");
+        RemoteService remoteService = NetworkBaseAPI.getInstance().getByName(split[0]);
+        if(remoteService == null)
+            return Optional.empty();
+
+        return Optional.ofNullable(remoteService.getServers().get(Integer.parseInt(split[1])));
     }
-    public Message setHeader(String header){
-        super.put("header",header);
-        return this;
+
+    public void setProvider(String provider) {
+        super.put("from", provider);
     }
-    public void setProvider(String provider){
-        super.put("provider",provider);
+
+    public String getReceiver() {
+        return (String) super.get("to");
     }
-    public void setSender(String provider){
-        super.put("sender",provider);
+
+    public void setReceiver(String receiver) {
+        super.put("to", receiver);
     }
-    public String getProvider(){
-        return (String) super.get("provider");
+
+    public boolean hasReceiver() {
+        return super.containsKey("to");
     }
-    public String getSender(){
-        return (String) super.get("sender");
+
+    public boolean hasProvider() {
+        return super.containsKey("from");
     }
-    public boolean hasProvider(){
-        return containsKey("provider");
-    }
-    public String getHeader(){
+
+    public String getHeader() {
         return (String) super.get("header");
     }
 
-    public Message setRequestInfo(RequestInfo requestInfo){
-        super.put("RI",requestInfo.id);
+    public Message setHeader(String header) {
+        super.put("header", header);
         return this;
     }
 
-    public RequestInfo getRequest(){
+    public Message setRequestInfo(RequestInfo requestType) {
+        super.put("RI", requestType.id);
+        return this;
+    }
+
+    public RequestInfo getRequest() {
         return (RequestInfo) RequestType.getByID((Integer) super.get("RI"));
     }
-    public int getRequestID(){
+
+    public int getRequestID() {
         return (int) super.get("RI");
     }
 
-    public boolean hasRequest(){
-        return containsKey("RI");
+    public boolean hasRequest() {
+        return super.containsKey("RI");
     }
 
-    public JsonObject toJsonObject() {
-        return new Gson().toJsonTree(this).getAsJsonObject();
+    public String getString(String key) {
+        return String.valueOf(super.get(prefix + key));
     }
 
-    public String getString(String key){
-        return String.valueOf(super.get("DN-"+key));
-    }
-
-    public int getInt(String key){
+    public int getInt(String key) {
         return (int) get(key);
         //  return (int) Integer.parseInt(getString(key));
     }
 
-    public float getFloat(String key){
-        return ((Double) get(key)).floatValue();
+    public float getFloat(String key) {
+        return (float) get(key);
         //return (float) Float.parseFloat(getString(key));
     }
 
-    public long getLong(String key){
+    public long getLong(String key) {
         return (long) get(key);
         //return (long) Long.parseLong(getString(key));
     }
@@ -130,117 +335,110 @@ public class Message extends LinkedHashMap<String, Object> {
         return (List<?>) get(key);
         //return new ArrayList<>(Arrays.asList(getString(key).split(",")));
     }
-    public <T> List<T> getList(String key, Class<T> tClass) {
-        return (List<T>) get(key);
-        // return new ArrayList<T>((Collection<? extends T>) Arrays.asList(getString(key).split(",")));
-    }
-    public List<Integer> getIntegersList(String key){
-        /*List<Double> doubles = (List<Inte>) get(key);
-        List<Integer> i = new ArrayList<>();
-        for(Double d : doubles){
-            i.add(d.intValue());
-        }*/
 
-        return (List<Integer>) get(key);
-      //  return i;
+    public <K, V> LinkedTreeMap<K,V> getMap(String key, Class<K> keyMap, Class<V> valueMap) {
+        return (LinkedTreeMap<K, V>) get(key, mapper.getTypeFactory().constructMapType(LinkedTreeMap.class, keyMap, valueMap));
+        //return new ArrayList<>(Arrays.asList(getString(key).split(",")));
     }
 
-    public List<Float> getFloatList(String key){
-     /*   List<Double> doubles = (List<Double>) get(key);
-        List<Float> i = new ArrayList<>();
-        for(Double d : doubles){
-            i.add(d.floatValue());
-        }*/
+    public <T> ArrayList<T> getList(String key, Class<T> tClass) {
+        Object o = get(key);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        Type token = TypeToken.getParameterized(List.class, tClass).getType();
+        System.out.println(token.getTypeName());
+        JavaType type = mapper.getTypeFactory().
+                constructCollectionType(List.class, tClass);
+        ArrayList<T> list = null;
 
-        return (List<Float>) get(key);
-        //return i;
+
+        try {
+            if (o instanceof String) {
+                // T[] array = new Gson().fromJson((String) o, (Class<T[]>) tClass);
+                list = mapper.readValue((String) o, type);
+                // list = mapper.readValue((String) o, type);
+            } else {
+                list = mapper.readValue(mapper.writeValueAsString(o), type);
+
+            }
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+/*
+
+        System.out.println(o.getClass());
+
+        if(o instanceof String){
+            return new Gson().fromJson((String) o,type);
+        }
+        if(o instanceof LinkedTreeMap){
+            LinkedTreeMap<?,?> l = (LinkedTreeMap<?,?>) o;
+            List<T> list = (List<T>) new ArrayList<>(l.values());
+            return list;
+        }
+
+        if(o instanceof List){
+
+        }
+
+
+
+       // LinkedTreeMap
+        //return new Gson().fromJson(new Gson().toJson(get(key)),type);
+        //return (List<T>) get(key,type);
+       // return new ArrayList<T>((Collection<? extends T>) Arrays.asList(getString(key).split(",")));*/
+
     }
 
+    public Packet toPacket(NetEntity theReceiver){
+        return new Packet() {
+            @Override
+            public Message getMessage() {
+                return Message.this;
+            }
 
-    public boolean getBoolean(String key){
+            @Override
+            public String getProvider() {
+                return "be.alexandre01.dnplugin/api/objects/core"; // for later do core-id
+            }
+
+            @Override
+            public NetEntity getReceiver() {
+                return theReceiver;
+            }
+        };
+    }
+
+    public boolean getBoolean(String key) {
         return (boolean) get(key);
         //return (boolean) Boolean.parseBoolean(getString(key));
     }
 
-    public boolean hasChannel(){
-        return containsKey("channel");
+    public boolean hasChannel() {
+        return super.containsKey("channel");
     }
 
-    public static Message createFromJsonString(String json) {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(new TypeToken<Map <String, Object>>(){}.getType(),  new MapDeserializerDoubleAsIntFix());
-        Gson gson = gsonBuilder.create();
-        Message builder = new Message(gson.fromJson(json, HASH_MAP_TYPE));
-        return builder;
-    }
 
-    public static boolean isJSONValid(String json) {
-        try {
-            new Gson().fromJson(json, Object.class);
-            return true;
-        } catch(com.google.gson.JsonSyntaxException ex) {
-            return false;
-        }
-    }
 
-    @Override
-    public String toString() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(new TypeToken<Map <String, Object>>(){}.getType(),  new MapDeserializerDoubleAsIntFix());
-        //gsonBuilder.setLongSerializationPolicy(LongSerializationPolicy.DEFAULT);
-        String json = gsonBuilder.create().toJson(this,Message.class);
-        return json;
-    }
-
-    public static class MapDeserializerDoubleAsIntFix implements JsonDeserializer<Map<String, Object>> {
-
-        @Override  @SuppressWarnings("unchecked")
-        public Map<String, Object> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            return (Map<String, Object>) read(json);
-        }
-
-        public Object read(JsonElement in) {
-
-            if(in.isJsonArray()){
-                List<Object> list = new ArrayList<Object>();
-                JsonArray arr = in.getAsJsonArray();
-                for (JsonElement anArr : arr) {
-                    list.add(read(anArr));
-                }
-                return list;
-            }else if(in.isJsonObject()){
-                Map<String, Object> map = new LinkedTreeMap<String, Object>();
-                JsonObject obj = in.getAsJsonObject();
-                Set<Map.Entry<String, JsonElement>> entitySet = obj.entrySet();
-                for(Map.Entry<String, JsonElement> entry: entitySet){
-                    map.put(entry.getKey(), read(entry.getValue()));
-                }
-                return map;
-            }else if( in.isJsonPrimitive()){
-                JsonPrimitive prim = in.getAsJsonPrimitive();
-                if(prim.isBoolean()){
-                    return prim.getAsBoolean();
-                }else if(prim.isString()){
-                    return prim.getAsString();
-                }else if(prim.isNumber()){
-
-                    Number num = prim.getAsNumber();
-                    // here you can handle double int/long values
-                    // and return any type you want
-                    // this solution will transform 3.0 float to long values
-                    if(Math.ceil(num.doubleValue())  == num.longValue()){
-                        if(num.longValue() > Integer.MAX_VALUE){
-                            return num.longValue();
-                        }else {
-                            return num.intValue();
-                        }
-                    } else{
-                        return num.doubleValue();
-                    }
-                }
+    public Optional<DNCallbackReceiver> getCallback(){
+        AtomicReference<DNCallbackReceiver> callbackReceiver = new AtomicReference<>();
+        getProvider().ifPresent(new Consumer<NetEntity>() {
+            @Override
+            public void accept(NetEntity netEntity) {
+                callbackReceiver.set(new DNCallbackReceiver(getMessageID(),Message.this));
             }
-            return null;
-        }
+        });
+        return Optional.ofNullable(callbackReceiver.get());
     }
 
+    public String toString() {
+        try {
+            String json = mapper.writeValueAsString(this);
+            System.out.println(json);
+            return json;
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

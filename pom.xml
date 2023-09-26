@@ -39,8 +39,7 @@
                 <module>Network</module>
                 <module>BungeeCord</module>
                 <module>Spigot</module>
-                <module>Velocity/Velo-API</module>
-                <module>Velocity/Velo-Core</module>
+                <module>Velocity</module>
             </modules>
             <build>
                 <resources>
@@ -118,15 +117,16 @@
                                         <option>-dontnote</option>
                                         <option>-dontwarn</option> <!-- added option to ignore com.sun missing classes -->
                                         <option>-keepattributes Signature,InnerClasses,SourceFile,LineNumberTable,*Annotations*,LocalVariableTable</option>
-                                        <option>-keep class be.alexandre01.dnplugin.client.Launcher</option>
+                                        <option>-keep class be.alexandre01.dnplugin.netEntity.Launcher</option>
                                         <option>-keep class !be.alexandre01.dnplugin.** { *; }</option>
                                         <option>-keep class be.alexandre01.dnplugin.shaded.** { *; }</option>
-                                        <option>-keepclasseswithmembernames class be.alexandre01.dnplugin.client.Launcher {
+                                        <option>-keepclasseswithmembernames class be.alexandre01.dnplugin.netEntity.Launcher {
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
-                                        <option>-keep class be.alexandre01.dnplugin.api.request.RequestType</option>
-                                        <option>-keepclasseswithmembernames class be.alexandre01.dnplugin.api.request.RequestType {
+                                        <option>-keep class be.alexandre01.dnplugin.api.connection.request.RequestType</option>
+                                        <option>-keepclasseswithmembernames class
+                                            be.alexandre01.dnplugin.api.connection.request.RequestType {
                                             <![CDATA[<methods>]]>;
                                             <![CDATA[<fields>]]>;
                                             }
@@ -296,6 +296,7 @@
                 <module>API</module>
                 <module>BungeeCord/Bungee-API</module>
                 <module>Spigot/Spigot-API</module>
+                <module>Velocity/Velo-API</module>
             </modules>
             <dependencies>
                 <dependency>

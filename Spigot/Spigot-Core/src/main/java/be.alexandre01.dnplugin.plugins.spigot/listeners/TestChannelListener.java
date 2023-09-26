@@ -1,13 +1,13 @@
 package be.alexandre01.dnplugin.plugins.spigot.listeners;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
-import be.alexandre01.dnplugin.api.request.channels.DNChannel;
-import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
-import be.alexandre01.dnplugin.api.request.channels.DataListener;
-import be.alexandre01.dnplugin.api.request.channels.RegisterListener;
-import be.alexandre01.dnplugin.api.request.channels.DNChannelInterceptor;
-import be.alexandre01.dnplugin.api.request.channels.ChannelPacket;
-import be.alexandre01.dnplugin.api.request.channels.GetDataThread;
+import be.alexandre01.dnplugin.api.connection.request.channels.DNChannel;
+import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
+import be.alexandre01.dnplugin.api.connection.request.channels.DataListener;
+import be.alexandre01.dnplugin.api.connection.request.channels.RegisterListener;
+import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelInterceptor;
+import be.alexandre01.dnplugin.api.connection.request.channels.ChannelPacket;
+import be.alexandre01.dnplugin.api.connection.request.channels.GetDataThread;
 import be.alexandre01.dnplugin.plugins.spigot.DNSpigot;
 import be.alexandre01.dnplugin.plugins.spigot.ImplAPI;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.player.NetworkDisconnectEvent;
