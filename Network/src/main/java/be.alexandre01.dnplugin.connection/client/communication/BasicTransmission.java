@@ -94,7 +94,6 @@ public class BasicTransmission extends ClientResponse {
                     e.printStackTrace();
                 }
                 System.out.println("The connection has been established on the remote address: " + ctx.channel().remoteAddress());
-
                 NetworkBaseAPI.getInstance().callServerAttachedEvent();
             }  else if(requestInfo.equals(RequestType.PROXY_HANDSHAKE_SUCCESS)){
                 String processName = message.getString("PROCESSNAME");

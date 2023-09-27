@@ -85,9 +85,7 @@ public class DNSpigot extends JavaPlugin{
 
         //Register BungeeCord Channel
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-
     }
-
     @Override
     public void onDisable(){
         if(isReloading){
@@ -101,11 +99,6 @@ public class DNSpigot extends JavaPlugin{
         }
 
     }
-
-
-
-
-
 
     public void registerCommand(String commandName, Command commandClass){
         try{

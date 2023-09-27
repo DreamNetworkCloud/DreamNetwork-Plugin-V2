@@ -173,6 +173,16 @@
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
+                                        <option>-keepclasseswithmembernames class
+                                            be.alexandre01.dnplugin.plugins.velocity.DNVelocity {
+                                            <![CDATA[<methods>]]>;
+                                            }
+                                        </option>
+                                        <option>-keepclasseswithmembernames class
+                                            be.alexandre01.dnplugin.plugins.velocity.api.** {
+                                            <![CDATA[<methods>]]>;
+                                            }
+                                        </option>
                                         <option>-keep class be.alexandre01.dnplugin.plugins.sponge.api.**</option>
                                         <option>-keepclasseswithmembernames class
                                             be.alexandre01.dnplugin.plugins.sponge.api.**{

@@ -58,7 +58,8 @@ public class VelocityServersManager implements DNVelocityServersManager {
     public void unregisterServer(String finalname){
         Optional<RegisteredServer> server = DNVelocity.getInstance().getServer().getServer(finalname);
         if(!server.isPresent())return;
-        if(networkBaseAPI.getServices().size() == 1){
+        networkBaseAPI.getServices().remove(finalname);
+        if(networkBaseAPI.getServices().isEmpty()){
             DNVelocity.getInstance().getServer().registerServer(DNVelocity.getInstance().getCoreTemp());
             return;
         }

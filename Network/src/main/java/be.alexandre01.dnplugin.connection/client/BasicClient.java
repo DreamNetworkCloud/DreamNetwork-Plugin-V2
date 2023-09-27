@@ -9,6 +9,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Arrays;
@@ -24,6 +25,9 @@ public class BasicClient extends Thread implements IBasicClient {
     boolean isRunning = false;
 
     boolean isExternal = false;
+
+    @Getter String fullName = null;
+    @Getter String connectionID = null;
 
     String host;
     int port;
@@ -52,6 +56,21 @@ public class BasicClient extends Thread implements IBasicClient {
         }else {
             System.out.println("Can't read -DNHost property");
             System.out.println("Using default host localhost...");
+        }
+
+        String hInfo = System.getProperty("NInfo");
+        if(hInfo != null){
+            String[] split = hInfo.split("\\+");
+            fullName = split[0];
+            connectionID = split[1];
+            NetworkBaseAPI.getInstance().setProcessName(fullName);
+            NetworkBaseAPI.getInstance().setConnectionID(connectionID);
+        }else {
+            if(isExternal){
+                System.out.println("Can't read -DNInfo property");
+                System.out.println("The server will be shutdown");
+                NetworkBaseAPI.getInstance().shutdownProcess();
+            }
         }
     }
 

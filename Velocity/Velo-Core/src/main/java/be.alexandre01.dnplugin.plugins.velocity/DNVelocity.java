@@ -135,7 +135,7 @@ public class DNVelocity {
         // For instance, we could register an event:
 
         // JAMAIS PRESENT
-        server.getServer("be.alexandre01.dnplugin/api/objects/core").ifPresent(serverInfo -> {
+        server.getServer("core").ifPresent(serverInfo -> {
             coreTemp = serverInfo.getServerInfo();
         });
 

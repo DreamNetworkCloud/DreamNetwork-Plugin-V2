@@ -23,6 +23,7 @@ import lombok.Setter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 public abstract class NetworkBaseAPI extends NetCore{
@@ -34,6 +35,7 @@ public abstract class NetworkBaseAPI extends NetCore{
     private static NetworkBaseAPI instance;
 
     @Getter private boolean isExternal = false;
+    @Setter private String connectionID = null;
 
 
     public static NetworkBaseAPI getInstance() {
@@ -164,6 +166,10 @@ public abstract class NetworkBaseAPI extends NetCore{
             return true;
         }
         return false;
+    }
+
+    public Optional<String> getConnectionID(){
+        return Optional.ofNullable(connectionID);
     }
 
     @Override

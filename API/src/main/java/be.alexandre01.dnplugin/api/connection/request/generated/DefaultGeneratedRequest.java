@@ -21,8 +21,12 @@ public class DefaultGeneratedRequest extends RequestBuilder {
         requestData.put(RequestType.CORE_HANDSHAKE,(message, args) ->{
             message.set("INFO", NetworkBaseAPI.getInstance().getInfo());
             message.set("PORT", NetworkBaseAPI.getInstance().getPort());
-            if(NetworkBaseAPI.getInstance().isExternal())
+            if(NetworkBaseAPI.getInstance().isExternal()){
                 message.set("EXTERNAL",true);
+                message.set("NAME",NetworkBaseAPI.getInstance().getProcessName());
+                message.set("ID",NetworkBaseAPI.getInstance().getConnectionID().get());
+            }
+
             return message;
         });
 

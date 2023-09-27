@@ -17,12 +17,12 @@ public class VelocityRequestResponse extends ClientResponse {
         this.dnVelocityAPI = (DNVelocityAPI) DNVelocityAPI.getInstance();
 
         addRequestInterceptor(RequestType.PROXY_REGISTER_SERVER,(message, ctx) -> {
-            System.out.println("Registering server: " + message.getString("PROCESSNAME"));
+            dnVelocityAPI.getLogger().info("Registering server: " + message.getString("PROCESSNAME"));
             dnVelocityAPI.getDnVelocityServersManager().registerServer(message.getString("PROCESSNAME"),message.getString("REMOTEIP"),message.getInt("PORT"),Mods.valueOf(message.getString("MODS")));
         });
 
         addRequestInterceptor(RequestType.PROXY_UNREGISTER_SERVER,(message, ctx) -> {
-            System.out.println("Unregistering server: " + message.getString("PROCESSNAME"));
+            dnVelocityAPI.getLogger().info("Unregistering server: " + message.getString("PROCESSNAME"));
             dnVelocityAPI.getDnVelocityServersManager().unregisterServer(message.getString("PROCESSNAME"));
         });
 

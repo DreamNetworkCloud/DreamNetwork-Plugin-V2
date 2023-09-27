@@ -84,10 +84,31 @@ public class RedirectConnection  {
 
     @Subscribe
     public void onPlayerConnect(PostLoginEvent event){
+
+    }
+    @Subscribe
+    public void onPlayerChoose(com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent event) {
         if(dnVelocity.getConfiguration().isConnexionOnLobby()){
             dnVelocity.getLogger().info("[DNBungee] Redirecting player to lobby server");
             pending.add(event.getPlayer().getGameProfile().getId());
+            Optional<RegisteredServer> r = DNVelocity.getInstance().getServer().getServer(dnVelocity.getConfiguration().getLobby());
+            if(r.isPresent()) {
+                event.setInitialServer(r.get());
+            }else {
+                findAny().ifPresent(event::setInitialServer);
+            }
+        }else {
+            findAny().ifPresent(event::setInitialServer);
         }
+    }
+
+    public Optional<RegisteredServer> findAny(){
+        return DNVelocity.getInstance().getServer().getAllServers().stream().findAny();
+    }
+
+    @Subscribe
+    public void onLogin(com.velocitypowered.api.event.connection.LoginEvent event) {
+        event.setResult(ResultedEvent.ComponentResult.allowed());
     }
 
  /*   @EventHandler
