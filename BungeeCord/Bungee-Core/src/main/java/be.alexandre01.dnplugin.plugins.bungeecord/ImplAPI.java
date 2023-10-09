@@ -2,6 +2,7 @@ package be.alexandre01.dnplugin.plugins.bungeecord;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
+import be.alexandre01.dnplugin.api.connection.request.Packet;
 import be.alexandre01.dnplugin.api.connection.request.RequestManager;
 import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
 import be.alexandre01.dnplugin.api.universal.player.UniversalPlayer;
@@ -10,6 +11,8 @@ import be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeServersManager;
 import be.alexandre01.dnplugin.plugins.bungeecord.communication.BungeeRequestResponse;
 import be.alexandre01.dnplugin.plugins.bungeecord.communication.generated.BungeeGeneratedRequest;
 import be.alexandre01.dnplugin.plugins.bungeecord.utils.BungeeServersManager;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Getter;
 
 import java.util.logging.Logger;
@@ -83,6 +86,8 @@ public class ImplAPI extends NetworkBaseAPI implements DNBungeeAPI {
     public Logger getLogger() {
         return Logger.getGlobal();
     }
+
+
 
     @Override
     public RequestManager getRequestManager() {

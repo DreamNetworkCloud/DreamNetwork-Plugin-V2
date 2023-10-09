@@ -47,7 +47,7 @@ public abstract class TaskHandler {
 
     public void onAccepted(){}
 
-    public void onRefused(){}
+    public void onRejected(){}
 
     public void onIgnored(){}
 
@@ -65,7 +65,7 @@ public abstract class TaskHandler {
 
     public enum TaskType{
         IGNORED,
-        REFUSED,
+        REJECTED,
         ACCEPTED,
         SUCCESS,
         FAILED,

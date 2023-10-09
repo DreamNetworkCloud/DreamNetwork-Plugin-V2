@@ -73,4 +73,16 @@ public class DNServer extends RemoteClient {
         };
     }
 
+    @Override
+    public Packet dispatch(Packet packet) {
+        networkBaseAPI.getClientHandler().writeAndFlush(packet.getMessage());
+        return packet;
+    }
+
+    @Override
+    public Packet dispatch(Packet packet, GenericFutureListener<? extends Future<? super Void>> future) {
+        networkBaseAPI.getClientHandler().writeAndFlush(packet.getMessage(),future);
+        return packet;
+    }
+
 }

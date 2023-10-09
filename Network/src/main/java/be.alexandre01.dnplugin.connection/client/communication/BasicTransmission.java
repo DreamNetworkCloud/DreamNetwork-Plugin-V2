@@ -2,9 +2,7 @@ package be.alexandre01.dnplugin.connection.client.communication;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.request.RequestInfo;
-import be.alexandre01.dnplugin.api.connection.request.TaskHandler;
 import be.alexandre01.dnplugin.api.connection.request.channels.ChannelPacket;
-import be.alexandre01.dnplugin.api.connection.request.RequestPacket;
 import be.alexandre01.dnplugin.api.connection.request.RequestType;
 import be.alexandre01.dnplugin.api.connection.request.channels.DNChannel;
 import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelInterceptor;
@@ -127,8 +125,8 @@ public class BasicTransmission extends ClientResponse {
                                 case ACCEPTED:
                                     handler.onAccepted();
                                     break;
-                                case REFUSED:
-                                    handler.onRefused();
+                                case REJECTED:
+                                    handler.onRejected();
                                     break;
                                 case IGNORED:
                                     handler.onFailed();

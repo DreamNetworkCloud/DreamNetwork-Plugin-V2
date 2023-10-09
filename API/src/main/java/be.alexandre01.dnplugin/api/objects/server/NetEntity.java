@@ -14,13 +14,18 @@ import lombok.Getter;
 */
 @Getter
 public abstract class
+
 NetEntity {
     protected final String name;
 
     protected NetEntity(String name) {
         this.name = name;
     }
-    public abstract Packet writeAndFlush(Message message);
-    public abstract Packet writeAndFlush(Message message, GenericFutureListener<? extends Future<? super Void>> listener);
+    @Deprecated public abstract Packet writeAndFlush(Message message);
+    @Deprecated public abstract Packet writeAndFlush(Message message, GenericFutureListener<? extends Future<? super Void>> listener);
+
+    public abstract Packet dispatch(Packet packet);
+    public abstract Packet dispatch(Packet packet, GenericFutureListener<? extends Future<? super Void>> future);
+
     public abstract RequestManager getRequestManager();
 }

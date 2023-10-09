@@ -83,10 +83,6 @@ public class RedirectConnection  {
     }
 
     @Subscribe
-    public void onPlayerConnect(PostLoginEvent event){
-
-    }
-    @Subscribe
     public void onPlayerChoose(com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent event) {
         if(dnVelocity.getConfiguration().isConnexionOnLobby()){
             dnVelocity.getLogger().info("[DNBungee] Redirecting player to lobby server");

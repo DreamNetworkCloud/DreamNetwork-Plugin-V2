@@ -23,6 +23,12 @@
             <url>https://repo.spongepowered.org/maven</url>
         </repository>
     </repositories>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>maven-snapshots</id>
+            <url>https://repo.dreamnetwork.cloud/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <profiles>
         <profile>
@@ -285,7 +291,7 @@
                             </executions>
                             <configuration>
                                 <serverId>nexus-releases</serverId>
-                                <nexusUrl>http://localhost:8081/nexus/</nexusUrl>
+                                <nexusUrl>https://repo.dreamnetwork.cloud/</nexusUrl>
                                 <skipStaging>true</skipStaging>
                             </configuration>
                         </plugin>
@@ -326,8 +332,21 @@
                 </dependency>
             </dependencies>
         </profile>
-
+    <profile>
+        <id>snapshots</id>
+        <activation>
+            <activeByDefault>false</activeByDefault>
+        </activation>
+        <properties>
+            <java.version>8</java.version>
+            <outputPath>${project.basedir}/target/</outputPath>
+        </properties>
+        <modules>
+            <module>API</module>
+            <module>BungeeCord/Bungee-API</module>
+            <module>Spigot/Spigot-API</module>
+            <module>Velocity/Velo-API</module>
+        </modules>
+    </profile>
     </profiles>
-
-
 </project>

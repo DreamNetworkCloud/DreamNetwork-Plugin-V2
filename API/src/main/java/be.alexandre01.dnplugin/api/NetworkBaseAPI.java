@@ -197,4 +197,15 @@ public abstract class NetworkBaseAPI extends NetCore{
             }
         };
     }
+    @Override
+    public Packet dispatch(Packet packet) {
+        getClientHandler().writeAndFlush(packet.getMessage());
+        return packet;
+    }
+
+    @Override
+    public Packet dispatch(Packet packet, GenericFutureListener<? extends Future<? super Void>> future) {
+        getClientHandler().writeAndFlush(packet.getMessage(),future);
+        return packet;
+    }
 }

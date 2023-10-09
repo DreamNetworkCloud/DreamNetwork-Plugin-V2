@@ -11,6 +11,12 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>maven-snapshots</id>
+            <url>https://repo.dreamnetwork.cloud/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
     <repositories>
         <repository>
             <id>sponge-repo</id>
@@ -218,6 +224,32 @@
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>snapshots</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.5.1</version>
+                        <executions>
+                            <execution>
+                                <id>default-deploy</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <serverId>nexus-releases</serverId>
+                            <nexusUrl>https://repo.dreamnetwork.cloud/</nexusUrl>
+                            <skipStaging>true</skipStaging>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
