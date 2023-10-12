@@ -2,6 +2,7 @@ package be.alexandre01.dnplugin.connection.client.communication;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.request.RequestInfo;
+import be.alexandre01.dnplugin.api.connection.request.TaskHandler;
 import be.alexandre01.dnplugin.api.connection.request.channels.ChannelPacket;
 import be.alexandre01.dnplugin.api.connection.request.RequestType;
 import be.alexandre01.dnplugin.api.connection.request.channels.DNChannel;
@@ -14,6 +15,13 @@ import java.util.logging.Level;
 
 
 public class BasicTransmission extends ClientResponse {
+
+    public BasicTransmission(){
+        addRequestInterceptor(RequestType.CORE_STOP_SERVER,(message, ctx) -> {
+            NetworkBaseAPI.getInstance().shutdownProcess();
+        });
+    }
+
 
     @Override
     public void onResponse(Message message, ChannelHandlerContext ctx) throws Exception {
