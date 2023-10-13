@@ -126,8 +126,8 @@ public class BasicTransmission extends ClientResponse {
                             handler.setupHandler(message);
                             handler.onCallback();
 
-                            NetworkBaseAPI.getInstance().getLogger().log(Level.INFO,"Handler present => "+ handler.getCustomType());
-                            NetworkBaseAPI.getInstance().getLogger().log(Level.INFO,"TaskType present => "+ handler.getTaskType());
+                           // NetworkBaseAPI.getInstance().getLogger().log(Level.INFO,"Handler present => "+ handler.getCustomType());
+                           // NetworkBaseAPI.getInstance().getLogger().log(Level.INFO,"TaskType present => "+ handler.getTaskType());
 
                             switch (handler.getTaskType()) {
                                 case ACCEPTED:
@@ -137,11 +137,9 @@ public class BasicTransmission extends ClientResponse {
                                     handler.onRejected();
                                     break;
                                 case IGNORED:
-                                    handler.onFailed();
                                     handler.onIgnored();
                                     break;
                                 case FAILED:
-                                    System.out.println("Failed");
                                     handler.onFailed();
                                     handler.destroy();
                                     break;

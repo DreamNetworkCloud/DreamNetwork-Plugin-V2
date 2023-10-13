@@ -4,6 +4,8 @@ import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.request.RequestBuilder;
 import be.alexandre01.dnplugin.api.connection.request.RequestType;
 
+import java.util.Arrays;
+
 public class DefaultGeneratedRequest extends RequestBuilder {
     /**
      * DefaultGeneratedRequest is a class that initializes the requestData map with default values for various request types.
@@ -58,6 +60,11 @@ public class DefaultGeneratedRequest extends RequestBuilder {
         });
 
         requestData.put(RequestType.CORE_START_SERVER,(message, args) -> {
+            message.set("SERVERNAME",args[0]);
+            return message;
+        });
+        requestData.put(RequestType.CORE_RESTART_SERVER,(message, args) -> {
+            System.out.println("ARGS =>" + Arrays.toString(args));
             message.set("SERVERNAME",args[0]);
             return message;
         });

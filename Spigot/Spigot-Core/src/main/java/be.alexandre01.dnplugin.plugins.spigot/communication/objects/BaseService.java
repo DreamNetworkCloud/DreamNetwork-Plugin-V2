@@ -1,10 +1,13 @@
 package be.alexandre01.dnplugin.plugins.spigot.communication.objects;
 
-import be.alexandre01.dnplugin.api.NetworkBaseAPI;
+import be.alexandre01.dnplugin.api.connection.request.DNCallback;
+import be.alexandre01.dnplugin.api.connection.request.RequestPacket;
+import be.alexandre01.dnplugin.api.connection.request.TaskHandler;
 import be.alexandre01.dnplugin.api.objects.RemoteBundle;
 import be.alexandre01.dnplugin.api.objects.RemoteService;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import be.alexandre01.dnplugin.api.connection.request.RequestType;
+import be.alexandre01.dnplugin.api.objects.server.ExecutorCallbacks;
 import be.alexandre01.dnplugin.plugins.spigot.DNSpigot;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.server.ServerStartedEvent;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.server.ServerStoppedEvent;
@@ -17,40 +20,67 @@ public class BaseService extends RemoteService {
     }
 
     @Override
-    public void start() {
-        NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_START_SERVER,getName());
+    public ExecutorCallbacks start() {
+        RequestPacket executecmd = DNSpigot.getAPI().getRequestManager().getRequest(RequestType.CORE_START_SERVER,getName());
+        ExecutorCallbacks executorCallbacks = new ExecutorCallbacks();
+        DNCallback.multiple(executecmd, new TaskHandler() {
+            DNServer dnServer;
+            @Override
+            public void onCallback() {
+                if(hasType(TaskType.CUSTOM)){
+                    if(getCustomType().equals("STARTED")){
+                        String name = getResponse().getString("name");
+                        String[] splittedName = name.split("-");
+                        int id = Integer.parseInt(splittedName[splittedName.length-1]);
+                        servers.put(id,dnServer = new DNServer(name,id,BaseService.this));
+                        if(executorCallbacks.getStartList() != null){
+                            executorCallbacks.getStartList().forEach(iCallbackStart -> iCallbackStart.whenStart(dnServer));
+                        }
+                        return;
+                    }
+                    if(getCustomType().equals("LINKED")){
+                        if(dnServer == null){
+                            System.out.println("DNServer is null");
+                            onFailed();
+                            return;
+                        }
+                        if(executorCallbacks.getConnectList() != null){
+                            executorCallbacks.getConnectList().forEach(iCallbackConnect -> iCallbackConnect.whenConnect(dnServer));
+                        }
+                        destroy();
+                        return;
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed() {
+                if(executorCallbacks.getFailList() != null){
+                    executorCallbacks.getFailList().forEach(ExecutorCallbacks.ICallbackFail::whenFail);
+                }
+                destroy();
+            }
+        }).send();
+        return executorCallbacks;
     }
 
-    @Deprecated
-    public void createServer(String serverName){
-        System.out.println(serverName);
-        String[] data = serverName.split(";");
-
-        String[] numSearch = serverName.split("-");
-        int i = Integer.parseInt(numSearch[numSearch.length-1]);
-
-        DNServer dnServer = new DNServer(numSearch[0],i,this);
-
-        if(!isStarted())
+    public DNServer createServer(String serverName,int id){
+        DNServer dnServer;
+        if(servers.containsKey(id)){
+            return servers.get(id);
+        }else {
+            dnServer = new DNServer(serverName,id,this);
+            servers.put(id,dnServer);
+        }
+        if(!isStarted()){
             isStarted = true;
+        }
 
-        servers.put(i,dnServer);
-    }
-    public void createServer(String serverName,int id){
-        DNServer dnServer = new DNServer(serverName,id,this);
-
-        servers.put(id,dnServer);
-
-        if(!isStarted())
-            isStarted = true;
-        Bukkit.getScheduler().scheduleSyncDelayedTask(DNSpigot.getInstance(),()->{
-            ServerStartedEvent event = new ServerStartedEvent(dnServer);
-            Bukkit.getScheduler().scheduleSyncDelayedTask(DNSpigot.getInstance(), () -> {
-                Bukkit.getPluginManager().callEvent(event);
-            });
-
+        ServerStartedEvent event = new ServerStartedEvent(dnServer);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(DNSpigot.getInstance(), () -> {
+            Bukkit.getPluginManager().callEvent(event);
         });
-
+        return dnServer;
     }
 
     public void removeServer(String serverName){

@@ -2,6 +2,7 @@ package be.alexandre01.dnplugin.api.objects;
 
 import be.alexandre01.dnplugin.api.objects.player.DNPlayer;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
+import be.alexandre01.dnplugin.api.objects.server.ExecutorCallbacks;
 import be.alexandre01.dnplugin.api.utils.Mods;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Getter @Setter
 public abstract class RemoteService {
+
     protected List<DNPlayer> players = new ArrayList<>();
     protected HashMap<Integer, DNServer> servers = new HashMap<>();
     private String name;
@@ -27,7 +29,7 @@ public abstract class RemoteService {
         this.remoteBundle = remoteBundle;
     }
 
-    public abstract void start();
+    public abstract ExecutorCallbacks start();
 
     public RemoteBundle getRemoteBundle(){
         return remoteBundle;

@@ -5,8 +5,8 @@ import be.alexandre01.dnplugin.api.objects.RemoteBundle;
 import be.alexandre01.dnplugin.api.objects.RemoteService;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import be.alexandre01.dnplugin.api.connection.request.RequestType;
+import be.alexandre01.dnplugin.api.objects.server.ExecutorCallbacks;
 import be.alexandre01.dnplugin.api.utils.Mods;
-import be.alexandre01.dnplugin.api.utils.messages.Message;
 
 public class ProxyService extends RemoteService {
     public ProxyService(String name, Mods mods, boolean isStarted, RemoteBundle remoteBundle) {
@@ -14,8 +14,9 @@ public class ProxyService extends RemoteService {
     }
 
     @Override
-    public void start() {
+    public ExecutorCallbacks start() {
         NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_START_SERVER,getName());
+        return null;
     }
 
     @Deprecated

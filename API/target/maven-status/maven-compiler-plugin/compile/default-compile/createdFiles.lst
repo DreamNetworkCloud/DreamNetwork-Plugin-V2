@@ -8,6 +8,7 @@ be\alexandre01\dnplugin\api\utils\messages\Message$4.class
 be\alexandre01\dnplugin\api\connection\request\DNCallback.class
 be\alexandre01\dnplugin\api\connection\request\channels\ChannelPacket.class
 be\alexandre01\dnplugin\api\connection\request\RequestType.class
+be\alexandre01\dnplugin\api\objects\server\DNServer$2.class
 be\alexandre01\dnplugin\api\connection\request\channels\RegisterListener.class
 be\alexandre01\dnplugin\api\utils\Config.class
 be\alexandre01\dnplugin\api\utils\files\tablist\Animations.class
@@ -63,12 +64,17 @@ be\alexandre01\dnplugin\api\connection\request\channels\DNChannelInterceptor.cla
 be\alexandre01\dnplugin\api\connection\request\communication\ClientResponse.class
 be\alexandre01\dnplugin\api\objects\player\RemoteHuman.class
 be\alexandre01\dnplugin\api\objects\server\DNServer.class
+be\alexandre01\dnplugin\api\objects\server\ExecutorCallbacks$ICallbackStop.class
 be\alexandre01\dnplugin\api\utils\files\SearchText$1.class
 be\alexandre01\dnplugin\api\connection\request\channels\DataListener.class
+be\alexandre01\dnplugin\api\objects\server\ExecutorCallbacks$ICallbackConnect.class
 be\alexandre01\dnplugin\api\utils\messages\Message$5.class
+be\alexandre01\dnplugin\api\objects\server\ExecutorCallbacks$ICallbackFail.class
 be\alexandre01\dnplugin\api\utils\messages\Message$1.class
+be\alexandre01\dnplugin\api\objects\server\ExecutorCallbacks$ICallbackStart.class
 be\alexandre01\dnplugin\api\connection\IBasicClient.class
 be\alexandre01\dnplugin\api\objects\RemoteService.class
+be\alexandre01\dnplugin\api\objects\server\ExecutorCallbacks.class
 be\alexandre01\dnplugin\api\objects\server\RemoteClient.class
 be\alexandre01\dnplugin\api\utils\files\SearchText$distributeText.class
 be\alexandre01\dnplugin\api\connection\request\channels\GetDataThread.class

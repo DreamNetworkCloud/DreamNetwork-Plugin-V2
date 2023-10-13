@@ -12,13 +12,13 @@ public class ReloadListener implements Listener {
         String cmd = event.getMessage();
         if(cmd.equalsIgnoreCase("/reload") || cmd.equalsIgnoreCase("/rl") || cmd.equalsIgnoreCase("/reloads") ){
             if(!event.getPlayer().hasPermission("network.reload")){
-                event.getPlayer().sendMessage("§cVous n'avez pas la permission d'accèder à cette commande.");
+                event.getPlayer().sendMessage("§cYou don't have the permission to execute the command.");
                 event.setCancelled(true);
                 return;
             }
             event.setCancelled(true);
             DNSpigot.getInstance().isReloading = true;
-            event.getPlayer().sendMessage("§e>> DreamNetwork: §cLa commande /reload n'est pas conseillé, elle peut rentrer en conflit avec d'autres plugins et causer des fuites de mémoire! A utiliser avec précaution");
+            event.getPlayer().sendMessage("§e>> DreamNetwork: §cThe /reload command is not recommended, it can conflict with other plugins and cause memory leaks! Use with caution");
             Bukkit.reload();
         }
     }

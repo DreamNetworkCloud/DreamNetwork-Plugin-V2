@@ -47,9 +47,6 @@ public class RequestPacket implements Packet {
         currentId++;
     }
 
-    public RequestPacket send(){
-        return NetworkBaseAPI.getInstance().getRequestManager().sendRequest(this);
-    }
 
     @Override
     public NetEntity getReceiver() {

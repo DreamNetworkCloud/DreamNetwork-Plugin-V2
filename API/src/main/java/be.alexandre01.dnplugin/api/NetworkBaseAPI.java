@@ -208,4 +208,9 @@ public abstract class NetworkBaseAPI extends NetCore{
         getClientHandler().writeAndFlush(packet.getMessage(),future);
         return packet;
     }
+
+    public void restartCurrentServer() {
+        System.out.println("Restarting "+ getProcessName());
+        NetworkBaseAPI.getInstance().getRequestManager().getRequest(RequestType.CORE_RESTART_SERVER,getProcessName()).dispatch();
+    }
 }

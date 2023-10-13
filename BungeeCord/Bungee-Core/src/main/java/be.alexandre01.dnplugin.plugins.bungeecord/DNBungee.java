@@ -48,6 +48,7 @@ public class DNBungee extends Plugin {
     public NetworkYAML configuration;
     public MessagesManager messagesManager;
     public PlayerTabList playerTabList;
+
     //public int slot = -2;
     //public boolean isMaintenance;
     public boolean cancelKick;

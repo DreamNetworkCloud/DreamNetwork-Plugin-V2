@@ -5,12 +5,14 @@ import be.alexandre01.dnplugin.api.connection.request.*;
 import be.alexandre01.dnplugin.api.objects.RemoteService;
 import be.alexandre01.dnplugin.api.objects.player.DNPlayer;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
 
 @Getter
 public class DNServer extends RemoteClient {
@@ -42,8 +44,24 @@ public class DNServer extends RemoteClient {
         RequestPacket requestPacket = networkBaseAPI.getRequestManager().getRequest(requestInfo, new Message(), null, object);
         sendMessage(requestPacket.getMessage());
     }
-    public void stop(){
-        networkBaseAPI.getRequestManager().sendRequest(RequestType.CORE_STOP_SERVER,name+"-"+id);
+    public CompletableFuture<Boolean> stop(){
+        CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();
+        DNCallback.single(networkBaseAPI.getRequestManager().getRequest(RequestType.CORE_STOP_SERVER, name + "-" + id), new TaskHandler() {
+            @Override
+            public void onAccepted() {
+                completableFuture.complete(true);
+            }
+
+            @Override
+            public void onFailed() {
+                completableFuture.complete(false);
+            }
+        }).send();
+        return completableFuture;
+    }
+
+    public void restart(){
+        networkBaseAPI.getRequestManager().sendRequest(RequestType.CORE_RESTART_SERVER,name+"-"+id);
     }
 
     @Override
