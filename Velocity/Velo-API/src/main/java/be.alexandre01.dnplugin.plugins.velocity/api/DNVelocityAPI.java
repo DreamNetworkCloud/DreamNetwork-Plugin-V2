@@ -12,6 +12,8 @@ public interface DNVelocityAPI {
         return (DNVelocityAPI) NetworkBaseAPI.getInstance();
     }
 
+
+
     IClientHandler getClientHandler();
 
     String getInfo();

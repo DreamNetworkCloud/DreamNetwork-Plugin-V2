@@ -3,7 +3,6 @@ package be.alexandre01.dnplugin.api.objects.player;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DNPlayerManager {
@@ -13,7 +12,7 @@ public class DNPlayerManager {
     public void addPlayer(DNPlayer dnPlayer){
 
         dnPlayer.getServer().getPlayers().add(dnPlayer);
-        dnPlayer.getServer().getRemoteService().getPlayers().add(dnPlayer);
+        dnPlayer.getServer().getRemoteExecutor().getPlayers().add(dnPlayer);
         dnPlayers.put(dnPlayer.getId(), dnPlayer);
         dnPlayersByName.put(dnPlayer.getName(), dnPlayer);
     }
@@ -26,12 +25,12 @@ public class DNPlayerManager {
 
     private void removePlayerFromServer(DNPlayer dnPlayer){
         dnPlayer.getServer().getPlayers().remove(dnPlayer);
-        dnPlayer.getServer().getRemoteService().getPlayers().remove(dnPlayer);
+        dnPlayer.getServer().getRemoteExecutor().getPlayers().remove(dnPlayer);
     }
 
     public void addPlayerFromServer(DNPlayer dnPlayer){
         dnPlayer.getServer().getPlayers().add(dnPlayer);
-        dnPlayer.getServer().getRemoteService().getPlayers().add(dnPlayer);
+        dnPlayer.getServer().getRemoteExecutor().getPlayers().add(dnPlayer);
     }
 
     public void updatePlayer(DNPlayer dnPlayer,DNServer dnServer){

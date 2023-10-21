@@ -3,6 +3,7 @@ package be.alexandre01.dnplugin.plugins.spigot;
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
 import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
+import be.alexandre01.dnplugin.api.connection.request.communication.ClientResponse;
 import be.alexandre01.dnplugin.api.objects.player.DNPlayerManager;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import be.alexandre01.dnplugin.api.connection.request.RequestManager;
@@ -162,7 +163,7 @@ public class ImplAPI extends NetworkBaseAPI implements DNSpigotAPI {
 
     @Override
     public void sendPlayerTo(Player player, DNServer dnServer){
-        sendPlayerTo(player,dnServer.getFullName());
+        sendPlayerTo(player,dnServer.getName());
     }
 
 

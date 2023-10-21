@@ -4,7 +4,6 @@ package be.alexandre01.dnplugin.api.utils.messages;
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.request.DNCallbackReceiver;
 import be.alexandre01.dnplugin.api.connection.request.Packet;
-import be.alexandre01.dnplugin.api.objects.RemoteService;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import be.alexandre01.dnplugin.api.objects.server.NetEntity;
 import be.alexandre01.dnplugin.api.connection.request.RequestInfo;
@@ -258,14 +257,32 @@ public class Message extends LinkedHashMap<String, Object> {
         if(provider.contains("core")){
             return Optional.of(NetworkBaseAPI.getInstance());
         }
-        String[] split = provider.split("-");
-        RemoteService remoteService = NetworkBaseAPI.getInstance().getByName(split[0]);
-        if(remoteService == null)
+        return NetworkBaseAPI.getInstance().getByFullName(provider).map(dnServer -> dnServer);
+        /*NetworkBaseAPI.getInstance().getByName(split[0]).map(dnServer -> )
+        if(remoteExecutor == null)
             return Optional.empty();
 
-        return Optional.ofNullable(remoteService.getServers().get(Integer.parseInt(split[1])));
+        return Optional.ofNullable(remoteExecutor.getServers().get(Integer.parseInt(split[1])));*/
     }
+    public <T extends NetEntity> Optional<T> getProvider(Class<T> tClass) {
+        String provider = (String) super.get("from");
+        if (provider == null) {
+            return Optional.empty();
+        }
+        if(provider.contains("core")){
+            if(tClass.isAssignableFrom(NetworkBaseAPI.class))
+                return Optional.of(tClass.cast(NetworkBaseAPI.getInstance()));
+        }
+        if(tClass.isAssignableFrom(DNServer.class)){
+            return NetworkBaseAPI.getInstance().getByFullName(provider).map(dnServer -> (T) dnServer);
+        }
+        return Optional.empty();
+        /*NetworkBaseAPI.getInstance().getByName(split[0]).map(dnServer -> )
+        if(remoteExecutor == null)
+            return Optional.empty();
 
+        return Optional.ofNullable(remoteExecutor.getServers().get(Integer.parseInt(split[1])));*/
+    }
     public void setProvider(String provider) {
         super.put("from", provider);
     }
@@ -400,7 +417,7 @@ public class Message extends LinkedHashMap<String, Object> {
 
             @Override
             public String getProvider() {
-                return "be.alexandre01.dnplugin/api/objects/core"; // for later do core-id
+                return NetworkBaseAPI.getInstance().getProcessName();
             }
 
             @Override

@@ -148,6 +148,9 @@ public class BasicTransmission extends ClientResponse {
                                     handler.onTimeout();
                                     handler.destroy();
                                     break;
+                                case CUSTOM:
+                                    handler.onCustom(handler.getCustomType());
+                                    break;
                             }
                             if(handler.isSingle()){
                                 handler.destroy();

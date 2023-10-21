@@ -2,10 +2,9 @@ package be.alexandre01.dnplugin.plugins.bungeecord.utils;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.objects.RemoteBundle;
-import be.alexandre01.dnplugin.api.objects.RemoteService;
 import be.alexandre01.dnplugin.plugins.bungeecord.DNBungee;
 import be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeServersManager;
-import be.alexandre01.dnplugin.plugins.bungeecord.communication.objects.ProxyService;
+import be.alexandre01.dnplugin.plugins.bungeecord.communication.objects.ProxyExecutor;
 import be.alexandre01.dnplugin.api.utils.Mods;
 import lombok.Getter;
 import net.md_5.bungee.api.ProxyServer;
@@ -63,7 +62,7 @@ public class BungeeServersManager implements DNBungeeServersManager {
             }
 
 
-            ProxyService proxyService;
+            ProxyExecutor proxyService;
             String name = processName.split("-")[0];
             int id = Integer.parseInt(processName.split("-")[1]);
             String[] splitPath = name.split("/");
@@ -74,7 +73,7 @@ public class BungeeServersManager implements DNBungeeServersManager {
                 networkBaseAPI.getBundles().put(bundlePath, new RemoteBundle(bundlePath, false));
             }
             RemoteBundle remoteBundle = networkBaseAPI.getBundles().get(bundlePath);
-            networkBaseAPI.getServices().put(name, proxyService = new ProxyService(name, mods, true, remoteBundle));
+            networkBaseAPI.getServices().put(name, proxyService = new ProxyExecutor(name, mods, true, remoteBundle));
             proxyService.createServer(name, id);
         } catch (Exception e) {
             e.printStackTrace();

@@ -162,14 +162,18 @@
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
-
                                         <option>-keepclasseswithmembernames class
-                                            be.alexandre01.dnplugin.plugins.spigot.command.** {
+                                            be.alexandre01.dnplugin.plugins.spigot.commands.** {
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
                                         <option>-keepclasseswithmembernames class
-                                            be.alexandre01.dnplugin.plugins.bungee.components.command.** {
+                                            be.alexandre01.dnplugin.plugins.bungeecord.components.commands.** {
+                                            <![CDATA[<methods>]]>;
+                                            }
+                                        </option>
+                                        <option>-keepclasseswithmembernames class
+                                            be.alexandre01.dnplugin.plugins.velocity.components.commands.** {
                                             <![CDATA[<methods>]]>;
                                             }
                                         </option>
@@ -231,13 +235,8 @@
             <dependencies>
                 <dependency>
                     <groupId>be.alexandre01.dnplugin</groupId>
-                    <artifactId>DreamNetwork-Network</artifactId>
-                    <version>1.5.0-SNAPSHOT</version>
-                </dependency>
-                <dependency>
-                    <groupId>be.alexandre01.dnplugin</groupId>
                     <artifactId>DreamNetwork-API</artifactId>
-                    <version>1.6.2-SNAPSHOT</version>
+                    <version>1.6.3-SNAPSHOT</version>
                 </dependency>
                 <dependency>
                     <groupId>be.alexandre01.dnplugin</groupId>

@@ -2,16 +2,17 @@ package be.alexandre01.dnplugin.api;
 
 import be.alexandre01.dnplugin.api.connection.IBasicClient;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
+import be.alexandre01.dnplugin.api.connection.request.CustomRequestInfo;
 import be.alexandre01.dnplugin.api.connection.request.Packet;
 import be.alexandre01.dnplugin.api.connection.request.RequestManager;
-import be.alexandre01.dnplugin.api.objects.RemoteBundle;
-import be.alexandre01.dnplugin.api.objects.RemoteService;
-import be.alexandre01.dnplugin.api.connection.request.CustomRequestInfo;
 import be.alexandre01.dnplugin.api.connection.request.RequestType;
+import be.alexandre01.dnplugin.api.objects.RemoteBundle;
+import be.alexandre01.dnplugin.api.objects.RemoteExecutor;
 import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
 import be.alexandre01.dnplugin.api.connection.request.communication.ResponseManager;
 import be.alexandre01.dnplugin.api.connection.request.exception.IDNotFoundException;
 import be.alexandre01.dnplugin.api.objects.core.NetCore;
+import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import be.alexandre01.dnplugin.api.objects.server.NetEntity;
 import be.alexandre01.dnplugin.api.universal.player.UniversalPlayer;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
@@ -27,7 +28,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 public abstract class NetworkBaseAPI extends NetCore{
-    @Getter @Setter private HashMap<String,RemoteService> services = new HashMap<>();
+    @Getter @Setter private HashMap<String, RemoteExecutor> services = new HashMap<>();
     @Getter @Setter private HashMap<String, RemoteBundle> bundles = new HashMap<>();
 
     private boolean isInit = false;
@@ -67,8 +68,24 @@ public abstract class NetworkBaseAPI extends NetCore{
         }
         requestTypes.add(requestType);
     }
-    public RemoteService getByName(String process){
-        return services.get(process);
+    public Optional<DNServer> getByName(String process,int id){
+        return Optional.ofNullable(services.get(process)).map(remoteExecutor -> remoteExecutor.getServers().get(id));
+    }
+
+    public Optional<DNServer> getByFullName(String process){
+        try {
+            String[] split = process.split("-");
+            if(split.length == 2){
+                return getByName(split[0],Integer.parseInt(split[1]));
+            }
+        }catch (Exception e) {
+            return Optional.empty();
+        }
+        return Optional.empty();
+    }
+
+    public Optional<RemoteExecutor> getByName(String process){
+        return Optional.ofNullable(services.get(process));
     }
 
     public RemoteBundle getBundleByName(String name){
@@ -120,31 +137,9 @@ public abstract class NetworkBaseAPI extends NetCore{
         if(isInit){
             throw new RuntimeException("Connection already initialized");
         }
-        //check if class be.alexandre01.dnplugin.connection.BaseClient exist
-        Class<?> clazz = null;
-        try {
-            clazz = Class.forName("be.alexandre01.dnplugin.connection.client.BasicClient");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return false;
-        }
-        Object o;
-        try {
-             o = clazz.newInstance();
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-        if(o instanceof IBasicClient){
-            IBasicClient basicClient = (IBasicClient) o;
-            isExternal = basicClient.isExternal();
-
-            Thread thread = new Thread(basicClient);
-            thread.start();
-            return isInit = true;
-        }
-        throw new RuntimeException("Class be.alexandre01.dnplugin.connection.client.BasicClient not found or castable");
+        DNNetworkUtilities.getInstance().initConnection().orElseThrow(() -> new RuntimeException("Can't connect to the network"));
+        isInit = true;
+        return true;
     }
 
     public boolean isSpigot(){

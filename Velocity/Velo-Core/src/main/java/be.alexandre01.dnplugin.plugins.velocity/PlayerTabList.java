@@ -28,7 +28,6 @@ public class PlayerTabList {
     }
 
     public void start(){
-        dnVelocity.getLogger().info("Bonjjjour");
         end = false;
         TabListYAML tabList = dnVelocity.getYamlManager().getTabList();
         TabList header = tabList.getHeader();

@@ -105,7 +105,6 @@ public class ImplAPI extends NetworkBaseAPI implements DNBungeeAPI {
     }
     @Override
     public void callServerAttachedEvent() {
-
     }
 
     @Override

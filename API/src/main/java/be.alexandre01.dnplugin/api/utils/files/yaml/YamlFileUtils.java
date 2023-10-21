@@ -3,6 +3,7 @@ package be.alexandre01.dnplugin.api.utils.files.yaml;
 import be.alexandre01.dnplugin.api.utils.colors.Colors;
 import lombok.Getter;
 import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.Tag;
@@ -74,7 +75,7 @@ public class YamlFileUtils<T> {
         };*/
         Yaml yaml;
         if(constructor == null){
-            yaml = new Yaml(new Constructor(),new CustomRepresenter(skipNull,null,clazz)/*,representer*/);
+            yaml = new Yaml(new Constructor(new LoaderOptions()),new CustomRepresenter(skipNull,null,clazz)/*,representer*/);
         }else {
             yaml = new Yaml(constructor,this.representer);
         }

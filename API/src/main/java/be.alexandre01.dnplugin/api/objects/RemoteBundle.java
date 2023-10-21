@@ -8,7 +8,7 @@ import java.util.HashMap;
 @Getter
 public class RemoteBundle {
 
-    @Getter private final HashMap<String,RemoteService> remoteServices = new HashMap<>();
+    @Getter private final HashMap<String, RemoteExecutor> remoteServices = new HashMap<>();
     protected boolean isProxy;
     protected String name;
     public RemoteBundle(String name, boolean isProxy) {
@@ -20,7 +20,7 @@ public class RemoteBundle {
         return (T) remoteServices.get(name);
     }
 
-    public RemoteService getRemoteService(String name) {
+    public RemoteExecutor getRemoteService(String name) {
         return remoteServices.get(name);
     }
 

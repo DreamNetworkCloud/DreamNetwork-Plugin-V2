@@ -44,12 +44,12 @@ public class Maintenance implements SimpleCommand {
             case ON:
                 configuration.setMaintenance(true);
                 dnVelocity.saveConfig();
-                sender.sendMessage(Component.text("§aVous venez d'activer la maintenance."));
+                sender.sendMessage(Component.text("§aYou just §aenabled§a the maintenance."));
                 break;
             case OFF:
                 configuration.setMaintenance(false);
                 dnVelocity.saveConfig();
-                sender.sendMessage(Component.text("§aVous venez de §cdésactiver§a la maintenance."));
+                sender.sendMessage(Component.text("§aYou just §cdisabled§a the maintenance."));
                 break;
             case ADD:
                 if(args.length < 2){
@@ -57,11 +57,13 @@ public class Maintenance implements SimpleCommand {
                     return;
                 }
                 String playernameadd = args[1].toLowerCase();
-
+                if(configuration.getMaintenanceAllowedPlayers() == null) {
+                    configuration.setMaintenanceAllowedPlayers(new ArrayList<>());
+                }
                 if(!configuration.getMaintenanceAllowedPlayers().contains(playernameadd)){
                     configuration.getMaintenanceAllowedPlayers().add(playernameadd);
                     dnVelocity.saveConfig();
-                    sender.sendMessage(Component.text("§aVous venez d'ajouter "+ args[1] +" à la liste."));
+                    sender.sendMessage(Component.text("§aYou just added "+ args[1] +" to the list."));
                 }
                 break;
             case REMOVE:
@@ -70,15 +72,17 @@ public class Maintenance implements SimpleCommand {
                     return;
                 }
                 String playernamermv = args[1].toLowerCase();
-
+                if(configuration.getMaintenanceAllowedPlayers() == null) {
+                    configuration.setMaintenanceAllowedPlayers(new ArrayList<>());
+                }
                 if(configuration.getMaintenanceAllowedPlayers().contains(playernamermv)){
                     configuration.getMaintenanceAllowedPlayers().remove(playernamermv);
                     dnVelocity.saveConfig();
-                    sender.sendMessage(Component.text("§aVous venez de retirer "+ args[1] +" de la liste."));
+                    sender.sendMessage(Component.text("§aYou just removed "+ args[1] +" from the list."));
                 }
                 break;
             case LIST:
-                sender.sendMessage(Component.text("§6Liste de la Maintenance :"));
+                sender.sendMessage(Component.text("§6List of allowed players:"));
                 for (String allowedPlayer: configuration.getMaintenanceAllowedPlayers()){
                     sender.sendMessage(Component.text("§e - "+ allowedPlayer));
                 }

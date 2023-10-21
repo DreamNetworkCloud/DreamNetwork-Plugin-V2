@@ -5,13 +5,4 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
     </content>
   </component>
-  <component name="FacetManager">
-    <facet type="minecraft" name="Minecraft">
-      <configuration>
-        <autoDetectTypes>
-          <platformType>VELOCITY</platformType>
-        </autoDetectTypes>
-      </configuration>
-    </facet>
-  </component>
 </module>

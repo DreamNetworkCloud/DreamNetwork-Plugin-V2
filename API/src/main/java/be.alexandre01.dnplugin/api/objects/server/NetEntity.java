@@ -17,7 +17,6 @@ public abstract class
 
 NetEntity {
     protected final String name;
-
     protected NetEntity(String name) {
         this.name = name;
     }

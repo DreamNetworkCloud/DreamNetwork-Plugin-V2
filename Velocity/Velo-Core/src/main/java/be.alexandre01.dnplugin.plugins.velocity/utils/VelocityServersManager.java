@@ -4,7 +4,7 @@ import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.objects.RemoteBundle;
 import be.alexandre01.dnplugin.plugins.velocity.DNVelocity;
 import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityServersManager;
-import be.alexandre01.dnplugin.plugins.velocity.communication.objects.ProxyService;
+import be.alexandre01.dnplugin.plugins.velocity.communication.objects.ProxyExecutor;
 import be.alexandre01.dnplugin.api.utils.Mods;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.velocitypowered.api.proxy.server.ServerInfo;
@@ -32,7 +32,7 @@ public class VelocityServersManager implements DNVelocityServersManager {
             System.out.println(info.getAddress().getHostString());
        //     DNVelocity.getInstance().getServer().getConfiguration().getServers().put(processName,info.getAddress().getHostString()+":"+info.getAddress().getPort());
             servers.add(processName);
-            ProxyService proxyService;
+            ProxyExecutor proxyService;
             String name = processName.split("-")[0];
             int id = Integer.parseInt(processName.split("-")[1]);
             if(networkBaseAPI.getServices().isEmpty()){
@@ -46,7 +46,7 @@ public class VelocityServersManager implements DNVelocityServersManager {
                 networkBaseAPI.getBundles().put(bundlePath,new RemoteBundle(bundlePath,false));
             }
             RemoteBundle remoteBundle = networkBaseAPI.getBundles().get(bundlePath);
-            networkBaseAPI.getServices().put(name,proxyService = new ProxyService(name, mods,true,remoteBundle));
+            networkBaseAPI.getServices().put(name,proxyService = new ProxyExecutor(name, mods,true,remoteBundle));
             proxyService.createServer(name,id);
         }catch (Exception e){
             e.printStackTrace();

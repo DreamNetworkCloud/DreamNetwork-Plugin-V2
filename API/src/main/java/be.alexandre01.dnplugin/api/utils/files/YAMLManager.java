@@ -56,7 +56,7 @@ public class YAMLManager {
                     (int) network.getOrDefault("maxPlayerPerLobby", 15),
                     (boolean) network.getOrDefault("maintenance", false),
                     (boolean) network.getOrDefault("enableRedirectionKick", true),
-                    (String) network.getOrDefault("redirectionKickServer", "lobby"),
+                    (String) network.getOrDefault("redirectionKickServer", "main/lobby"),
                     (boolean) network.getOrDefault("statusLogo", false),
                     (List<String>) network.getOrDefault("maintenanceAllowedPlayers", new ArrayList<String>()),
                     (boolean) network.getOrDefault("autoSendPlayers", true),

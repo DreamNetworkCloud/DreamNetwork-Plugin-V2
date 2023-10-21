@@ -5,8 +5,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.server.ServerCommandEvent;
 
 public class ReloadListener implements Listener {
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            Bukkit.broadcastMessage("§e>> DreamNetwork: §c The server is reloading...");
+            DNSpigot.getInstance().isReloading = true;
+            Bukkit.reload();
+        }
+    };
     @EventHandler
     public void onReload(PlayerCommandPreprocessEvent event){
         String cmd = event.getMessage();
@@ -17,9 +26,25 @@ public class ReloadListener implements Listener {
                 return;
             }
             event.setCancelled(true);
-            DNSpigot.getInstance().isReloading = true;
+
             event.getPlayer().sendMessage("§e>> DreamNetwork: §cThe /reload command is not recommended, it can conflict with other plugins and cause memory leaks! Use with caution");
-            Bukkit.reload();
+            runnable.run();
+        }
+    }
+
+    @EventHandler
+    public void onReloadFromConsole(ServerCommandEvent event){
+        String cmd = event.getCommand();
+
+        if(cmd.equalsIgnoreCase("reload") || cmd.equalsIgnoreCase("rl") || cmd.equalsIgnoreCase("reloads")){
+            if(!event.getSender().hasPermission("network.reload")){
+                event.getSender().sendMessage("§cYou don't have the permission to execute the command.");
+                event.setCancelled(true);
+                return;
+            }
+            Bukkit.getConsoleSender().sendMessage("§e>> DreamNetwork: §cThe /reload command is not recommended, it can conflict with other plugins and cause memory leaks! Use with caution");
+            DNSpigot.getInstance().isReloading = true;
+            runnable.run();
         }
     }
 }

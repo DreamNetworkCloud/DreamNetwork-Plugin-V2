@@ -2,10 +2,9 @@ package be.alexandre01.dnplugin.api.objects.server;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.request.*;
-import be.alexandre01.dnplugin.api.objects.RemoteService;
+import be.alexandre01.dnplugin.api.objects.RemoteExecutor;
 import be.alexandre01.dnplugin.api.objects.player.DNPlayer;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Getter;
@@ -17,21 +16,16 @@ import java.util.concurrent.CompletableFuture;
 @Getter
 public class DNServer extends RemoteClient {
     private final Collection<DNPlayer> players = new ArrayList<>();
-    private final RemoteService remoteService;
+    private final RemoteExecutor remoteExecutor;
     private final int id;
     private final NetworkBaseAPI networkBaseAPI = NetworkBaseAPI.getInstance();
     private final RequestManager requestManager = new RequestManager(this);
 
-    public DNServer(String name,int id,RemoteService remoteService){
-        super(name);
+    public DNServer(String name, int id, RemoteExecutor remoteExecutor){
+        super(name+"-"+id);
         this.id = id;
-        this.remoteService = remoteService;
+        this.remoteExecutor = remoteExecutor;
     }
-
-    public String getFullName(){
-        return name + "-" + id;
-    }
-
 
     @Deprecated
     public void sendMessage(Message message){
@@ -71,7 +65,7 @@ public class DNServer extends RemoteClient {
 
     @Override
     public Packet writeAndFlush(Message message, GenericFutureListener<? extends Future<? super Void>> listener) {
-        message.setReceiver(getFullName());
+        message.setReceiver(getName());
         networkBaseAPI.getClientHandler().writeAndFlush(message);
         return new Packet() {
             @Override
@@ -81,7 +75,7 @@ public class DNServer extends RemoteClient {
 
             @Override
             public String getProvider() {
-                return getFullName();
+                return getName();
             }
 
             @Override
@@ -93,12 +87,12 @@ public class DNServer extends RemoteClient {
 
     @Override
     public Packet dispatch(Packet packet) {
-        networkBaseAPI.getClientHandler().writeAndFlush(packet.getMessage());
-        return packet;
+        return dispatch(packet,null);
     }
 
     @Override
     public Packet dispatch(Packet packet, GenericFutureListener<? extends Future<? super Void>> future) {
+        packet.getMessage().setReceiver(getName());
         networkBaseAPI.getClientHandler().writeAndFlush(packet.getMessage(),future);
         return packet;
     }

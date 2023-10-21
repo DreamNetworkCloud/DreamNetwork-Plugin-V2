@@ -1,16 +1,16 @@
 package be.alexandre01.dnplugin.plugins.spigot;
 
-import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.IBasicClient;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import be.alexandre01.dnplugin.api.connection.request.RequestFile;
 import be.alexandre01.dnplugin.api.connection.request.RequestManager;
 import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
-import be.alexandre01.dnplugin.plugins.spigot.command.NetworkCommand;
-import be.alexandre01.dnplugin.plugins.spigot.command.StatsCommand;
+import be.alexandre01.dnplugin.plugins.spigot.commands.NetworkCommand;
+import be.alexandre01.dnplugin.plugins.spigot.commands.StatsCommand;
 import be.alexandre01.dnplugin.plugins.spigot.listeners.ReloadListener;
 import be.alexandre01.dnplugin.plugins.spigot.listeners.RestartListener;
+import be.alexandre01.dnplugin.plugins.spigot.listeners.TestDispatchListener;
 import be.alexandre01.dnplugin.plugins.spigot.utils.SpigotText;
 import be.alexandre01.dnplugin.api.utils.ASCII;
 import be.alexandre01.dnplugin.api.utils.Config;
@@ -83,6 +83,7 @@ public class DNSpigot extends JavaPlugin{
         registerCommand("dnstats",new StatsCommand("dnstats"));
         getServer().getPluginManager().registerEvents(new ReloadListener(),this);
         getServer().getPluginManager().registerEvents(new RestartListener(),this);
+        getServer().getPluginManager().registerEvents(new TestDispatchListener(),this);
         //getServer().getPluginManager().registerEvents(new TestChannelListener(),this);
 
         //Register BungeeCord Channel

@@ -32,7 +32,7 @@ public class StopListener implements Listener {
       System.out.println("Stopping server...");
       DNServer server = DNSpigot.getAPI().getCurrentServer();
       if (server != null) {
-        if (server.getRemoteService().getMods() == Mods.DYNAMIC) {
+        if (server.getRemoteExecutor().getMods() == Mods.DYNAMIC) {
           for (World world : Bukkit.getWorlds())
             world.setAutoSave(false); 
           Runtime.getRuntime().halt(0);

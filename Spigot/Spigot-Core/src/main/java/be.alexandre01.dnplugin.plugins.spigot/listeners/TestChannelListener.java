@@ -120,7 +120,6 @@ public class TestChannelListener implements Listener {
             }
         });
 
-
         ImplAPI dnSpigotAPI = (ImplAPI) DNSpigot.getAPI();
         dnSpigotAPI.autoRefreshPlayers();
     }

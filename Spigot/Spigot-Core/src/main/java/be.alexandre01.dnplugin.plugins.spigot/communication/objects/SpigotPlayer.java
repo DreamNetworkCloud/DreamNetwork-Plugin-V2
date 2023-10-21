@@ -34,7 +34,7 @@ public class SpigotPlayer extends DNServerPlayer {
 
     public void updateServer(DNServer dnServer) {
         player = null;
-        if(dnServer.getFullName().equals(NetworkBaseAPI.getInstance().getProcessName())){
+        if(dnServer.getName().equals(NetworkBaseAPI.getInstance().getProcessName())){
             try {
                 player = Bukkit.getPlayer(getName());
             }catch (Exception e){
@@ -81,7 +81,7 @@ public class SpigotPlayer extends DNServerPlayer {
     }
     @Override
     public void sendTo(DNServer server) {
-        NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.PROXY_PLAYER_INSTRUCTION,getName(),3,server.getFullName());
+        NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.PROXY_PLAYER_INSTRUCTION,getName(),3,server.getName());
     }
 
     @Override

@@ -2,13 +2,15 @@ package be.alexandre01.dnplugin.plugins.spigot.communication;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.objects.RemoteBundle;
-import be.alexandre01.dnplugin.api.objects.RemoteService;
+import be.alexandre01.dnplugin.api.objects.RemoteExecutor;
 import be.alexandre01.dnplugin.api.objects.player.DNPlayer;
 import be.alexandre01.dnplugin.api.objects.player.DNPlayerManager;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import be.alexandre01.dnplugin.api.connection.request.RequestType;
 import be.alexandre01.dnplugin.api.connection.request.communication.ClientResponse;
-import be.alexandre01.dnplugin.plugins.spigot.communication.objects.BaseService;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
+import be.alexandre01.dnplugin.plugins.spigot.api.communication.MessageReceivedEvent;
+import be.alexandre01.dnplugin.plugins.spigot.communication.objects.BaseExecutor;
 import be.alexandre01.dnplugin.plugins.spigot.DNSpigot;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.player.NetworkDisconnectEvent;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.player.NetworkJoinEvent;
@@ -16,6 +18,7 @@ import be.alexandre01.dnplugin.plugins.spigot.api.events.player.NetworkSwitchSer
 import be.alexandre01.dnplugin.plugins.spigot.communication.objects.SpigotPlayer;
 import be.alexandre01.dnplugin.api.utils.Mods;
 import com.google.gson.internal.LinkedTreeMap;
+import io.netty.channel.ChannelHandlerContext;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 
@@ -27,7 +30,7 @@ public class SpigotRequestResponse extends ClientResponse {
     final NetworkBaseAPI networkBaseAPI;
     final DNPlayerManager dnPlayerManager;
     final PluginManager pluginManager;
-    final HashMap<String, RemoteService> remoteServices;
+    final HashMap<String, RemoteExecutor> remoteServices;
     public SpigotRequestResponse(){
         networkBaseAPI = NetworkBaseAPI.getInstance();
         dnPlayerManager =  DNSpigot.getAPI().getDnPlayerManager();
@@ -83,13 +86,13 @@ public class SpigotRequestResponse extends ClientResponse {
                     }
                     RemoteBundle remoteBundle = networkBaseAPI.getBundles().get(bundlePath);
                     networkBaseAPI.getBundles().put(bundlePath,remoteBundle);
-                    BaseService service = new BaseService(nums[0],mods,isStarted,remoteBundle);
+                    BaseExecutor service = new BaseExecutor(nums[0],mods,isStarted,remoteBundle);
                     remoteBundle.getRemoteServices().put(serverName,service);
                     networkBaseAPI.getServices().put(nums[0],service);
                 }
                 if(isStarted){
                     int i = Integer.parseInt(nums[1]);
-                    BaseService baseService = (BaseService) networkBaseAPI.getServices().get(nums[0]);
+                    BaseExecutor baseService = (BaseExecutor) networkBaseAPI.getServices().get(nums[0]);
                     baseService.createServer(nums[0],i);
                 }
             }
@@ -102,7 +105,7 @@ public class SpigotRequestResponse extends ClientResponse {
                 for(String servers : rServers){
                     String[] nums = servers.split("-");
                     int i = Integer.parseInt(nums[nums.length-1]);
-                    BaseService baseService = (BaseService) networkBaseAPI.getServices().get(nums[0]);
+                    BaseExecutor baseService = (BaseExecutor) networkBaseAPI.getServices().get(nums[0]);
                     baseService.removeServer(i);
                 }
             }
@@ -118,7 +121,7 @@ public class SpigotRequestResponse extends ClientResponse {
                 DNServer dnServer = null;
                 String playerName = null;
                 UUID uuid = null;
-                RemoteService service = null;
+                RemoteExecutor service = null;
 
                 String[] split = p.split(";");
 
@@ -171,7 +174,7 @@ public class SpigotRequestResponse extends ClientResponse {
                     });
                 }else {
                     if(dnServer != null){
-                        System.out.println("Change Server "+dnPlayer.getServer().getFullName()+ " to "+ dnServer.getFullName());
+                        System.out.println("Change Server "+dnPlayer.getServer().getName()+ " to "+ dnServer.getName());
                         dnPlayerManager.updatePlayer(dnPlayer,dnServer);
 
                         NetworkSwitchServerEvent event = new NetworkSwitchServerEvent(dnPlayer.getServer(),dnPlayer);
@@ -204,5 +207,13 @@ public class SpigotRequestResponse extends ClientResponse {
             networkBaseAPI.getChannelManager().getChannel(channelName).callRegisterEvent(map);
         });
 
+    }
+
+    @Override
+    protected void onResponse(Message message, ChannelHandlerContext ctx) throws Exception {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(DNSpigot.getInstance(),()->{
+            MessageReceivedEvent event = new MessageReceivedEvent(message);
+            pluginManager.callEvent(event);
+        });
     }
 }

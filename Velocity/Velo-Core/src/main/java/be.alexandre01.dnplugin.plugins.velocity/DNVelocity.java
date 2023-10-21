@@ -11,6 +11,7 @@ import be.alexandre01.dnplugin.plugins.velocity.components.commands.Slot;
 import be.alexandre01.dnplugin.plugins.velocity.components.commands.TabList;
 import be.alexandre01.dnplugin.plugins.velocity.listeners.PlayerServerListener;
 import be.alexandre01.dnplugin.plugins.velocity.components.listeners.ServerPingListener;
+import be.alexandre01.dnplugin.plugins.velocity.listeners.RedirectConnection;
 import be.alexandre01.dnplugin.plugins.velocity.objects.PlayerManagement;
 import be.alexandre01.dnplugin.api.utils.files.YAMLManager;
 import be.alexandre01.dnplugin.api.utils.files.messages.MessagesManager;
@@ -81,35 +82,13 @@ public class DNVelocity {
         port = server.getBoundAddress().getPort();
         getLogger().info(server.getConfiguration().getQueryMap());
         getLogger().info(String.valueOf(server.getBoundAddress().getPort()));
-
-        //port = server.getConfiguration().();
         this.metricsFactory = metricsFactory;
         int pluginId = 18387; // <-- Replace with the id of your plugin!
         System.setProperty("bstats.relocatecheck","false");
 
-        //InputStream is = getClass().getClassLoader().getResourceAsStream("proxies/messages.yml");
-        //getLogger().log(Level.WARNING, is.toString());
         loadConfig(dataDirectory);
-
-      //  Metrics metrics = metricsFactory.make(this,pluginId);
-
-        //INIT defaultBungeeText
-
-       // loadConfig();
-        //allowedPlayer = new ArrayList<>();
-       /* if(!getProxy().getConfig().getListeners().isEmpty()){
-            ListenerInfo listenerInfo = getProxy().getConfig().getListeners().stream().findFirst().get();
-            port = listenerInfo.getHost().getPort();
-        }*/
-
-
-
-        //server.getEventManager().register(this, this);
         type = "VELOCITY";
-
-
         api = new ImplAPI(this);
-
         this.dnChannelManager = new DNChannelManager();
         this.requestManager = new RequestManager(api);
 
@@ -145,8 +124,9 @@ public class DNVelocity {
         EventManager eventManager = getServer().getEventManager();
         CommandManager commandManager = getServer().getCommandManager();
 
-        eventManager.register(this, new PlayerServerListener());
+       // eventManager.register(this, new PlayerServerListener());
         eventManager.register(this,new ServerPingListener());
+        eventManager.register(this,new RedirectConnection());
 
         CommandMeta slotCommandMeta = commandManager.metaBuilder("slot").aliases("slots").plugin(this).build();
         commandManager.register(slotCommandMeta, new Slot());

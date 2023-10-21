@@ -6,6 +6,7 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Command;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,12 +43,12 @@ public class Maintenance extends Command {
             case ON:
                 configuration.setMaintenance(true);
                 dnBungee.saveConfig();
-                sender.sendMessage(new TextComponent("§aVous venez d'activer la maintenance."));
+                sender.sendMessage(new TextComponent("§aYou just §aenabled§a the maintenance."));
                 break;
             case OFF:
                 configuration.setMaintenance(false);
                 dnBungee.saveConfig();
-                sender.sendMessage(new TextComponent("§aVous venez de §cdésactiver§a la maintenance."));
+                sender.sendMessage(new TextComponent("§aYou just §cdisabled§a the maintenance."));
                 break;
             case ADD:
                 if(args.length < 2){
@@ -55,11 +56,13 @@ public class Maintenance extends Command {
                     return;
                 }
                 String playernameadd = args[1].toLowerCase();
-
+                if(configuration.getMaintenanceAllowedPlayers() == null) {
+                    configuration.setMaintenanceAllowedPlayers(new ArrayList<>());
+                }
                 if(!configuration.getMaintenanceAllowedPlayers().contains(playernameadd)){
                     configuration.getMaintenanceAllowedPlayers().add(playernameadd);
                     dnBungee.saveConfig();
-                    sender.sendMessage(new TextComponent("§aVous venez d'ajouter "+ args[1] +" à la liste."));
+                    sender.sendMessage(new TextComponent("§aYou just added "+ args[1] +" to the list."));
                 }
                 break;
             case REMOVE:
@@ -72,11 +75,11 @@ public class Maintenance extends Command {
                 if(configuration.getMaintenanceAllowedPlayers().contains(playernamermv)){
                     configuration.getMaintenanceAllowedPlayers().remove(playernamermv);
                     dnBungee.saveConfig();
-                    sender.sendMessage(new TextComponent("§aVous venez de retirer "+ args[1] +" de la liste."));
+                    sender.sendMessage(new TextComponent("§aYou just removed "+ args[1] +" from the list."));
                 }
                 break;
             case LIST:
-                sender.sendMessage(new TextComponent("§6Liste de la Maintenance :"));
+                sender.sendMessage(new TextComponent("§6List of allowed players:"));
                 for (String allowedPlayer: configuration.getMaintenanceAllowedPlayers()){
                     sender.sendMessage(new TextComponent("§e - "+ allowedPlayer));
                 }

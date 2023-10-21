@@ -56,6 +56,8 @@ public abstract class TaskHandler {
 
     public void onTimeout(){}
 
+    public void onCustom(String custom){}
+
     public void destroy() {
         System.out.println("Destroy "+ MID);
         DNCallback.getCurrentId().remove(MID);
