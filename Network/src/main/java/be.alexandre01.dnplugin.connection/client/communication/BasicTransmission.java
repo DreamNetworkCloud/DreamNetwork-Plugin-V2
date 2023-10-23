@@ -2,19 +2,17 @@ package be.alexandre01.dnplugin.connection.client.communication;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.request.RequestInfo;
-import be.alexandre01.dnplugin.api.connection.request.TaskHandler;
 import be.alexandre01.dnplugin.api.connection.request.channels.ChannelPacket;
 import be.alexandre01.dnplugin.api.connection.request.RequestType;
 import be.alexandre01.dnplugin.api.connection.request.channels.DNChannel;
 import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelInterceptor;
-import be.alexandre01.dnplugin.api.connection.request.communication.ClientResponse;
+import be.alexandre01.dnplugin.api.connection.request.communication.ClientReceiver;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.util.NetUtil;
 
-import java.util.logging.Level;
 
-
-public class BasicTransmission extends ClientResponse {
+public class BasicTransmission extends ClientReceiver {
 
     public BasicTransmission(){
         addRequestInterceptor(RequestType.CORE_STOP_SERVER,(message, ctx) -> {
@@ -24,13 +22,16 @@ public class BasicTransmission extends ClientResponse {
 
 
     @Override
-    public void onResponse(Message message, ChannelHandlerContext ctx) throws Exception {
+    public void onReceive(Message message, ChannelHandlerContext ctx) throws Exception {
         ChannelPacket receivedPacket = new ChannelPacket(message);
-        if(message.getHeader() != null){
-            if(message.getHeader().equals("channel")) {
+
+            if(message.hasChannel()){
+                System.out.println("Message from channel "+message.getChannel());
                 DNChannel dnChannel = NetworkBaseAPI.getInstance().getChannelManager().getChannel(message.getChannel());
+                System.out.println("Channel => ?"+ dnChannel);
                 if(dnChannel != null){
                     if(!dnChannel.getDnChannelInterceptors().isEmpty()){
+                        System.out.println("Interceptors => "+ dnChannel.getDnChannelInterceptors());
                         for (DNChannelInterceptor dnChannelInterceptor : dnChannel.getDnChannelInterceptors()){
                             dnChannelInterceptor.received(receivedPacket);
                         }
@@ -38,6 +39,7 @@ public class BasicTransmission extends ClientResponse {
                     return;
                 }
             }
+        if(message.getHeader() != null){
             if(message.getHeader().equals("cData")) {
                 DNChannel dnChannel = NetworkBaseAPI.getInstance().getChannelManager().getChannel(message.getChannel());
                 if(dnChannel != null){
@@ -100,7 +102,7 @@ public class BasicTransmission extends ClientResponse {
                     e.printStackTrace();
                 }
                 System.out.println("The connection has been established on the remote address: " + ctx.channel().remoteAddress());
-                NetworkBaseAPI.getInstance().callServerAttachedEvent();
+                NetworkBaseAPI.getInstance().callServiceAttachedEvent();
             }  else if(requestInfo.equals(RequestType.PROXY_HANDSHAKE_SUCCESS)){
                 String processName = message.getString("PROCESSNAME");
                 final NetworkBaseAPI networkBaseAPI = NetworkBaseAPI.getInstance();
@@ -112,6 +114,7 @@ public class BasicTransmission extends ClientResponse {
                     e.printStackTrace();
                 }
                 System.out.println("The connection has been established on the remote address: "+ ctx.channel().remoteAddress());
+                NetworkBaseAPI.getInstance().callServiceAttachedEvent();
             }
         }
 

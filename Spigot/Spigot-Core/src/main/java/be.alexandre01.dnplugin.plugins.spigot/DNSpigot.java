@@ -83,7 +83,7 @@ public class DNSpigot extends JavaPlugin{
         registerCommand("dnstats",new StatsCommand("dnstats"));
         getServer().getPluginManager().registerEvents(new ReloadListener(),this);
         getServer().getPluginManager().registerEvents(new RestartListener(),this);
-        getServer().getPluginManager().registerEvents(new TestDispatchListener(),this);
+        //getServer().getPluginManager().registerEvents(new TestDispatchListener(),this);
         //getServer().getPluginManager().registerEvents(new TestChannelListener(),this);
 
         //Register BungeeCord Channel

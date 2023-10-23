@@ -1,6 +1,6 @@
 package be.alexandre01.dnplugin.api.connection;
 
-import be.alexandre01.dnplugin.api.connection.request.communication.ClientResponse;
+import be.alexandre01.dnplugin.api.connection.request.communication.ClientReceiver;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -28,11 +28,14 @@ public interface IClientHandler extends ChannelHandler, ChannelInboundHandler {
 
     void writeAndFlush(Message msg, GenericFutureListener<? extends Future<? super Void>> listener);
 
-    java.util.ArrayList<ClientResponse> getResponses();
+    ClientReceiver[] getResponses();
 
     io.netty.channel.Channel getChannel();
 
 
     void setChannel(io.netty.channel.Channel channel);
     public ICallbackManager getCallbackManager();
+
+    public void addResponse(ClientReceiver clientReceiver);
+    public void removeResponse(ClientReceiver clientReceiver);
 }

@@ -26,6 +26,11 @@ public class Maintenance implements SimpleCommand {
     @Override
     public void execute(Invocation invocation) {
         CommandSource sender = invocation.source();
+
+        if(!sender.hasPermission("maintenance.use")){
+            sender.sendMessage(Component.text("§cYou don't have the permission to use this command."));
+            return;
+        }
         String[] args = invocation.arguments();
 
         if(args.length == 0){

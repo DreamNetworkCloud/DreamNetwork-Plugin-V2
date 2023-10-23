@@ -46,21 +46,22 @@ public class ChannelPacket implements Packet {
         this.basicClientHandler = NetworkBaseAPI.getInstance().getClientHandler();
     }
 
-    public void createResponse(Message message){
-        this.createResponse(message,null,"channel");
+    public void createRequest(Message message){
+        this.createRequest(message,null,null);
     }
-    public void createResponse(Message message,String header){
-        this.createResponse(message,null,header);
-    }
-
-    public void createResponse(Message message,GenericFutureListener<? extends Future<? super Void>> listener){
-        this.createResponse(message,listener,"channel");
+    public void createRequest(Message message, String header){
+        this.createRequest(message,null,header);
     }
 
-    public void createResponse(Message message,GenericFutureListener<? extends Future<? super Void>> listener,String header){
+    public void createRequest(Message message, GenericFutureListener<? extends Future<? super Void>> listener){
+        this.createRequest(message,listener,"channel");
+    }
+
+    public void createRequest(Message message, GenericFutureListener<? extends Future<? super Void>> listener, String header){
         message.setProvider(provider);
-        message.setReceiver(NetworkBaseAPI.getInstance().getInfo());
-        message.setHeader(header);
+       // message.setHeader(header);
+        if(header != null)
+            message.setHeader(header);
         message.setChannel(channel);
         if(requestInfo != null){
             RequestBuilder.RequestData requestData = NetworkBaseAPI.getInstance().getRequestManager().getRequestBuilder().getRequestData().get(requestInfo);

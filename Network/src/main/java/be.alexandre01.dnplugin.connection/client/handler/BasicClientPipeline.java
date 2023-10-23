@@ -7,16 +7,15 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 
 public class BasicClientPipeline extends ChannelInitializer<SocketChannel> {
-    private BasicClient basicClient;
+    private final BasicClientHandler basicClientHandler;
 
     public BasicClientPipeline(BasicClient basicClient){
-
-        this.basicClient = basicClient;
+        basicClientHandler = new BasicClientHandler(basicClient);
     }
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
         ch.pipeline().addLast("Decoder",new BasicDecoder());
-        ch.pipeline().addLast(new BasicClientHandler(basicClient));
+        ch.pipeline().addLast(basicClientHandler);
         ch.pipeline().addLast("Encoder",new BasicEncoder());
     }
 }

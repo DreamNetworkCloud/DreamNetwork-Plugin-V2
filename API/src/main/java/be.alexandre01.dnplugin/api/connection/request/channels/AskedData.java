@@ -21,7 +21,7 @@ public class AskedData<T>{
                 public void run() {
                     //dSystem.out.println("Submitted !");
                     CompletableFuture<T> completableFuture = new CompletableFuture<>();
-                    new ChannelPacket(dnChannel.getName(), dnChannel.getNetworkBaseAPI().getProcessName()).createResponse(new Message().set("key", key),"cAsk");
+                    new ChannelPacket(dnChannel.getName(), dnChannel.getNetworkBaseAPI().getProcessName()).createRequest(new Message().set("key", key),"cAsk");
 
                     if(dnChannel.getAutoSendObjects().containsKey(key) && dnChannel.getObjects().containsKey(key)){
                         getDataThread.onComplete(completableFuture.getNow((T) dnChannel.getObjects().get(key)));

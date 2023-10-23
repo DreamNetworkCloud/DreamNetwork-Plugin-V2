@@ -32,6 +32,11 @@ public class TabList implements SimpleCommand {
     @Override
     public void execute(Invocation invocation) {
         CommandSource sender = invocation.source();
+
+        if(!sender.hasPermission("tablist.use")){
+            sender.sendMessage(Component.text("§cYou don't have the permission to use this command."));
+            return;
+        }
         String[] args = invocation.arguments();
 
         if(args.length < 1){sendHelp(sender);return;}

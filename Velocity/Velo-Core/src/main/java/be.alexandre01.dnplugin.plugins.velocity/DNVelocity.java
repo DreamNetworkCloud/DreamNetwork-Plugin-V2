@@ -101,11 +101,7 @@ public class DNVelocity {
         }*/
 
         //  getLogger().log(Level.INFO,"Enabling the Network Connection on the port "+port+"...");
-        if(!api.initConnection()){
-            getLogger().severe("The connection to the server has failed.");
-           // this.server.shutdown();
-            return;
-        }
+
     }
 
     @Subscribe
@@ -114,17 +110,25 @@ public class DNVelocity {
         // For instance, we could register an event:
 
         // JAMAIS PRESENT
+
+        System.out.println("Enabling the Network Connection on the port "+port+"...");
+
+        System.out.println("Servers => "+server.getAllServers());
         server.getServer("core").ifPresent(serverInfo -> {
             coreTemp = serverInfo.getServerInfo();
         });
-
+        if(!api.initConnection()){
+            getLogger().severe("The connection to the server has failed.");
+            // this.server.shutdown();
+            return;
+        }
         playerTabList = new PlayerTabList(server);
         playerTabList.start();
 
         EventManager eventManager = getServer().getEventManager();
         CommandManager commandManager = getServer().getCommandManager();
 
-       // eventManager.register(this, new PlayerServerListener());
+        eventManager.register(this, new PlayerServerListener());
         eventManager.register(this,new ServerPingListener());
         eventManager.register(this,new RedirectConnection());
 

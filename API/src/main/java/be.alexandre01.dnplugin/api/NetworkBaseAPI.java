@@ -1,6 +1,5 @@
 package be.alexandre01.dnplugin.api;
 
-import be.alexandre01.dnplugin.api.connection.IBasicClient;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
 import be.alexandre01.dnplugin.api.connection.request.CustomRequestInfo;
 import be.alexandre01.dnplugin.api.connection.request.Packet;
@@ -24,7 +23,9 @@ import lombok.Setter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 
 public abstract class NetworkBaseAPI extends NetCore{
@@ -37,6 +38,8 @@ public abstract class NetworkBaseAPI extends NetCore{
 
     @Getter private boolean isExternal = false;
     @Setter private String connectionID = null;
+    protected boolean isAttached;
+    protected final List<Consumer<NetworkBaseAPI>> consumerList = new ArrayList<>();
 
 
     public static NetworkBaseAPI getInstance() {
@@ -127,7 +130,7 @@ public abstract class NetworkBaseAPI extends NetCore{
 
     public abstract void setClientHandler(IClientHandler basicClientHandler);
 
-    public abstract void callServerAttachedEvent();
+    public abstract void callServiceAttachedEvent();
 
     public abstract void shutdownProcess();
 
@@ -137,7 +140,9 @@ public abstract class NetworkBaseAPI extends NetCore{
         if(isInit){
             throw new RuntimeException("Connection already initialized");
         }
-        DNNetworkUtilities.getInstance().initConnection().orElseThrow(() -> new RuntimeException("Can't connect to the network"));
+        if(!DNNetworkUtilities.getInstance().initConnection().isPresent()){
+            return false;
+        }
         isInit = true;
         return true;
     }
@@ -208,4 +213,17 @@ public abstract class NetworkBaseAPI extends NetCore{
         System.out.println("Restarting "+ getProcessName());
         NetworkBaseAPI.getInstance().getRequestManager().getRequest(RequestType.CORE_RESTART_SERVER,getProcessName()).dispatch();
     }
+
+
+    public void onInitialise(Consumer<NetworkBaseAPI> consumer) {
+        System.out.println("Initialise called");
+        if(isAttached){
+            System.out.println("Initialise already attached");
+            consumer.accept(this);
+        }else{
+            System.out.println("Initialise not yet attached");
+            consumerList.add(consumer);
+        }
+    }
+
 }

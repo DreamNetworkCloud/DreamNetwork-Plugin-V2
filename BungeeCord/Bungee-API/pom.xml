@@ -184,12 +184,6 @@
             <groupId>be.alexandre01.dnplugin</groupId>
             <artifactId>DreamNetwork-API</artifactId>
             <version>1.6.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>be.alexandre01.dnplugin</groupId>
-            <artifactId>DreamNetwork-API</artifactId>
-            <version>1.6.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

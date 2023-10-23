@@ -2,10 +2,10 @@ C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\Velocity\Velo-Core\src\main\java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\Velocity\Velo-Core\src\main\java\be.alexandre01.dnplugin.plugins.velocity\DNVelocity.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\Velocity\Velo-Core\src\main\java\be.alexandre01.dnplugin.plugins.velocity\PlayerTabList.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\Velocity\Velo-Core\src\main\java\be.alexandre01.dnplugin.plugins.velocity\listeners\PlayerServerListener.java
-C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\Velocity\Velo-Core\src\main\java\be.alexandre01.dnplugin.plugins.velocity\communication\VelocityRequestResponse.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\Velocity\Velo-Core\src\main\java\be.alexandre01.dnplugin.plugins.velocity\components\commands\TabList.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\Velocity\Velo-Core\src\main\java\be.alexandre01.dnplugin.plugins.velocity\communication\generated\VelocityGeneratedRequest.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\Velocity\Velo-Core\src\main\java\be.alexandre01.dnplugin.plugins.velocity\objects\PlayerManagement.java
+C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\Velocity\Velo-Core\src\main\java\be.alexandre01.dnplugin.plugins.velocity\communication\VelocityRequestReceiver.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\Velocity\Velo-Core\src\main\java\be.alexandre01.dnplugin.plugins.velocity\utils\VelocityServersManager.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\Velocity\Velo-Core\src\main\java\be.alexandre01.dnplugin.plugins.velocity\components\listeners\ServerPingListener.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\Velocity\Velo-Core\src\main\java\be.alexandre01.dnplugin.plugins.velocity\components\commands\Slot.java

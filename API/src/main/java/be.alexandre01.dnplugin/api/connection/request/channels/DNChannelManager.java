@@ -20,31 +20,6 @@ public class DNChannelManager {
         return channels.get(name);
     }
 
-    @Deprecated
-    public DNChannel registerChannel(DNChannel dnChannel){
-        return registerChannel(dnChannel,false,null);
-    }
-    @Deprecated
-    public DNChannel registerChannel(DNChannel dnChannel,boolean receiveSendedMessage){
-        return registerChannel(dnChannel,receiveSendedMessage,null);
-    }
-    @Deprecated
-    public DNChannel registerChannel(DNChannel dnChannel, boolean receiveSendedMessage, RegisterListener registerListener){
-        if(hasChannel(dnChannel.getName())){
-            DNChannel channel = getChannel(dnChannel.getName());
-            if(registerListener != null)
-                channel.setRegisterListener(registerListener);
-            channel.callRegisterEvent(true);
-            return channel;
-        }
-        if(registerListener != null)
-            dnChannel.setRegisterListener(registerListener);
-        NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_REGISTER_CHANNEL,dnChannel.getName(),receiveSendedMessage);
-        channels.put(dnChannel.getName(),dnChannel);
-
-        return dnChannel;
-    }
-
     public DNChannel registerChannel(String channelName,boolean receiveSendedMessage){
         return registerChannel(channelName,receiveSendedMessage,null);
     }
@@ -54,14 +29,16 @@ public class DNChannelManager {
             if(registerListener != null)
                 channel.setRegisterListener(registerListener);
             channel.callRegisterEvent(true);
-            return getChannel(channelName);
+            channel.isAccessible = true;
+            return channel;
         }
-        DNChannel dnChannel = new DNChannel(channelName);
+        DNChannel channel = new DNChannel(channelName);
         if(registerListener != null)
-            dnChannel.setRegisterListener(registerListener);
-        NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_REGISTER_CHANNEL,dnChannel.getName(),receiveSendedMessage);
-        channels.put(dnChannel.getName(),dnChannel);
-        return dnChannel;
+            channel.setRegisterListener(registerListener);
+        NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_REGISTER_CHANNEL,channel.getName(),receiveSendedMessage);
+        channels.put(channel.getName(),channel);
+        channel.isAccessible = true;
+        return channel;
     }
 
     public DNChannel registerChannel(String channelName){
@@ -69,7 +46,7 @@ public class DNChannelManager {
     }
     public void unRegisterChannel(DNChannel dnChannel){
         NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.CORE_UNREGISTER_CHANNEL,dnChannel.getName());
-        channels.remove(dnChannel.getName());
+        //channels.remove(dnChannel.getName());
     }
 
 }

@@ -35,7 +35,7 @@ public class VelocityServersManager implements DNVelocityServersManager {
             ProxyExecutor proxyService;
             String name = processName.split("-")[0];
             int id = Integer.parseInt(processName.split("-")[1]);
-            if(networkBaseAPI.getServices().isEmpty()){
+            if(networkBaseAPI.getServices().isEmpty() && DNVelocity.getInstance().getCoreTemp() != null){
                 DNVelocity.getInstance().getServer().unregisterServer(DNVelocity.getInstance().getCoreTemp());
             }
             String[] splitPath = name.split("/");
@@ -59,7 +59,7 @@ public class VelocityServersManager implements DNVelocityServersManager {
         Optional<RegisteredServer> server = DNVelocity.getInstance().getServer().getServer(finalname);
         if(!server.isPresent())return;
         networkBaseAPI.getServices().remove(finalname);
-        if(networkBaseAPI.getServices().isEmpty()){
+        if(networkBaseAPI.getServices().isEmpty() && DNVelocity.getInstance().getCoreTemp() != null){
             DNVelocity.getInstance().getServer().registerServer(DNVelocity.getInstance().getCoreTemp());
             return;
         }

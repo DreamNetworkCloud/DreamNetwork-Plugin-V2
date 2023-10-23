@@ -3,6 +3,7 @@ package be.alexandre01.dnplugin.plugins.bungeecord.listeners;
 import be.alexandre01.dnplugin.plugins.bungeecord.DNBungee;
 import be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeAPI;
 import be.alexandre01.dnplugin.api.utils.files.network.NetworkYAML;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -127,6 +128,13 @@ public class RedirectConnection implements Listener {
             if(s == null || s == event.getCancelServer()){
                 return;
             }
+            BaseComponent[] baseComponents = new BaseComponent[event.getKickReasonComponent().length+1];
+            baseComponents[0] = new TextComponent("§c");
+            for(int i = 0; i < event.getKickReasonComponent().length; i++){
+                baseComponents[i+1] = event.getKickReasonComponent()[i];
+            }
+            event.getPlayer().sendMessage(baseComponents);
+
             event.setCancelled(true);
             event.setCancelServer(s);
         }

@@ -14,21 +14,15 @@ public class PlayerServerListener {
         this.dnVelocity = DNVelocity.getInstance();
     }
 
-    /*@Subscribe
+    @Subscribe
     public void onSwitch(ServerConnectedEvent event){
-        dnVelocity.getPlayerManagement().updatePlayer(event.getPlayer());
+        dnVelocity.getPlayerManagement().updatePlayer(event.getPlayer(),event.getServer());
     }
 
     @Subscribe
     public void onDisconnect(DisconnectEvent event){
         dnVelocity.getPlayerManagement().removePlayer(event.getPlayer());
-    }*/
-
-    @Subscribe
-    public void onHandshake(ConnectionHandshakeEvent event) {
-
     }
-
 
 
 }

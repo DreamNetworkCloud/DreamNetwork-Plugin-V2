@@ -45,7 +45,7 @@ public interface DNSpigotAPI {
 
     void setClientHandler(IClientHandler basicClientHandler);
 
-    void callServerAttachedEvent();
+    void callServiceAttachedEvent();
 
     void autoRefreshPlayers();
 

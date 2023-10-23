@@ -21,13 +21,15 @@ public class BasicClient extends Thread implements IBasicClient {
     ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     public int trying = 0;
 
-    @Setter
+    @Setter @Getter
     boolean isRunning = false;
 
     boolean isExternal = false;
 
     @Getter String fullName = null;
     @Getter String connectionID = null;
+
+    @Getter BasicClientPipeline pipeline = new BasicClientPipeline(this);
 
     String host;
     int port;
@@ -89,7 +91,7 @@ public class BasicClient extends Thread implements IBasicClient {
             b.group(workerGroup); // (2)
             b.channel(NioSocketChannel.class); // (3)
             b.option(ChannelOption.SO_KEEPALIVE, true); // (4)
-            b.handler(new BasicClientPipeline(this));
+            b.handler(pipeline);
 
             // Start the client.
             ChannelFuture f = b.connect(host, port).sync(); // (5)

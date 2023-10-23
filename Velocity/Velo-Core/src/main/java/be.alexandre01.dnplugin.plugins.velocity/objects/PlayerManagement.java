@@ -4,6 +4,8 @@ import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.request.RequestType;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
 import com.velocitypowered.api.proxy.Player;
+import com.velocitypowered.api.proxy.ServerConnection;
+import com.velocitypowered.api.proxy.server.RegisteredServer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,23 +15,22 @@ public class PlayerManagement {
     private final ArrayList<Integer> removedIds = new ArrayList<>();
     private int currentID = 0;
 
-    public void updatePlayer(Player player){
+    public void updatePlayer(Player player, RegisteredServer serverConnection){
         int id;
         if(players.containsKey(player)){
             id = players.get(player);
-            NetworkBaseAPI.getInstance().getRequestManager().sendRequest(
-                    RequestType.CORE_UPDATE_PLAYER,
-                    id,
-                    player.getCurrentServer().get().getServer().getServerInfo().getName()
-            );
+                NetworkBaseAPI.getInstance().getRequestManager().sendRequest(
+                        RequestType.CORE_UPDATE_PLAYER,
+                        id,
+                        serverConnection.getServerInfo().getName());
+
         }else {
             id = createId();
             players.put(player,id);
-
             NetworkBaseAPI.getInstance().getRequestManager().sendRequest(
                     RequestType.CORE_UPDATE_PLAYER,
                     id,
-                    player.getCurrentServer().get().getServer().getServerInfo().getName(),
+                    serverConnection.getServerInfo().getName(),
                     player.getGameProfile().getName()
             );
         }

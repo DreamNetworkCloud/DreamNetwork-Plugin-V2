@@ -6,11 +6,15 @@ import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityAPI;
 import be.alexandre01.dnplugin.api.utils.files.network.NetworkYAML;
 import com.velocitypowered.api.event.ResultedEvent;
 import com.velocitypowered.api.event.Subscribe;
+import com.velocitypowered.api.event.connection.LoginEvent;
 import com.velocitypowered.api.event.connection.PostLoginEvent;
+import com.velocitypowered.api.event.player.KickedFromServerEvent;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
+import com.velocitypowered.api.proxy.server.ServerInfo;
 import net.kyori.adventure.text.Component;
+import org.checkerframework.checker.nullness.Opt;
 
 
 import java.util.HashSet;
@@ -19,7 +23,6 @@ import java.util.Set;
 import java.util.UUID;
 
 public class RedirectConnection  {
-    public boolean connexionOnLobby = true;
     private final Set<UUID> pending = new HashSet<>();
     private final DNVelocity dnVelocity;
     private final DNVelocityAPI dnVelocityAPI;
@@ -37,46 +40,45 @@ public class RedirectConnection  {
     }
 
     @Subscribe
-    public void onJoin(ServerConnectedEvent event){
+    public void onJoin(LoginEvent event){
         Player player = event.getPlayer();
-        RegisteredServer server = event.getServer();
-        Optional<RegisteredServer> pastServer = event.getPreviousServer();
 
         NetworkYAML config = dnVelocity.getConfiguration();
+
 
         if(config.getSlots() != -2){
             if(dnVelocity.getServer().getPlayerCount()-1 >= config.getSlots()){
                 if(!player.hasPermission("network.slot.bypass")){
                     if(config.isMaintenance() && !config.getMaintenanceAllowedPlayers().contains(player.getGameProfile().getName().toLowerCase())){
-                        player.disconnect(
+                        event.setResult(ResultedEvent.ComponentResult.denied(
                                 Component.text(dnVelocity.getMessage("connect.maintenance.header", player) + "\n")
                                         .append(Component.text(dnVelocity.getMessage("connect.maintenance.text-1", player) + "\n"))
                                         .append(Component.text("\n\n" + dnVelocity.getMessage("connect.maintenance.text-2", player) + "\n"))
                                         .append(Component.text(dnVelocity.getMessage("connect.maintenance.footer", player) + "\n"))
                                         .append(Component.text(dnVelocity.getMessage("general.ip", player)))
-                        );
+                        ));
                         return;
                     }
-                    player.disconnect(
+                    event.setResult(ResultedEvent.ComponentResult.denied(
                             Component.text(dnVelocity.getMessage("connect.slot-full.header", player) + "\n")
                                     .append(Component.text(dnVelocity.getMessage("connect.slot-full.text-1", player) + "\n"))
                                     .append(Component.text("\n\n" + dnVelocity.getMessage("connect.slot-full.text-2", player) + "\n"))
                                     .append(Component.text(dnVelocity.getMessage("connect.slot-full.footer", player) + "\n"))
                                     .append(Component.text(dnVelocity.getMessage("connect.slot-full.footer", player) + "\n"))
                                     .append(Component.text(dnVelocity.getMessage("general.ip", player)))
-                    );
+                    ));
                     return;
                 }
             }
 
             if(config.isMaintenance()){
                 if(!config.getMaintenanceAllowedPlayers().contains(player.getGameProfile().getName().toLowerCase()) && !player.hasPermission("network.maintenance.bypass")){
-                    player.disconnect(
+                    event.setResult(ResultedEvent.ComponentResult.denied(
                             Component.text(dnVelocity.getMessage("connect.maintenance.header",player) + "\n")
                                     .append(Component.text(dnVelocity.getMessage("connect.maintenance.text-1",player) + "\n"))
                                     .append(Component.text("\n\n"+ dnVelocity.getMessage("connect.maintenance.text-2",player) + "\n"))
                                     .append(Component.text(dnVelocity.getMessage("connect.maintenance.footer",player) + "\n"))
-                                    .append(Component.text(dnVelocity.getMessage("general.ip",player))));
+                                    .append(Component.text(dnVelocity.getMessage("general.ip",player)))));
                 }
             }
         }
@@ -85,16 +87,22 @@ public class RedirectConnection  {
     @Subscribe
     public void onPlayerChoose(com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent event) {
         if(dnVelocity.getConfiguration().isConnexionOnLobby()){
-            dnVelocity.getLogger().info("[DNBungee] Redirecting player to lobby server");
+            dnVelocity.getLogger().info("[DNVelocity] Redirecting player to lobby server");
             pending.add(event.getPlayer().getGameProfile().getId());
-            Optional<RegisteredServer> r = DNVelocity.getInstance().getServer().getServer(dnVelocity.getConfiguration().getLobby());
+            Optional<RegisteredServer> r = findLobby();
             if(r.isPresent()) {
+                dnVelocity.getPlayerManagement().updatePlayer(event.getPlayer(),r.get());
                 event.setInitialServer(r.get());
             }else {
-                findAny().ifPresent(event::setInitialServer);
+                //kick
+                event.getPlayer().disconnect(Component.text("§cNo lobby server found"));
+                //findAny().ifPresent(event::setInitialServer);
             }
         }else {
-            findAny().ifPresent(event::setInitialServer);
+            findAny().ifPresent(registeredServer -> {
+                dnVelocity.getPlayerManagement().updatePlayer(event.getPlayer(),registeredServer);
+                event.setInitialServer(registeredServer);
+            });
         }
     }
 
@@ -102,9 +110,34 @@ public class RedirectConnection  {
         return DNVelocity.getInstance().getServer().getAllServers().stream().findAny();
     }
 
+    public Optional<RegisteredServer> findLobby(){
+        return DNVelocity.getInstance().getServer().getAllServers().stream().filter(server -> server.getServerInfo().getName().startsWith(dnVelocity.getConfiguration().getLobby())).findAny();
+    }
+
+    public Optional<RegisteredServer> findFrom(String name){
+        return DNVelocity.getInstance().getServer().getAllServers().stream().filter(server -> server.getServerInfo().getName().startsWith(name)).findAny();
+    }
+
     @Subscribe
     public void onLogin(com.velocitypowered.api.event.connection.LoginEvent event) {
         event.setResult(ResultedEvent.ComponentResult.allowed());
+    }
+    @Subscribe
+    public void onServerKick(KickedFromServerEvent event) {
+        NetworkYAML config = dnVelocity.getConfiguration();
+        if(config.isKickRedirectionEnabled()){
+            Optional<RegisteredServer> s = findFrom(config.getKickRedirectionServer());
+
+            if(!s.isPresent() || s.get() == event.getServer()){
+                return;
+            }
+            event.getServerKickReason().ifPresent(component -> {
+                event.getPlayer().sendMessage(() -> {
+                    return Component.text("§c").append(component);
+                });
+            });
+            event.setResult(KickedFromServerEvent.RedirectPlayer.create(s.get()));
+        }
     }
 
  /*   @EventHandler
@@ -197,17 +230,7 @@ public class RedirectConnection  {
         }
     }
 
-    @EventHandler
-    public void onServerKick(ServerKickEvent event) {
-        if(dnVelocity.cancelKick){
-            ServerInfo s = getServer(dnVelocity.kickServerRedirection);
-            if(s == null || s == event.getCancelServer()){
-                return;
-            }
-            event.setCancelled(true);
-            event.setCancelServer(s);
-        }
-    }
+
     public ServerInfo getServer(String server){
         int i = 0;
         ServerInfo serverInfoFree = null;

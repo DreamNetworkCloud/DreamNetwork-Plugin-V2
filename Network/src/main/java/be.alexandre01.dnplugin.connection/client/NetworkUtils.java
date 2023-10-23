@@ -2,6 +2,7 @@ package be.alexandre01.dnplugin.connection.client;
 
 import be.alexandre01.dnplugin.api.DNNetworkUtilities;
 import be.alexandre01.dnplugin.api.connection.IBasicClient;
+import be.alexandre01.dnplugin.connection.client.BasicClient;
 
 import java.util.Optional;
 
@@ -18,8 +19,8 @@ public class NetworkUtils extends DNNetworkUtilities {
             client = new BasicClient();
         }
 
-        if(!client.isRunning){
-            client.connect();
+        if(!client.isRunning()){
+            new Thread(client).start();
             return Optional.ofNullable(client);
         }else {
             System.out.println("Client is already running");

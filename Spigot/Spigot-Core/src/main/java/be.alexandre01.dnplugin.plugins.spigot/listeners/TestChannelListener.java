@@ -21,6 +21,8 @@ import com.google.gson.internal.LinkedTreeMap;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import java.util.LinkedHashMap;
+
 public class TestChannelListener implements Listener {
     int serverOnline = 0;
     int playerOnline = 0;
@@ -34,7 +36,6 @@ public class TestChannelListener implements Listener {
 
 
         //Creation du channel
-        dnChannel = new DNChannel("test");
 
 
         //Ajout de plusieurs intercepteurs de données (exemple)
@@ -56,9 +57,9 @@ public class TestChannelListener implements Listener {
 
         //Enregistrement du channel au prêt de DreamNetwork ! (exemple)
         // Et on peut récupérer les données inscrit sur le channel si on le souhaite
-        dnChannelManager.registerChannel(dnChannel, true, new RegisterListener() {
+        dnChannelManager.registerChannel("Test", true, new RegisterListener() {
             @Override
-            public void onNewDataReceived(LinkedTreeMap<String, Object> newData) {
+            public void onNewDataReceived(LinkedHashMap<String, Object> newData) {
                 createInitialData("server_online", 0);
                 createInitialData("players_online", 0);
 
@@ -92,7 +93,7 @@ public class TestChannelListener implements Listener {
 
                         //ENVOI D'UNE REPONSE
                         Message newMessage = new Message().set("INFO","MERCI FRERO !");
-                        receivedPacket.createResponse(newMessage);
+                        receivedPacket.createRequest(newMessage);
                     }
                     if(status.equalsIgnoreCase("GENERATING")){
                         System.out.println("Le serveur est en train de générer le monde.");

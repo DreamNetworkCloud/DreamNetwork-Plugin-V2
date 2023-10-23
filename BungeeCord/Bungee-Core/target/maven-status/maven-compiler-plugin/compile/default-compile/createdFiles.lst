@@ -7,8 +7,8 @@ be\alexandre01\dnplugin\plugins\bungeecord\components\TablistCustomizer$1.class
 be\alexandre01\dnplugin\plugins\bungeecord\components\commands\Maintenance$1.class
 be\alexandre01\dnplugin\plugins\bungeecord\DNBungee.class
 be\alexandre01\dnplugin\plugins\bungeecord\PlayerTabList.class
-be\alexandre01\dnplugin\plugins\bungeecord\communication\BungeeRequestResponse.class
 be\alexandre01\dnplugin\plugins\bungeecord\ImplAPI.class
+be\alexandre01\dnplugin\plugins\bungeecord\communication\BungeeRequestReceiver.class
 be\alexandre01\dnplugin\plugins\bungeecord\components\commands\TabList$1.class
 be\alexandre01\dnplugin\plugins\bungeecord\listeners\RedirectConnection.class
 be\alexandre01\dnplugin\plugins\bungeecord\communication\objects\ProxyExecutor.class

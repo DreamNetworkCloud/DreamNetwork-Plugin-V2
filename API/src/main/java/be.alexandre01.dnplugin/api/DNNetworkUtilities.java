@@ -12,6 +12,18 @@ import java.util.Optional;
 public abstract class DNNetworkUtilities {
     @Getter private static DNNetworkUtilities instance;
 
+    static {
+        try {
+            Class.forName("be.alexandre01.dnplugin.api.DreamNetworkingInitializer").newInstance();
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public DNNetworkUtilities() {
         instance = this;
     }

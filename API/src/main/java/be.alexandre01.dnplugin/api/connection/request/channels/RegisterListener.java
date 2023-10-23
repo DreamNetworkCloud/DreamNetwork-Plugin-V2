@@ -3,10 +3,12 @@ package be.alexandre01.dnplugin.api.connection.request.channels;
 import com.google.gson.internal.LinkedTreeMap;
 import lombok.Getter;
 
+import java.util.LinkedHashMap;
+
 public abstract class RegisterListener {
     @Getter
     private DNChannel channel;
-    private LinkedTreeMap<String, Object> newData;
+    private LinkedHashMap<String, Object> newData;
 
     public void createInitialData(String key, Object data) {
         if (!contains(key)) {
@@ -31,7 +33,7 @@ public abstract class RegisterListener {
         return (T) channel.getNewData().get(key);
     }
 
-    public void executeNewData(LinkedTreeMap<String, Object> newData) {
+    public void executeNewData(LinkedHashMap<String, Object> newData) {
 
        /* System.out.println("PUT ALL " + newData);
         System.out.println("OBJECTS ? " + channel.getObjects());
@@ -42,5 +44,5 @@ public abstract class RegisterListener {
         channel.getObjects().putAll(newData);
     }
 
-    public abstract void onNewDataReceived(LinkedTreeMap<String, Object> newData);
+    public abstract void onNewDataReceived(LinkedHashMap<String, Object> newData);
 }
