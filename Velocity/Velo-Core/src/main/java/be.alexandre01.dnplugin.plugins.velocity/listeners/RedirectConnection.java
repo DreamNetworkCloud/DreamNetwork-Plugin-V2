@@ -94,8 +94,14 @@ public class RedirectConnection  {
                 dnVelocity.getPlayerManagement().updatePlayer(event.getPlayer(),r.get());
                 event.setInitialServer(r.get());
             }else {
+                Player player = event.getPlayer();
                 //kick
-                event.getPlayer().disconnect(Component.text("§cNo lobby server found"));
+                Component component =  Component.text(dnVelocity.getMessage("connect.noLobby.header", player) + "\n")
+                        .append(Component.text(dnVelocity.getMessage("connect.noLobby.text-1", player) + "\n"))
+                        .append(Component.text("\n\n" + dnVelocity.getMessage("connect.noLobby.text-2", player) + "\n"))
+                        .append(Component.text(dnVelocity.getMessage("connect.noLobby.footer", player) + "\n"))
+                        .append(Component.text(dnVelocity.getMessage("general.ip", player)));
+                event.getPlayer().disconnect(component);
                 //findAny().ifPresent(event::setInitialServer);
             }
         }else {
