@@ -124,7 +124,9 @@ public class DNChannel {
     public void callRegisterEvent(boolean force){
             hasBeenRegistered = true;
             if((getRegisterListener() != null && !hasCalledNewData) || force){
-                getRegisterListener().executeNewData(newData);
+                if(getRegisterListener() != null){
+                    getRegisterListener().executeNewData(newData);
+                }
             }
             for(Map.Entry<String,Object> entry : newData.entrySet()){
                 if(getDataListener().containsKey(entry.getKey())){
