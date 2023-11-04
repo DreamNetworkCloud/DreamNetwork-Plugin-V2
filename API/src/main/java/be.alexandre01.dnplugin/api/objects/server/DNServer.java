@@ -27,6 +27,8 @@ public class DNServer extends RemoteClient {
         this.remoteExecutor = remoteExecutor;
     }
 
+
+
     @Deprecated
     public void sendMessage(Message message){
         networkBaseAPI.getRequestManager().sendRequest(RequestType.CORE_RETRANSMISSION,message,name+"-"+id);
@@ -36,7 +38,7 @@ public class DNServer extends RemoteClient {
 
     public void sendRequest(RequestInfo requestInfo, Object... object){
         RequestPacket requestPacket = networkBaseAPI.getRequestManager().getRequest(requestInfo, new Message(), null, object);
-        sendMessage(requestPacket.getMessage());
+        writeAndFlush(requestPacket.getMessage());
     }
     public CompletableFuture<Boolean> stop(){
         CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();

@@ -16,7 +16,6 @@ public class ResponseManager {
         System.out.println("Add new response ! "+ clientReceiver.getClass().getSimpleName());
         System.out.println("Fuck3");
         // get all overrided methods and print it
-        System.out.println("Add response hihhiisdfhjpiusdfgoipçujfpoim");
         baseAPI.getClientHandler().addResponse(clientReceiver);
         for (Class<?> c = clientReceiver.getClass(); c != null; c = c.getSuperclass()) {
             System.out.println("Putain de classe "+ c.getSimpleName());

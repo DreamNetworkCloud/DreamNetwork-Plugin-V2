@@ -12,10 +12,10 @@ import lombok.Getter;
  ↬   Made by Alexandre01Dev 😎
  ↬   done on 21/09/2023 at 18:48
 */
-@Getter
-public abstract class
 
-NetEntity {
+@Getter
+
+public abstract class NetEntity {
     protected final String name;
     protected NetEntity(String name) {
         this.name = name;

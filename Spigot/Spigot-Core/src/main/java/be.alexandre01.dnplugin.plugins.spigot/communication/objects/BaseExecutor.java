@@ -40,7 +40,7 @@ public class BaseExecutor extends RemoteExecutor {
                         String name = getResponse().getString("name");
                         String[] splittedName = name.split("-");
                         int id = Integer.parseInt(splittedName[splittedName.length-1]);
-                        servers.put(id,dnServer = new DNServer(name,id, BaseExecutor.this));
+                        servers.put(id,dnServer = new DNServer(splittedName[0],id, BaseExecutor.this));
                         if(executorCallbacks.getStartList() != null){
                             executorCallbacks.getStartList().forEach(iCallbackStart -> iCallbackStart.whenStart(dnServer));
                         }
