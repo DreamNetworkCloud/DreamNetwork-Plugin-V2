@@ -2,6 +2,8 @@ package be.alexandre01.dnplugin.api.connection.request;
 
 import be.alexandre01.dnplugin.api.objects.server.NetEntity;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Getter;
 
 import java.util.Optional;
@@ -31,17 +33,30 @@ public class DNCallbackReceiver {
         return (creationTimeStamp+(timeOut)*1000L) <= System.currentTimeMillis();
     }
 
-    public boolean send(String custom){
+    public boolean send(String custom, GenericFutureListener<? extends Future<? super Void>> listener){
         //response ID = RID
         // Message ID = MID
-        return mergeAndSend(new Message(),custom).isPresent();
+        return mergeAndSend(new Message(),custom,listener).isPresent();
     }
 
-    public void send(TaskHandler.TaskType taskType){
-        this.send(taskType.toString());
+    public boolean send(String custom){
+        return this.send(custom,null);
+    }
+
+
+
+    public boolean send(TaskHandler.TaskType taskType){
+        return this.send(taskType.toString());
+    }
+
+    public boolean send(TaskHandler.TaskType taskType, GenericFutureListener<? extends Future<? super Void>> listener){
+        return this.send(taskType.toString(),listener);
     }
 
     public Optional<Message> mergeAndSend(Message message, String custom){
+        return mergeAndSend(message,custom,null);
+    }
+    public Optional<Message> mergeAndSend(Message message, String custom, GenericFutureListener<? extends Future<? super Void>> listener){
         if(isOutOfTime()) return Optional.empty();
         if(this.message.getProvider().isPresent()){
             NetEntity netEntity = this.message.getProvider().get();
@@ -49,7 +64,7 @@ public class DNCallbackReceiver {
             message.setInRoot("tType",custom);
             //set provider (from) to receiver (to)
             message.setReceiver((String) this.message.getInRoot("from"));
-            netEntity.writeAndFlush(message);
+            netEntity.writeAndFlush(message,listener);
             return Optional.of(message);
         }else {
            return Optional.empty();

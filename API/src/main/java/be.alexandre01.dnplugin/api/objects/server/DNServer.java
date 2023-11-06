@@ -68,7 +68,7 @@ public class DNServer extends RemoteClient {
     @Override
     public Packet writeAndFlush(Message message, GenericFutureListener<? extends Future<? super Void>> listener) {
         message.setReceiver(getName());
-        networkBaseAPI.getClientHandler().writeAndFlush(message);
+        networkBaseAPI.getClientHandler().writeAndFlush(message,listener);
         return new Packet() {
             @Override
             public Message getMessage() {
@@ -86,6 +86,8 @@ public class DNServer extends RemoteClient {
             }
         };
     }
+
+
 
     @Override
     public Packet dispatch(Packet packet) {

@@ -5,16 +5,20 @@ import be.alexandre01.dnplugin.api.connection.request.CustomRequestInfo;
 import be.alexandre01.dnplugin.api.connection.request.Packet;
 import be.alexandre01.dnplugin.api.connection.request.RequestManager;
 import be.alexandre01.dnplugin.api.connection.request.RequestType;
+import be.alexandre01.dnplugin.api.connection.request.communication.ReceiverManager;
+import be.alexandre01.dnplugin.api.connection.request.packets.PacketHandlingFactory;
 import be.alexandre01.dnplugin.api.objects.RemoteBundle;
 import be.alexandre01.dnplugin.api.objects.RemoteExecutor;
 import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
-import be.alexandre01.dnplugin.api.connection.request.communication.ResponseManager;
 import be.alexandre01.dnplugin.api.connection.request.exception.IDNotFoundException;
 import be.alexandre01.dnplugin.api.objects.core.NetCore;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import be.alexandre01.dnplugin.api.objects.server.NetEntity;
 import be.alexandre01.dnplugin.api.universal.player.UniversalPlayer;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
+import be.alexandre01.dnplugin.api.utils.messages.mapper.MapperOfDNServer;
+import be.alexandre01.dnplugin.api.utils.messages.mapper.MapperOfDate;
+import be.alexandre01.dnplugin.api.utils.messages.mapper.MapperOfRemoteExecutor;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Getter;
@@ -35,9 +39,14 @@ public abstract class NetworkBaseAPI extends NetCore{
     private boolean isInit = false;
     private final ArrayList<RequestType> requestTypes = new ArrayList<>();
     private static NetworkBaseAPI instance;
+    @Getter private final PacketHandlingFactory packetFactory = new PacketHandlingFactory();
 
     @Getter private boolean isExternal = false;
     @Setter private String connectionID = null;
+
+    // ConfigService configService = new ConfigService();
+
+    @Getter private final ReceiverManager receiverManager = new ReceiverManager(this);
     protected boolean isAttached;
     protected final List<Consumer<NetworkBaseAPI>> consumerList = new ArrayList<>();
 
@@ -48,9 +57,15 @@ public abstract class NetworkBaseAPI extends NetCore{
     public NetworkBaseAPI(){
         super();
         instance = this;
+        Message.getDefaultMapper().addMapper(
+                new MapperOfRemoteExecutor(),
+                new MapperOfDNServer(),
+                new MapperOfDate()
+        );
+
     }
 
-    private ResponseManager responseManager = new ResponseManager(this);
+
 
     public void registerRequestType(String addonName, RequestType requestType){
         for (Field field : requestType.getClass().getFields()){
@@ -100,6 +115,7 @@ public abstract class NetworkBaseAPI extends NetCore{
 
     public abstract String getProcessName();
 
+
     public abstract UniversalPlayer getUniversalPlayer(String name);
     public abstract void setProcessName(String processName);
 
@@ -122,10 +138,6 @@ public abstract class NetworkBaseAPI extends NetCore{
 
 
     public abstract IClientHandler getClientHandler();
-
-    public ResponseManager getResponseManager(){
-        return responseManager;
-    }
 
 
     public abstract void setClientHandler(IClientHandler basicClientHandler);

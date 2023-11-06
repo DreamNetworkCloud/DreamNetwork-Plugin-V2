@@ -3,6 +3,7 @@ package be.alexandre01.dnplugin.connection.client.handler;
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
 import be.alexandre01.dnplugin.api.connection.request.RequestType;
+import be.alexandre01.dnplugin.api.connection.request.packets.handler.PacketRequestConverter;
 import be.alexandre01.dnplugin.connection.client.BasicClient;
 import be.alexandre01.dnplugin.api.connection.request.communication.ClientReceiver;
 import be.alexandre01.dnplugin.connection.client.communication.BasicTransmission;
@@ -34,6 +35,7 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter implements 
         this.basicClient = basicClient;
         callbackManager = new CallbackManager();
         responses.add(new BasicTransmission());
+        responses.add(new PacketRequestConverter());
         NetworkBaseAPI.getInstance().setClientHandler(this);
     }
 
@@ -97,7 +99,6 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter implements 
             if(!responses.isEmpty()){
                 for (ClientReceiver iBasicClientReceiver : tempResponses) {
                     try {
-                        System.out.println("Response: "+ iBasicClientReceiver.getClass().getSimpleName());
                         if(iBasicClientReceiver.getClass().getDeclaringClass() != null){
                             if(iBasicClientReceiver.getClass().getDeclaringClass().getDeclaredMethod("onResponse",Message.class,ChannelHandlerContext.class).getDeclaringClass() != null){
                                 System.out.println(iBasicClientReceiver.getClass().getDeclaringClass().getDeclaredMethod("onResponse",Message.class,ChannelHandlerContext.class).getDeclaringClass().getSimpleName());

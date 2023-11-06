@@ -45,10 +45,6 @@ public class SpigotRequestReceiver extends ClientReceiver {
             });
         });
 
-        addRequestInterceptor(RequestType.CORE_STOP_SERVER,(message, ctx) -> {
-            DNSpigot.getAPI().getClientHandler().getChannel().close();
-            Bukkit.shutdown();
-        });
         addRequestInterceptor(RequestType.SERVER_NEW_SERVERS,(message, ctx) -> {
             List<String> nServers = (List<String>) message.getList("SERVERS");
             //networkBaseAPI.getServers().addAll(nServers);

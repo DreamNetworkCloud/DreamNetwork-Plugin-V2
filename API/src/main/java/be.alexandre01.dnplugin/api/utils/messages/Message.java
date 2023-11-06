@@ -26,17 +26,72 @@ import java.util.function.Consumer;
 
 @Getter
 public class Message extends LinkedHashMap<String, Object> {
-    ObjectMapper mapper;
+    private final ObjectMapper jacksonMapper;
 
     final char prefix = '$';
+
+    @Getter static final ObjectsMappingFactory defaultMapper = new ObjectsMappingFactory();
+
+    ObjectsMappingFactory currentMapper = defaultMapper;
+
+    private static final Set<Class<?>> WRAPPER_TYPES = getWrapperTypes();
+
+    public static boolean isWrapperType(Class<?> clazz)
+    {
+        return WRAPPER_TYPES.contains(clazz);
+    }
+
+    private static Set<Class<?>> getWrapperTypes()
+    {
+        Set<Class<?>> ret = new HashSet<Class<?>>();
+        ret.add(Boolean.class);
+        ret.add(Character.class);
+        ret.add(Byte.class);
+        ret.add(Short.class);
+        ret.add(Integer.class);
+        ret.add(Long.class);
+        ret.add(Float.class);
+        ret.add(Double.class);
+        ret.add(Void.class);
+        return ret;
+    }
+
+
+    public Message emptyMapper(){
+        currentMapper = null;
+        return this;
+    }
+
+    public Message newMapper(){
+        currentMapper = new ObjectsMappingFactory();
+        return this;
+    }
+
+
 
     public Message(Map<String, Object> map) {
         this(map, createMapper());
     }
 
-    public Message(Map<String, Object> map, ObjectMapper mapper) {
+
+    public Message(Map<String, Object> map, ObjectMapper jacksonMapper) {
         super(map);
-        this.mapper = mapper;
+        this.jacksonMapper = jacksonMapper;
+    }
+
+    public Message(String header){
+        this();
+        setHeader(header);
+    }
+
+    public Message(String key, Object value, boolean objectFormat, Class<?>... overrideChild) {
+        this();
+        set(key, value, objectFormat, overrideChild);
+    }
+
+    public Message(String key, Object value, Class<?>... overrideChild) {
+        this();
+        set(key, value, overrideChild);
     }
 
     public Message() {
@@ -94,38 +149,60 @@ public class Message extends LinkedHashMap<String, Object> {
     }
 
 
-    public Message set(String id, Object value, Class<?>... overrideChild) {
-        GsonBuilder gsonBuilder = new GsonBuilder();
+    public Message set(String id, Object value, boolean objectFormat, Class<?>... overrideChild) {
+        Class<?> valueType = value.getClass();
 
-        if (overrideChild.length != 0) {
-            List<Class<?>> classes = Arrays.asList(overrideChild);
-            gsonBuilder.setExclusionStrategies(new ExclusionStrategy() {
-                public boolean shouldSkipField(FieldAttributes field) {
-                    return classes.stream().noneMatch(field.getDeclaringClass()::equals);
-                }
+        ObjectConverterMapper<Object,?> mapper = (ObjectConverterMapper<Object, ?>) currentMapper.getMapper(valueType);
+        if(mapper != null){
+            valueType = mapper.findConvertableTypeOf(valueType);
+            value = mapper.convert(value);
+        }
+        if(objectFormat){
+            GsonBuilder gsonBuilder = null;
+            if (overrideChild.length != 0) {
+                gsonBuilder = new GsonBuilder();
+                List<Class<?>> classes = Arrays.asList(overrideChild);
+                gsonBuilder.setExclusionStrategies(new ExclusionStrategy() {
+                    public boolean shouldSkipField(FieldAttributes field) {
+                        return classes.stream().noneMatch(field.getDeclaringClass()::equals);
+                    }
 
-                @Override
-                public boolean shouldSkipClass(Class<?> aClass) {
-                    return false;
-                }
-            });
-            value = gsonBuilder.create().toJson(value);
+                    @Override
+                    public boolean shouldSkipClass(Class<?> aClass) {
+                        return false;
+                    }
+                });
+            }
+            if(!valueType.isPrimitive() && !isWrapperType(valueType) && valueType != String.class && !valueType.isEnum()){
+                if(gsonBuilder == null)
+                    gsonBuilder = new GsonBuilder();
+
+                value = gsonBuilder.create().toJson(value,valueType);
+            }
         }
         super.put(prefix + id, value);
-        System.out.println("Value to be set " + value);
         return this;
     }
 
-    public Message setCustomObject(String id, Object value, Class<?> tClass) {
+    public Message set(String id, Object value, Class<?>... overrideChild) {
+        return set(id, value, true, overrideChild);
+    }
 
-        ObjectMapper mapper = new ObjectMapper();
+    public Message setCustomObject(String id, Object value, Class<?> tClass) {
+        Class<?> valueType = tClass;
+
+        ObjectConverterMapper<Object,?> mapper = (ObjectConverterMapper<Object, ?>) currentMapper.getMapper(valueType);
+        if(mapper != null){
+            valueType = mapper.findConvertableTypeOf(valueType);
+            value = mapper.convert(value);
+        }
+
+        ObjectMapper jsonMapper = new ObjectMapper();
         //mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         try {
-            System.out.println(value);
-            mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-            String json = mapper.writer().forType(tClass).writeValueAsString(value);
-            System.out.println(json);
+            jsonMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+            jsonMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            String json = jsonMapper.writer().forType(valueType).writeValueAsString(value);
             super.put(prefix + id, json);
         } catch (JsonProcessingException e) {
             System.out.println("Error with custom object");
@@ -138,9 +215,15 @@ public class Message extends LinkedHashMap<String, Object> {
 
 
 
-    public Message setList(String id, List<?> value, Class<?>... overrideChild) {
+    public Message setList(String id, List<Object> value, Class<?>... overrideChild) {
         GsonBuilder gsonBuilder = new GsonBuilder();
+        Class<?> valueType = value.getClass().getTypeParameters()[0].getClass();
 
+        ObjectConverterMapper<Object,?> mapper = (ObjectConverterMapper<Object, ?>) currentMapper.getMapper(valueType);
+        if(mapper != null){
+            valueType = mapper.findConvertableTypeOf(valueType);
+            value.replaceAll(mapper::convert);
+        }
         if (overrideChild.length != 0) {
 
             List<Class<?>> classes = Arrays.asList(overrideChild);
@@ -219,22 +302,48 @@ public class Message extends LinkedHashMap<String, Object> {
     }
 
     public Object get(String key, JavaType type) {
-        Object o = super.get(prefix + key);
-        if (o instanceof String) {
+        Object value = super.get(prefix + key);
+        Class<?> valueType = type.getRawClass();
+
+        if(valueType == Object.class || valueType == String.class || isWrapperType(type.getRawClass())){
+            return get(key);
+        }
+
+        ObjectConverterMapper<?,Object> mapper = (ObjectConverterMapper<?, Object>) currentMapper.getMapper(valueType);
+        if(mapper != null && mapper.findConvertableTypeOf(valueType) == value.getClass()){
+            return mapper.read(value);
+        }
+
+        if(type.getRawClass() == Object.class){
+            return get(key);
+        }
+        if (value instanceof String) {
             try {
-                return mapper.readValue((String) o, type);
+                return jacksonMapper.readValue((String) value, type);
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
             //return gson.fromJson((String) o,tClass);
         }
-        if (o == null) {
+        if (value == null) {
             return null;
         }
         return super.get(prefix + key);
     }
     public <T> T get(String key, Class<T> tClass){
-        return (T) get(key, mapper.getTypeFactory().constructType(tClass));
+        return (T) get(key, jacksonMapper.getTypeFactory().constructType(tClass));
+    }
+
+    public <T> Optional<T> getOptional(String key, Class<T> tClass){
+        return Optional.ofNullable((T) get(key, jacksonMapper.getTypeFactory().constructType(tClass)));
+    }
+
+    public <T> Optional<T> getOptional(String key, JavaType type){
+        return Optional.ofNullable((T) get(key, type));
+    }
+
+    public <T> Optional<T> getOptional(String key){
+        return Optional.ofNullable((T) get(key));
     }
 
 
@@ -310,6 +419,10 @@ public class Message extends LinkedHashMap<String, Object> {
         return this;
     }
 
+    public boolean hasHeader() {
+        return super.containsKey("header");
+    }
+
     public Message setRequestInfo(RequestInfo requestType) {
         super.put("RI", requestType.id);
         return this;
@@ -352,29 +465,35 @@ public class Message extends LinkedHashMap<String, Object> {
     }
 
     public <K, V> LinkedTreeMap<K,V> getMap(String key, Class<K> keyMap, Class<V> valueMap) {
-        return (LinkedTreeMap<K, V>) get(key, mapper.getTypeFactory().constructMapType(LinkedTreeMap.class, keyMap, valueMap));
+        return (LinkedTreeMap<K, V>) get(key, jacksonMapper.getTypeFactory().constructMapType(LinkedTreeMap.class, keyMap, valueMap));
         //return new ArrayList<>(Arrays.asList(getString(key).split(",")));
     }
 
     public <T> ArrayList<T> getList(String key, Class<T> tClass) {
         Object o = get(key);
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        ObjectMapper jsonMapper = new ObjectMapper();
+        jsonMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         Type token = TypeToken.getParameterized(List.class, tClass).getType();
         System.out.println(token.getTypeName());
-        JavaType type = mapper.getTypeFactory().
+        JavaType type = jsonMapper.getTypeFactory().
                 constructCollectionType(List.class, tClass);
         ArrayList<T> list = null;
+
+
 
 
         try {
             if (o instanceof String) {
                 // T[] array = new Gson().fromJson((String) o, (Class<T[]>) tClass);
-                list = mapper.readValue((String) o, type);
+                list = jsonMapper.readValue((String) o, type);
                 // list = mapper.readValue((String) o, type);
             } else {
-                list = mapper.readValue(mapper.writeValueAsString(o), type);
+                list = jsonMapper.readValue(jsonMapper.writeValueAsString(o), type);
+            }
 
+            ObjectConverterMapper<T,Object> mapper = (ObjectConverterMapper<T, Object>) currentMapper.getMapper(type.getRawClass());
+            if(mapper != null){
+                list.replaceAll(mapper::read);
             }
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -449,7 +568,7 @@ public class Message extends LinkedHashMap<String, Object> {
 
     public String toString() {
         try {
-            String json = mapper.writeValueAsString(this);
+            String json = jacksonMapper.writeValueAsString(this);
             System.out.println(json);
             return json;
         } catch (JsonProcessingException e) {

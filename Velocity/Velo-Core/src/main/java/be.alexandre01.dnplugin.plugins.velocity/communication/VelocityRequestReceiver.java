@@ -44,9 +44,6 @@ public class VelocityRequestReceiver extends ClientReceiver {
             dnVelocityAPI.getLogger().info(message.getString("LOG"));
         });
 
-        addRequestInterceptor(RequestType.CORE_STOP_SERVER,(message, ctx) -> {
-            DNVelocity.getInstance().getServer().shutdown();
-        });
 
         addRequestInterceptor(RequestType.CORE_REGISTER_CHANNEL,(message, ctx) -> {
             System.out.println("Registering channel");

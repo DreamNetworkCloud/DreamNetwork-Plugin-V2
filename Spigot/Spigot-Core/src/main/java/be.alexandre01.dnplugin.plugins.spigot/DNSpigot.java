@@ -6,6 +6,7 @@ import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import be.alexandre01.dnplugin.api.connection.request.RequestFile;
 import be.alexandre01.dnplugin.api.connection.request.RequestManager;
 import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
 import be.alexandre01.dnplugin.plugins.spigot.commands.NetworkCommand;
 import be.alexandre01.dnplugin.plugins.spigot.commands.StatsCommand;
 import be.alexandre01.dnplugin.plugins.spigot.listeners.ReloadListener;
@@ -14,6 +15,9 @@ import be.alexandre01.dnplugin.plugins.spigot.listeners.TestDispatchListener;
 import be.alexandre01.dnplugin.plugins.spigot.utils.SpigotText;
 import be.alexandre01.dnplugin.api.utils.ASCII;
 import be.alexandre01.dnplugin.api.utils.Config;
+import be.alexandre01.dnplugin.plugins.spigot.utils.mapper.MapperOfBukkitOfflinePlayer;
+import be.alexandre01.dnplugin.plugins.spigot.utils.mapper.MapperOfBukkitPlayer;
+import be.alexandre01.dnplugin.plugins.spigot.utils.mapper.MapperOfLocation;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -88,6 +92,12 @@ public class DNSpigot extends JavaPlugin{
 
         //Register BungeeCord Channel
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+
+        Message.getDefaultMapper().addMapper(
+                new MapperOfBukkitPlayer(),
+                new MapperOfBukkitOfflinePlayer(),
+                new MapperOfLocation()
+        );
     }
     @Override
     public void onDisable(){
@@ -98,7 +108,7 @@ public class DNSpigot extends JavaPlugin{
                 getMessage("server.shutdown");
                 player.kickPlayer("Le serveur est entrain de s'éteindre.");
             }
-            getAPI().getClientHandler().getChannel().close();
+           // getAPI().getClientHandler().getChannel().close();
         }
 
     }

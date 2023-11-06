@@ -6,6 +6,7 @@ import be.alexandre01.dnplugin.api.connection.IClientHandler;
 import be.alexandre01.dnplugin.api.connection.request.RequestFile;
 import be.alexandre01.dnplugin.api.connection.request.RequestManager;
 import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
 import be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeAPI;
 import be.alexandre01.dnplugin.plugins.bungeecord.components.TablistCustomizer;
 import be.alexandre01.dnplugin.plugins.bungeecord.components.commands.Maintenance;
@@ -20,6 +21,7 @@ import be.alexandre01.dnplugin.api.utils.Config;
 import be.alexandre01.dnplugin.api.utils.files.YAMLManager;
 import be.alexandre01.dnplugin.api.utils.files.messages.MessagesManager;
 import be.alexandre01.dnplugin.api.utils.files.network.NetworkYAML;
+import be.alexandre01.dnplugin.plugins.bungeecord.utils.mapper.MapperOfBungeePlayer;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.ProxyServer;
@@ -94,6 +96,10 @@ public class DNBungee extends Plugin {
         playerTabList = new PlayerTabList();
         playerTabList.start();
 
+
+        Message.getDefaultMapper().addMapper(
+                new MapperOfBungeePlayer()
+        );
 
         /*if(!configuration.contains("network.lobby")){
             configuration.set("network.lobby","main/lobby");
@@ -208,7 +214,7 @@ public class DNBungee extends Plugin {
 
     @Override
     public void onDisable(){
-        DNBungeeAPI.getInstance().getClientHandler().getChannel().close();
+        //DNBungeeAPI.getInstance().getClientHandler().getChannel().close();
     }
 
     public void loadConfig(){

@@ -123,7 +123,7 @@
                                         <option>-dontshrink</option>
                                         <option>-dontnote</option>
                                         <option>-dontwarn</option> <!-- added option to ignore com.sun missing classes -->
-                                        <option>-keepattributes Signature,InnerClasses,SourceFile,LineNumberTable,*Annotations*,LocalVariableTable</option>
+                                        <option>-keepattributes  *Annotation*, Exceptions, Signature, Deprecated, SourceFile, SourceDir, LineNumberTable, LocalVariableTable, LocalVariableTypeTable, Synthetic, EnclosingMethod, RuntimeVisibleAnnotations, RuntimeInvisibleAnnotations, RuntimeVisibleParameterAnnotations, RuntimeInvisibleParameterAnnotations, AnnotationDefault, InnerClasses</option>
                                         <option>-keep class be.alexandre01.dnplugin.netEntity.Launcher</option>
                                         <option>-keep class !be.alexandre01.dnplugin.** { *; }</option>
                                         <option>-keep class be.alexandre01.dnplugin.shaded.** { *; }</option>

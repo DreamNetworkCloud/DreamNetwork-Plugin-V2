@@ -5,6 +5,7 @@ import be.alexandre01.dnplugin.api.connection.IClientHandler;
 import be.alexandre01.dnplugin.api.connection.request.RequestFile;
 import be.alexandre01.dnplugin.api.connection.request.RequestManager;
 import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
 import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityAPI;
 import be.alexandre01.dnplugin.plugins.velocity.components.commands.Maintenance;
 import be.alexandre01.dnplugin.plugins.velocity.components.commands.Slot;
@@ -16,6 +17,7 @@ import be.alexandre01.dnplugin.plugins.velocity.objects.PlayerManagement;
 import be.alexandre01.dnplugin.api.utils.files.YAMLManager;
 import be.alexandre01.dnplugin.api.utils.files.messages.MessagesManager;
 import be.alexandre01.dnplugin.api.utils.files.network.NetworkYAML;
+import be.alexandre01.dnplugin.plugins.velocity.utils.mapper.MapperOfVelocityPlayer;
 import com.google.inject.Inject;
 import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.command.CommandMeta;
@@ -35,6 +37,9 @@ import org.bstats.velocity.Metrics;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 @Getter @Setter @Plugin(id = "dreamnetwork-plugin", name = "DreamNetwork Plugin for Velocity", version = "1.0.0-SNAPSHOT",
@@ -94,6 +99,10 @@ public class DNVelocity {
 
         RequestFile requestFile = new RequestFile();
 
+        Message.getDefaultMapper().addMapper(
+                new MapperOfVelocityPlayer()
+        );
+
         /*try {
             requestFile.loadFile(  Config.getPath(dataDirectory.toRealPath()+"/DreamNetwork/requests.dream"));
         } catch (IOException e) {
@@ -143,7 +152,14 @@ public class DNVelocity {
     public void onProxyShutDown(ProxyShutdownEvent event) {
         // Do some operation demanding access to the Velocity API here.
         // For instance, we could register an event:
-        DNVelocityAPI.getInstance().getClientHandler().getChannel().close();
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+        executorService.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                DNVelocityAPI.getInstance().getClientHandler().getChannel().close();
+                executorService.shutdown();
+            }
+        },1000,1000, TimeUnit.SECONDS);
     }
 
     public void loadConfig(Path dataDirectory){
@@ -161,6 +177,7 @@ public class DNVelocity {
     }
 
     public String getMessage(String path, Player player){
+
         String msg = messagesManager.getString(path);
         if(msg == null){
             return "";

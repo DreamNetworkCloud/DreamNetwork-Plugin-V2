@@ -44,9 +44,6 @@ public class BungeeRequestReceiver extends ClientReceiver {
             dnBungeeAPI.getLogger().info(message.getString("LOG"));
         });
 
-        addRequestInterceptor(RequestType.CORE_STOP_SERVER,(message, ctx) -> {
-            DNBungee.getInstance().getProxy().stop();
-        });
 
         addRequestInterceptor(RequestType.CORE_REGISTER_CHANNEL,(message, ctx) -> {
             System.out.println("Registering channel");

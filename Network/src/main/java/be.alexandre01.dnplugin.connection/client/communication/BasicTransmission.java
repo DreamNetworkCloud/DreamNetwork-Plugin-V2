@@ -2,6 +2,7 @@ package be.alexandre01.dnplugin.connection.client.communication;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.request.RequestInfo;
+import be.alexandre01.dnplugin.api.connection.request.TaskHandler;
 import be.alexandre01.dnplugin.api.connection.request.channels.ChannelPacket;
 import be.alexandre01.dnplugin.api.connection.request.RequestType;
 import be.alexandre01.dnplugin.api.connection.request.channels.DNChannel;
@@ -16,7 +17,14 @@ public class BasicTransmission extends ClientReceiver {
 
     public BasicTransmission(){
         addRequestInterceptor(RequestType.CORE_STOP_SERVER,(message, ctx) -> {
-            NetworkBaseAPI.getInstance().shutdownProcess();
+            System.out.println("Stopping server");
+            message.getCallback().ifPresent(receiver -> {
+                System.out.println("Received callback");
+                receiver.send(TaskHandler.TaskType.ACCEPTED,future -> {
+                    System.out.println("Sending accepted");
+                    NetworkBaseAPI.getInstance().shutdownProcess();
+                });
+            });
         });
     }
 
