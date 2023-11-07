@@ -27,22 +27,22 @@ public class ProxyExecutor extends RemoteExecutor {
     }
 
     @Deprecated
-    public void createServer(String serverName){
+    public void createServer(String serverName,String customName){
         System.out.println(serverName);
         String[] data = serverName.split(";");
 
         String[] numSearch = serverName.split("-");
         int i = Integer.parseInt(numSearch[numSearch.length-1]);
 
-        DNServer dnServer = new DNServer(numSearch[0],i,this);
+        DNServer dnServer = new DNServer(numSearch[0],customName,i,this);
 
         if(!isStarted())
             isStarted = true;
 
         servers.put(i,dnServer);
     }
-    public void createServer(String serverName,int id){
-        DNServer dnServer = new DNServer(serverName,id,this);
+    public void createServer(String serverName,int id,String customName){
+        DNServer dnServer = new DNServer(serverName,customName,id,this);
         System.out.println("Create Server " + serverName+"-"+id);
         servers.put(id,dnServer);
 

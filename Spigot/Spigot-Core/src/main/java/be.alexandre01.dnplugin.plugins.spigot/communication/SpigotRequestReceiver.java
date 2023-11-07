@@ -56,20 +56,20 @@ public class SpigotRequestReceiver extends ClientReceiver {
                 boolean isStarted;
 
                 boolean proxy = false;
-                if(data[2].equals("t")){
+                if(data[3].equals("t")){
                     isStarted = true;
                 }else {
                     isStarted = false;
                 }
 
-                if(data[3].equals("p")){
+                if(data[4].equals("p")){
                     proxy = true;
                 }
 
                 if(!networkBaseAPI.getServices().containsKey(nums[0])){
                     Mods mods;
 
-                    if(data[1].equals("S")){
+                    if(data[2].equals("S")){
                         mods = Mods.STATIC;
                     }else {
                         mods = Mods.DYNAMIC;
@@ -90,7 +90,10 @@ public class SpigotRequestReceiver extends ClientReceiver {
                 if(isStarted){
                     int i = Integer.parseInt(nums[1]);
                     BaseExecutor baseService = (BaseExecutor) networkBaseAPI.getServices().get(nums[0]);
-                    baseService.createServer(nums[0],i);
+                    String customName = null;
+                    if(!data[1].equals("n"))
+                        customName = data[1];
+                    baseService.createServer(nums[0],customName,i);
                 }
             }
         });
@@ -141,11 +144,11 @@ public class SpigotRequestReceiver extends ClientReceiver {
                         if (service.getServers().containsKey(serverId)) {
                            // System.out.println("Retreaving server");
                             dnServer = service.getServers().get(serverId);
-                        } else {
+                        } /*else {
                            // System.out.println("Creating server");
                             dnServer = new DNServer(serverName, serverId, service);
                             service.getServers().put(serverId, dnServer);
-                        }
+                        }*/
                     }
                     if(i == 2) {
                        // System.out.println("Player name : "+split[i]);

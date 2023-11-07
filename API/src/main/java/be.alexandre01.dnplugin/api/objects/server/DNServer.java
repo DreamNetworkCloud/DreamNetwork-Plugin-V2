@@ -8,10 +8,12 @@ import be.alexandre01.dnplugin.api.objects.player.DNPlayer;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import lombok.AccessLevel;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
@@ -22,14 +24,21 @@ public class DNServer extends RemoteClient {
     private final NetworkBaseAPI networkBaseAPI = NetworkBaseAPI.getInstance();
     private final RequestManager requestManager = new RequestManager(this);
     private final DataManager dataManager = new DataManager(this);
+    @Getter(AccessLevel.NONE) private final String customName;
 
-    public DNServer(String name, int id, RemoteExecutor remoteExecutor){
+
+
+    public DNServer(String name, String customName,int id, RemoteExecutor remoteExecutor){
         super(name+"-"+id);
         this.id = id;
+        this.customName = customName;
         this.remoteExecutor = remoteExecutor;
     }
 
 
+    public Optional<String> getVisibleName() {
+        return Optional.ofNullable(customName);
+    }
 
     @Deprecated
     public void sendMessage(Message message){

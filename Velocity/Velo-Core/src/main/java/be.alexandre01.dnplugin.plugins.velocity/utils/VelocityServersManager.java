@@ -24,14 +24,18 @@ public class VelocityServersManager implements DNVelocityServersManager {
     }
 
     @Override
-    public void registerServer(String processName, String ip, int port, Mods mods){
+    public void registerServer(String processName, String customName,String ip, int port, Mods mods){
         try {
-            ServerInfo info = new ServerInfo(processName,new InetSocketAddress(ip,port));//ProxyServer.getInstance().constructServerInfo(processName,new InetSocketAddress(ip,port) , "", false);
+            String viewName = processName;
+            if(customName != null){
+                viewName = customName;
+            }
+            ServerInfo info = new ServerInfo(viewName,new InetSocketAddress(ip,port));//ProxyServer.getInstance().constructServerInfo(processName,new InetSocketAddress(ip,port) , "", false);
             RegisteredServer server = DNVelocity.getInstance().getServer().registerServer(info);
             System.out.println(DNVelocity.getInstance().getServer().getConfiguration().getServers().entrySet());
             System.out.println(info.getAddress().getHostString());
        //     DNVelocity.getInstance().getServer().getConfiguration().getServers().put(processName,info.getAddress().getHostString()+":"+info.getAddress().getPort());
-            servers.add(processName);
+            servers.add(viewName);
             ProxyExecutor proxyService;
             String name = processName.split("-")[0];
             int id = Integer.parseInt(processName.split("-")[1]);
@@ -47,7 +51,7 @@ public class VelocityServersManager implements DNVelocityServersManager {
             }
             RemoteBundle remoteBundle = networkBaseAPI.getBundles().get(bundlePath);
             networkBaseAPI.getServices().put(name,proxyService = new ProxyExecutor(name, mods,true,remoteBundle));
-            proxyService.createServer(name,id);
+            proxyService.createServer(name,id,customName);
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -38,9 +38,10 @@ public class BaseExecutor extends RemoteExecutor {
                 if(hasType(TaskType.CUSTOM)){
                     if(getCustomType().equals("STARTED")){
                         String name = getResponse().getString("name");
+                        String customName = getResponse().containsKey("customName") ? getResponse().getString("customName") : null;
                         String[] splittedName = name.split("-");
                         int id = Integer.parseInt(splittedName[splittedName.length-1]);
-                        servers.put(id,dnServer = new DNServer(splittedName[0],id, BaseExecutor.this));
+                        servers.put(id,dnServer = new DNServer(splittedName[0],customName,id, BaseExecutor.this));
                         if(executorCallbacks.getStartList() != null){
                             executorCallbacks.getStartList().forEach(iCallbackStart -> iCallbackStart.whenStart(dnServer));
                         }
@@ -72,12 +73,12 @@ public class BaseExecutor extends RemoteExecutor {
         return executorCallbacks;
     }
 
-    public DNServer createServer(String serverName,int id){
+    public DNServer createServer(String serverName,String customName, int id){
         DNServer dnServer;
         if(servers.containsKey(id)){
             return servers.get(id);
         }else {
-            dnServer = new DNServer(serverName,id,this);
+            dnServer = new DNServer(serverName,customName,id,this);
             servers.put(id,dnServer);
         }
         if(!isStarted()){

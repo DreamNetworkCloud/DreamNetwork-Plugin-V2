@@ -22,7 +22,11 @@ public class BungeeRequestReceiver extends ClientReceiver {
 
         addRequestInterceptor(RequestType.PROXY_REGISTER_SERVER,(message, ctx) -> {
             System.out.println("Registering server: " + message.getString("PROCESSNAME"));
-            dnBungeeAPI.getDnBungeeServersManager().registerServer(message.getString("PROCESSNAME"),message.getString("REMOTEIP"),message.getInt("PORT"),Mods.valueOf(message.getString("MODS")));
+            String customName = null;
+            if(message.containsKey("CUSTOMNAME")){
+                customName = message.getString("CUSTOMNAME");
+            }
+            dnBungeeAPI.getDnBungeeServersManager().registerServer(message.getString("PROCESSNAME"),customName,message.getString("REMOTEIP"),message.getInt("PORT"),Mods.valueOf(message.getString("MODS")));
         });
 
         addRequestInterceptor(RequestType.PROXY_UNREGISTER_SERVER,(message, ctx) -> {

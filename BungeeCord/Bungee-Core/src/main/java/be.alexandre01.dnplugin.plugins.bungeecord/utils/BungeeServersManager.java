@@ -28,11 +28,15 @@ public class BungeeServersManager implements DNBungeeServersManager {
     }
 
     @Override
-    public void registerServer(String processName, String ip, int port, Mods mods) {
+    public void registerServer(String processName,String customName, String ip, int port, Mods mods) {
         try {
-            ServerInfo info = ProxyServer.getInstance().constructServerInfo(processName, new InetSocketAddress(ip, port), "", false);
-            ProxyServer.getInstance().getServers().put(processName, info);
-            servers.add(processName);
+            String viewName = processName;
+            if (customName != null) {
+                viewName = customName;
+            }
+            ServerInfo info = ProxyServer.getInstance().constructServerInfo(viewName, new InetSocketAddress(ip, port), "", false);
+            ProxyServer.getInstance().getServers().put(viewName, info);
+            servers.add(viewName);
 
 
             if (DNBungee.getInstance().configuration.isConnexionOnLobby()) {
@@ -46,7 +50,7 @@ public class BungeeServersManager implements DNBungeeServersManager {
                         isCoreRegistered = true;
                     }
                     ProxyServer.getInstance().getConfig().getListeners().forEach(listenerInfo -> {
-                        listenerInfo.getServerPriority().add(processName);
+                        listenerInfo.getServerPriority().add(customName);
                     });
                 }
             } else {
@@ -57,7 +61,7 @@ public class BungeeServersManager implements DNBungeeServersManager {
                         listenerInfo.getServerPriority().remove(core.getName());
                         isCoreRegistered = false;
                     }
-                    listenerInfo.getServerPriority().add(processName);
+                    listenerInfo.getServerPriority().add(customName);
                 });
             }
 
@@ -74,7 +78,7 @@ public class BungeeServersManager implements DNBungeeServersManager {
             }
             RemoteBundle remoteBundle = networkBaseAPI.getBundles().get(bundlePath);
             networkBaseAPI.getServices().put(name, proxyService = new ProxyExecutor(name, mods, true, remoteBundle));
-            proxyService.createServer(name, id);
+            proxyService.createServer(name, id,customName);
         } catch (Exception e) {
             e.printStackTrace();
         }
