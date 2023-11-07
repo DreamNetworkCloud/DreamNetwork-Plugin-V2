@@ -126,8 +126,11 @@
             <version>4.1.100.Final</version>
             <scope>compile</scope>
         </dependency>
-
-
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.1-jre</version>
+        </dependency>
     </dependencies>
     <!-- https://mvnrepository.com/artifact/net.md-5/bungeecord-api -->
     <build>

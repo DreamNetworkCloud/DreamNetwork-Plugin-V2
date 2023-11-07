@@ -16,4 +16,5 @@ public abstract class NetCore extends NetEntity {
     public NetCore() {
         super("core");
     }
+
 }

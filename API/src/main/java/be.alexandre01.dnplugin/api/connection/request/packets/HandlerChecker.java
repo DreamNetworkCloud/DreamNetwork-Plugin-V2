@@ -1,6 +1,7 @@
 package be.alexandre01.dnplugin.api.connection.request.packets;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
+import be.alexandre01.dnplugin.api.connection.request.Packet;
 import be.alexandre01.dnplugin.api.connection.request.packets.exceptions.PacketParameterCastException;
 import be.alexandre01.dnplugin.api.connection.request.packets.exceptions.PacketParameterNullException;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
@@ -130,7 +131,31 @@ public abstract class HandlerChecker {
             }
         }
         try {
-            method.invoke(factory.getMethods().get(method), objects.toArray());
+            Object object = method.invoke(factory.getMethods().get(method), objects.toArray());
+
+            if(object instanceof Packet){
+                ((Packet) object).dispatch();
+                return;
+            }
+
+            if(object instanceof Message){
+                ctx.writeAndFlush((Message) object);
+                return;
+            }
+
+            if(object instanceof Optional){
+                Optional<?> optional = (Optional<?>) object;
+                if(optional.isPresent()){
+                    Object obj = optional.get();
+                    if(obj instanceof Packet){
+                        ((Packet) obj).dispatch();
+                    }
+                    if(obj instanceof Message){
+                        ctx.writeAndFlush((Message) obj);
+                    }
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -10,17 +10,22 @@ public class DNPlayerManager {
     @Getter private final HashMap<String, DNPlayer> dnPlayersByName = new HashMap<>();
 
     public void addPlayer(DNPlayer dnPlayer){
-
         dnPlayer.getServer().getPlayers().add(dnPlayer);
         dnPlayer.getServer().getRemoteExecutor().getPlayers().add(dnPlayer);
         dnPlayers.put(dnPlayer.getId(), dnPlayer);
         dnPlayersByName.put(dnPlayer.getName(), dnPlayer);
+        dnPlayer.getUniversalPlayer().getPlayerJoin().forEach(playerJoinListener -> {
+            playerJoinListener.onPlayerJoin(dnPlayer.getUniversalPlayer());
+        });
     }
 
     public void removePlayer(DNPlayer dnPlayer){
         removePlayerFromServer(dnPlayer);
         dnPlayers.remove(dnPlayer.getId());
         dnPlayersByName.remove(dnPlayer.getName());
+        dnPlayer.getUniversalPlayer().getPlayerQuit().forEach(playerQuitListener -> {
+            playerQuitListener.onPlayerQuit(dnPlayer.getUniversalPlayer());
+        });
     }
 
     private void removePlayerFromServer(DNPlayer dnPlayer){
@@ -37,5 +42,6 @@ public class DNPlayerManager {
         removePlayerFromServer(dnPlayer);
         dnPlayer.updateServer(dnServer);
         addPlayerFromServer(dnPlayer);
+        dnPlayer.getUniversalPlayer().getPlayerUpdates().forEach(playerUpdateServer -> playerUpdateServer.onPlayerUpdateServer(dnPlayer.getUniversalPlayer()));
     }
 }

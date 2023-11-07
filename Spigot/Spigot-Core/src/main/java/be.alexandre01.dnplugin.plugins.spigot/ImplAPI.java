@@ -11,7 +11,7 @@ import be.alexandre01.dnplugin.plugins.spigot.api.DNSpigotAPI;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.server.ServerAttachedEvent;
 import be.alexandre01.dnplugin.plugins.spigot.communication.SpigotRequestReceiver;
 import be.alexandre01.dnplugin.plugins.spigot.communication.generated.SpigotGeneratedRequest;
-import be.alexandre01.dnplugin.plugins.spigot.communication.objects.SpigotPlayer;
+import be.alexandre01.dnplugin.plugins.spigot.communication.objects.BukkitPlayer;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import lombok.Getter;
@@ -54,9 +54,9 @@ public class ImplAPI extends NetworkBaseAPI implements DNSpigotAPI {
     }
 
     @Override
-    public SpigotPlayer getUniversalPlayer(String name) {
+    public BukkitPlayer getUniversalPlayer(String name) {
         if(dnPlayerManager.getDnPlayersByName().containsKey(name)){
-            return (SpigotPlayer) dnPlayerManager.getDnPlayersByName().get(name).getUniversalPlayer();
+            return (BukkitPlayer) dnPlayerManager.getDnPlayersByName().get(name).getUniversalPlayer();
         }
         return null;
     }

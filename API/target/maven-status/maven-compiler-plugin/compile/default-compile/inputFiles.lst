@@ -3,7 +3,6 @@ C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\utils\files\yaml\YamlFileUtils.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\DNNetworkUtilities.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\channels\ChannelPacket.java
-C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\packets\TestRequest.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\packets\RequestHandler.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\RequestFutureResponse.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\utils\files\yaml\Ignore.java
@@ -13,6 +12,7 @@ C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\objects\player\RemoteHuman.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\utils\messages\mapper\MapperOfDNServer.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\packets\ClassFinder.java
+C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\datas\DefaultRemoteData.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\packets\PacketHandlerParameter.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\packets\exceptions\PacketInvalidAnnotation.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\packets\RequestExample.java
@@ -22,7 +22,6 @@ C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\utils\files\tablist\LineState.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\packets\Tuple.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\utils\messages\mapper\MapperOfRemoteExecutor.java
-C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\packets\TestClass.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\communication\ClientReceiver.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\DNCallbackReceiver.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\packets\handler\PacketRequestConverter.java
@@ -34,7 +33,6 @@ C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\objects\player\DNPlayer.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\ICallbackManager.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\communication\ReceiverManager.java
-C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\packets\MyRequestHandler.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\NetworkBaseAPI.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\IClientHandler.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\Packet.java
@@ -55,18 +53,22 @@ C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\TaskHandler.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\utils\files\SearchText.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\channels\AskedData.java
+C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\datas\DataManager.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\utils\files\yaml\CustomRepresenter.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\utils\messages\Message.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\utils\files\YAMLManager.java
+C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\exception\NoDataFoundException.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\IBasicClient.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\RequestPacket.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\channels\RegisterListener.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\RequestType.java
+C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\utils\messages\WrapperTypes.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\channels\DNChannel.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\RequestManager.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\exception\IDNotFoundException.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\objects\RemoteExecutor.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\channels\GetDataThread.java
+C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\connection\request\datas\RemoteData.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\utils\files\tablist\TabList.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\objects\server\RemoteClient.java
 C:\Spigot\BuildTools\DreamNetwork-Plugin-Stable\API\src\main\java\be.alexandre01.dnplugin\api\objects\server\DNServer.java

@@ -16,9 +16,8 @@ import be.alexandre01.dnplugin.plugins.spigot.DNSpigot;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.player.NetworkDisconnectEvent;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.player.NetworkJoinEvent;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.player.NetworkSwitchServerEvent;
-import be.alexandre01.dnplugin.plugins.spigot.communication.objects.SpigotPlayer;
+import be.alexandre01.dnplugin.plugins.spigot.communication.objects.BukkitPlayer;
 import be.alexandre01.dnplugin.api.utils.Mods;
-import com.google.gson.internal.LinkedTreeMap;
 import io.netty.channel.ChannelHandlerContext;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -136,7 +135,6 @@ public class SpigotRequestReceiver extends ClientReceiver {
                         String serverName = server[0];
                         int serverId = Integer.parseInt(server[1]);
                         if (!remoteServices.containsKey(serverName)) {
-                            System.out.println("Remote service doesn't exist");
                             continue;
                         }
                         service = remoteServices.get(serverName);
@@ -163,7 +161,7 @@ public class SpigotRequestReceiver extends ClientReceiver {
                     if(playerName == null || dnServer == null)
                         return;
 
-                    dnPlayer = new DNPlayer(playerName, uuid, dnServer, id,new SpigotPlayer());
+                    dnPlayer = new DNPlayer(playerName, uuid, dnServer, id,new BukkitPlayer());
                     dnPlayerManager.addPlayer(dnPlayer);
 
                     NetworkJoinEvent event = new NetworkJoinEvent(dnPlayer.getServer(),dnPlayer);

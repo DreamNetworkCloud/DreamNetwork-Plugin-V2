@@ -2,8 +2,11 @@ be\alexandre01\dnplugin\api\connection\ICallbackManager.class
 be\alexandre01\dnplugin\api\utils\IdSet.class
 be\alexandre01\dnplugin\api\connection\request\channels\ChannelPacket.class
 be\alexandre01\dnplugin\api\connection\request\packets\handler\PacketRequestConverter.class
+be\alexandre01\dnplugin\api\connection\request\datas\RemoteData.class
 be\alexandre01\dnplugin\api\objects\server\DNServer$2.class
 be\alexandre01\dnplugin\api\connection\request\communication\ClientReceiver$RequestInterceptor.class
+be\alexandre01\dnplugin\api\connection\request\datas\RemoteData$3.class
+be\alexandre01\dnplugin\api\connection\request\exception\NoDataFoundException.class
 be\alexandre01\dnplugin\api\connection\request\packets\PacketHandlerChecker$PacketHandlerCheckerBuilder.class
 be\alexandre01\dnplugin\api\connection\request\channels\RegisterListener.class
 be\alexandre01\dnplugin\api\utils\files\tablist\Animations.class
@@ -31,8 +34,8 @@ be\alexandre01\dnplugin\api\connection\request\communication\ReceiverManager.cla
 be\alexandre01\dnplugin\api\connection\request\packets\ClassFinder.class
 be\alexandre01\dnplugin\api\connection\request\RequestInfo.class
 be\alexandre01\dnplugin\api\utils\files\yaml\Ignore.class
+be\alexandre01\dnplugin\api\connection\request\datas\RemoteData$1.class
 be\alexandre01\dnplugin\api\connection\request\packets\PacketHandler.class
-be\alexandre01\dnplugin\api\connection\request\packets\TestClass.class
 be\alexandre01\dnplugin\api\utils\Config$1.class
 be\alexandre01\dnplugin\api\utils\colors\Colors.class
 be\alexandre01\dnplugin\api\utils\files\yaml\CustomRepresenter.class
@@ -41,6 +44,7 @@ be\alexandre01\dnplugin\api\connection\request\channels\DNChannelInterceptor.cla
 be\alexandre01\dnplugin\api\objects\server\DNServer.class
 be\alexandre01\dnplugin\api\objects\server\ExecutorCallbacks$ICallbackConnect.class
 be\alexandre01\dnplugin\api\objects\server\ExecutorCallbacks$ICallbackFail.class
+be\alexandre01\dnplugin\api\utils\messages\WrapperTypes.class
 be\alexandre01\dnplugin\api\utils\messages\Message$1.class
 be\alexandre01\dnplugin\api\objects\server\ExecutorCallbacks$ICallbackStart.class
 be\alexandre01\dnplugin\api\connection\IBasicClient.class
@@ -48,6 +52,7 @@ be\alexandre01\dnplugin\api\connection\request\packets\Tuple.class
 be\alexandre01\dnplugin\api\utils\files\SearchText$distributeText.class
 be\alexandre01\dnplugin\api\connection\request\channels\GetDataThread.class
 be\alexandre01\dnplugin\api\connection\request\communication\ClientReceiver.class
+be\alexandre01\dnplugin\api\connection\request\datas\RemoteData$2.class
 be\alexandre01\dnplugin\api\connection\request\exception\IDNotFoundException.class
 be\alexandre01\dnplugin\api\objects\server\DNServer$1.class
 be\alexandre01\dnplugin\api\connection\request\RequestManager.class
@@ -76,7 +81,6 @@ be\alexandre01\dnplugin\api\objects\server\NetEntity.class
 be\alexandre01\dnplugin\api\utils\Mods.class
 be\alexandre01\dnplugin\api\utils\files\yaml\YamlFileUtils.class
 be\alexandre01\dnplugin\api\connection\request\packets\PacketGlobal$PacketType.class
-be\alexandre01\dnplugin\api\connection\request\packets\MyRequestHandler.class
 be\alexandre01\dnplugin\api\utils\messages\ObjectConverterMapper.class
 be\alexandre01\dnplugin\api\utils\Config$1$1.class
 be\alexandre01\dnplugin\api\objects\player\exceptions\OnlineModeException.class
@@ -90,11 +94,15 @@ be\alexandre01\dnplugin\api\connection\request\RequestBuilder$RequestData.class
 be\alexandre01\dnplugin\api\connection\request\packets\PacketHandler$PacketCastOption.class
 be\alexandre01\dnplugin\api\utils\messages\Message$6.class
 be\alexandre01\dnplugin\api\objects\player\DNPlayerManager.class
+be\alexandre01\dnplugin\api\connection\request\datas\RemoteData$4.class
 be\alexandre01\dnplugin\api\utils\files\motd\MOTDYAML.class
 be\alexandre01\dnplugin\api\NetworkBaseAPI.class
 be\alexandre01\dnplugin\api\connection\request\channels\DNChannelManager.class
+be\alexandre01\dnplugin\api\connection\request\datas\DataManager.class
 be\alexandre01\dnplugin\api\utils\messages\ObjectsMappingFactory.class
 be\alexandre01\dnplugin\api\connection\request\packets\exceptions\PacketParameterNullException.class
+be\alexandre01\dnplugin\api\connection\request\datas\DefaultRemoteData.class
+be\alexandre01\dnplugin\api\connection\request\datas\RemoteData$RemoteDataBuilder.class
 be\alexandre01\dnplugin\api\connection\request\RequestFutureResponse.class
 be\alexandre01\dnplugin\api\connection\request\TaskHandler$TaskType.class
 be\alexandre01\dnplugin\api\DNNetworkUtilities.class
@@ -112,7 +120,6 @@ be\alexandre01\dnplugin\api\connection\request\channels\DataListener.class
 be\alexandre01\dnplugin\api\connection\request\packets\RequestAnnotation.class
 be\alexandre01\dnplugin\api\utils\messages\Message$5.class
 be\alexandre01\dnplugin\api\connection\request\packets\RequestHandler.class
-be\alexandre01\dnplugin\api\connection\request\packets\TestRequest.class
 be\alexandre01\dnplugin\api\utils\messages\mapper\MapperOfRemoteExecutor.class
 be\alexandre01\dnplugin\api\objects\server\ExecutorCallbacks.class
 be\alexandre01\dnplugin\api\objects\server\RemoteClient.class

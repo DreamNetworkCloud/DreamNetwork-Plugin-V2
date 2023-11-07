@@ -1,11 +1,9 @@
 package be.alexandre01.dnplugin.api;
 
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
-import be.alexandre01.dnplugin.api.connection.request.CustomRequestInfo;
-import be.alexandre01.dnplugin.api.connection.request.Packet;
-import be.alexandre01.dnplugin.api.connection.request.RequestManager;
-import be.alexandre01.dnplugin.api.connection.request.RequestType;
+import be.alexandre01.dnplugin.api.connection.request.*;
 import be.alexandre01.dnplugin.api.connection.request.communication.ReceiverManager;
+import be.alexandre01.dnplugin.api.connection.request.datas.DataManager;
 import be.alexandre01.dnplugin.api.connection.request.packets.PacketHandlingFactory;
 import be.alexandre01.dnplugin.api.objects.RemoteBundle;
 import be.alexandre01.dnplugin.api.objects.RemoteExecutor;
@@ -19,22 +17,23 @@ import be.alexandre01.dnplugin.api.utils.messages.Message;
 import be.alexandre01.dnplugin.api.utils.messages.mapper.MapperOfDNServer;
 import be.alexandre01.dnplugin.api.utils.messages.mapper.MapperOfDate;
 import be.alexandre01.dnplugin.api.utils.messages.mapper.MapperOfRemoteExecutor;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 
 public abstract class NetworkBaseAPI extends NetCore{
     @Getter @Setter private HashMap<String, RemoteExecutor> services = new HashMap<>();
     @Getter @Setter private HashMap<String, RemoteBundle> bundles = new HashMap<>();
+    @Getter private final HashMap<String, Object> localDatas = new HashMap<>();
+    @Getter private final Multimap<String, NetEntity> dataSubscribers = ArrayListMultimap.create();
 
     private boolean isInit = false;
     private final ArrayList<RequestType> requestTypes = new ArrayList<>();
@@ -47,6 +46,7 @@ public abstract class NetworkBaseAPI extends NetCore{
     // ConfigService configService = new ConfigService();
 
     @Getter private final ReceiverManager receiverManager = new ReceiverManager(this);
+    @Getter private final DataManager dataManager = new DataManager(this);
     protected boolean isAttached;
     protected final List<Consumer<NetworkBaseAPI>> consumerList = new ArrayList<>();
 
@@ -236,6 +236,26 @@ public abstract class NetworkBaseAPI extends NetCore{
             System.out.println("Initialise not yet attached");
             consumerList.add(consumer);
         }
+    }
+
+    public void setLocalData(String key, Object data){
+        if(localDatas.containsKey(key)){
+            if(!localDatas.get(key).getClass().isAssignableFrom(data.getClass()))
+                throw new RuntimeException("Data "+ key + "already set with a different type ("+ localDatas.get(key).getClass().getSimpleName() +")");
+        }
+
+        localDatas.put(key,data);
+        for (NetEntity netEntity : dataSubscribers.get(key)) {
+            netEntity.getRequestManager().sendRequest(RequestType.UNIVERSAL_SEND_DATA,key,data);
+        }
+    }
+
+    public Object getLocalData(String key){
+        return localDatas.get(key);
+    }
+
+    public <T> T getLocalData(String key, Class<T> tClass){
+        return (T) localDatas.get(key);
     }
 
 }

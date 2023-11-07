@@ -1,7 +1,7 @@
 package be.alexandre01.dnplugin.api.objects.server;
 
+import be.alexandre01.dnplugin.api.connection.request.datas.DataManager;
 import be.alexandre01.dnplugin.api.connection.request.Packet;
-import be.alexandre01.dnplugin.api.connection.request.RequestInfo;
 import be.alexandre01.dnplugin.api.connection.request.RequestManager;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
 import io.netty.util.concurrent.Future;
@@ -27,4 +27,6 @@ public abstract class NetEntity {
     public abstract Packet dispatch(Packet packet, GenericFutureListener<? extends Future<? super Void>> future);
 
     public abstract RequestManager getRequestManager();
+
+    public abstract DataManager getDataManager();
 }

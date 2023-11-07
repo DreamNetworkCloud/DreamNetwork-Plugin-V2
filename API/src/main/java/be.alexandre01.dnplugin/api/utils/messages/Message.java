@@ -32,28 +32,13 @@ public class Message extends LinkedHashMap<String, Object> {
 
     @Getter static final ObjectsMappingFactory defaultMapper = new ObjectsMappingFactory();
 
-    ObjectsMappingFactory currentMapper = defaultMapper;
+    private ObjectsMappingFactory currentMapper = defaultMapper;
 
-    private static final Set<Class<?>> WRAPPER_TYPES = getWrapperTypes();
+    private static final Set<Class<?>> WRAPPER_TYPES = WrapperTypes.get();
 
     public static boolean isWrapperType(Class<?> clazz)
     {
         return WRAPPER_TYPES.contains(clazz);
-    }
-
-    private static Set<Class<?>> getWrapperTypes()
-    {
-        Set<Class<?>> ret = new HashSet<Class<?>>();
-        ret.add(Boolean.class);
-        ret.add(Character.class);
-        ret.add(Byte.class);
-        ret.add(Short.class);
-        ret.add(Integer.class);
-        ret.add(Long.class);
-        ret.add(Float.class);
-        ret.add(Double.class);
-        ret.add(Void.class);
-        return ret;
     }
 
 
@@ -335,14 +320,20 @@ public class Message extends LinkedHashMap<String, Object> {
     }
 
     public <T> Optional<T> getOptional(String key, Class<T> tClass){
+        if(!containsKey(key))
+            return Optional.empty();
         return Optional.ofNullable((T) get(key, jacksonMapper.getTypeFactory().constructType(tClass)));
     }
 
     public <T> Optional<T> getOptional(String key, JavaType type){
+        if(!containsKey(key))
+            return Optional.empty();
         return Optional.ofNullable((T) get(key, type));
     }
 
     public <T> Optional<T> getOptional(String key){
+        if(!containsKey(key))
+            return Optional.empty();
         return Optional.ofNullable((T) get(key));
     }
 
@@ -478,8 +469,6 @@ public class Message extends LinkedHashMap<String, Object> {
         JavaType type = jsonMapper.getTypeFactory().
                 constructCollectionType(List.class, tClass);
         ArrayList<T> list = null;
-
-
 
 
         try {

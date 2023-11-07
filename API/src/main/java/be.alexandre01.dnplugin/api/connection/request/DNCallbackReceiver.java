@@ -1,5 +1,6 @@
 package be.alexandre01.dnplugin.api.connection.request;
 
+import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.objects.server.NetEntity;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
 import io.netty.util.concurrent.Future;

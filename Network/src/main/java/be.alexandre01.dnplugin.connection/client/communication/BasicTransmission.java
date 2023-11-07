@@ -8,14 +8,19 @@ import be.alexandre01.dnplugin.api.connection.request.RequestType;
 import be.alexandre01.dnplugin.api.connection.request.channels.DNChannel;
 import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelInterceptor;
 import be.alexandre01.dnplugin.api.connection.request.communication.ClientReceiver;
+import be.alexandre01.dnplugin.api.connection.request.datas.DefaultRemoteData;
+import be.alexandre01.dnplugin.api.connection.request.datas.RemoteData;
+import be.alexandre01.dnplugin.api.objects.server.NetEntity;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.NetUtil;
 
 
 public class BasicTransmission extends ClientReceiver {
+    final NetworkBaseAPI baseAPI;
 
     public BasicTransmission(){
+        baseAPI = NetworkBaseAPI.getInstance();
         addRequestInterceptor(RequestType.CORE_STOP_SERVER,(message, ctx) -> {
             System.out.println("Stopping server");
             message.getCallback().ifPresent(receiver -> {
@@ -26,6 +31,82 @@ public class BasicTransmission extends ClientReceiver {
                 });
             });
         });
+
+        addRequestInterceptor(RequestType.UNIVERSAL_CALL_DATA,(message, ctx) -> {
+            message.getCallback().ifPresent(receiver -> {
+                String key;
+                if(baseAPI.getLocalDatas().containsKey(key = message.getString("key"))){
+                    receiver.mergeAndSend(new Message().set("data",baseAPI.getLocalDatas().get(key)),TaskHandler.TaskType.ACCEPTED);
+                }else{
+                    receiver.send(TaskHandler.TaskType.FAILED);
+                }
+            });
+        });
+        addRequestInterceptor(RequestType.UNIVERSAL_OVERWRITE_DATA,(message, ctx) -> {
+            message.getCallback().ifPresent(receiver -> {
+                try {
+                    baseAPI.setLocalData(message.getString("key"),message.get("data"));
+                    receiver.send(TaskHandler.TaskType.ACCEPTED);
+                }catch (RuntimeException e){
+                    receiver.send(TaskHandler.TaskType.FAILED);
+                }
+            });
+        });
+
+        addRequestInterceptor(RequestType.UNIVERSAL_SUBSCRIBE_DATA,(message, ctx) -> {
+            message.getProvider().ifPresent(netEntity -> {
+                message.getCallback().ifPresent(receiver -> {
+                    String key = message.getString("key");
+                    if(baseAPI.getDataSubscribers().containsKey(key)){
+                        if(baseAPI.getDataSubscribers().get(key).contains(netEntity)){
+                            receiver.send(TaskHandler.TaskType.IGNORED);
+                            return;
+                        }
+                    }
+                    baseAPI.getDataSubscribers().put(key,netEntity);
+                    receiver.send(TaskHandler.TaskType.ACCEPTED);
+                });
+            });
+        });
+
+        addRequestInterceptor(RequestType.UNIVERSAL_UNSUBSCRIBE_DATA,(message, ctx) -> {
+            message.getProvider().ifPresent(netEntity -> {
+                message.getCallback().ifPresent(receiver -> {
+                    String key = message.getString("key");
+                    if(baseAPI.getDataSubscribers().containsKey(key)){
+                        if(baseAPI.getDataSubscribers().get(key).contains(netEntity)){
+                            baseAPI.getDataSubscribers().get(key).remove(netEntity);
+                            receiver.send(TaskHandler.TaskType.ACCEPTED);
+                            return;
+                        }
+                    }
+                    receiver.send(TaskHandler.TaskType.IGNORED);
+                });
+            });
+        });
+
+
+        // quand le netserver reçoit une reponse
+        addRequestInterceptor(RequestType.UNIVERSAL_SEND_DATA,(message, ctx) -> {
+            NetEntity entity;
+            if(!message.getProvider().isPresent()){
+                entity = NetworkBaseAPI.getInstance();
+            }else {
+                entity = message.getProvider().get();
+            }
+            String key = message.getString("key");
+            Object value = message.get("value");
+            if(!entity.getDataManager().getDatas().containsKey(key)){
+                entity.getDataManager().getDatas().put(key,new DefaultRemoteData<>(key,entity));
+            }else {
+                RemoteData<?> remoteData = entity.getDataManager().getDatas().get(key);
+                if(remoteData instanceof DefaultRemoteData){
+                    ((DefaultRemoteData<?>) remoteData).setData(value);
+                }
+            }
+        });
+
+
     }
 
 

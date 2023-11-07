@@ -49,7 +49,6 @@ public class DNCallback {
     }
 
     public void send(){
-        System.out.println("Register and send");
         NetworkBaseAPI.getInstance().getClientHandler().getCallbackManager().addCallback(id,handler);
         packet.getReceiver().writeAndFlush(packet.getMessage());
     }

@@ -2,6 +2,7 @@ package be.alexandre01.dnplugin.api.objects.server;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.request.*;
+import be.alexandre01.dnplugin.api.connection.request.datas.DataManager;
 import be.alexandre01.dnplugin.api.objects.RemoteExecutor;
 import be.alexandre01.dnplugin.api.objects.player.DNPlayer;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
@@ -20,6 +21,7 @@ public class DNServer extends RemoteClient {
     private final int id;
     private final NetworkBaseAPI networkBaseAPI = NetworkBaseAPI.getInstance();
     private final RequestManager requestManager = new RequestManager(this);
+    private final DataManager dataManager = new DataManager(this);
 
     public DNServer(String name, int id, RemoteExecutor remoteExecutor){
         super(name+"-"+id);
@@ -100,5 +102,7 @@ public class DNServer extends RemoteClient {
         networkBaseAPI.getClientHandler().writeAndFlush(packet.getMessage(),future);
         return packet;
     }
+
+
 
 }
