@@ -99,8 +99,8 @@ public class YAMLManager {
         try {
             LinkedHashMap<String, Object> motd = read(f);
             List<String> defaultC = new ArrayList<>();
-            defaultC.add("              &e&l✯ &9&lDreamNetwork &e&l✯ &f&r&n");
-            defaultC.add("     &e▅▆▇ &6&lBest Network System ▇▆▅");
+            defaultC.add("              &e&l✯ &9&lDreamNetwork &e&l✯ &f");
+            defaultC.add("   &e▅▆▇ &6&lBest Network System &e▇▆▅ ");
             List<String> hm = (List<String>) motd.getOrDefault("content", defaultC);
 
             List<String> content = new ArrayList<>(hm);
