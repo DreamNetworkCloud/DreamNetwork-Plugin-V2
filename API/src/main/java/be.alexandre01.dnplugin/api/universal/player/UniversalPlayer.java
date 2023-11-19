@@ -48,6 +48,6 @@ public abstract class UniversalPlayer {
     }
 
     public static interface PlayerUpdateServer{
-        void onPlayerUpdateServer(UniversalPlayer player);
+        void onPlayerUpdateServer(UniversalPlayer player,DNServer newServer);
     }
 }

@@ -25,8 +25,9 @@ public class BukkitPlayer extends DNServerPlayer {
     public BukkitPlayer() {
         getPlayerUpdates().add(new PlayerUpdateServer() {
             @Override
-            public void onPlayerUpdateServer(UniversalPlayer player) {
-                updateServer(currentServer);
+            public void onPlayerUpdateServer(UniversalPlayer player,DNServer newServer){
+                currentServer = newServer;
+                updateServer(newServer);
             }
         });
     }

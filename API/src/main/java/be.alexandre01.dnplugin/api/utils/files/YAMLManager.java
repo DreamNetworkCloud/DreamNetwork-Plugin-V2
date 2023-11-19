@@ -51,12 +51,12 @@ public class YAMLManager {
             System.out.println(network);
             assert network != null;
             this.network = new NetworkYAML(
-                    (String) network.getOrDefault("lobby", "main/lobby"),
+                    (String) network.getOrDefault("lobby", "lobby"),
                     (boolean) network.getOrDefault("connexionOnLobby", false),
                     (int) network.getOrDefault("maxPlayerPerLobby", 15),
                     (boolean) network.getOrDefault("maintenance", false),
-                    (boolean) network.getOrDefault("enableRedirectionKick", true),
-                    (String) network.getOrDefault("redirectionKickServer", "main/lobby"),
+                    (boolean) network.getOrDefault("enableRedirectionKick", false),
+                    (String) network.getOrDefault("redirectionKickServer", "lobby"),
                     (boolean) network.getOrDefault("statusLogo", false),
                     (List<String>) network.getOrDefault("maintenanceAllowedPlayers", new ArrayList<String>()),
                     (boolean) network.getOrDefault("autoSendPlayers", true),

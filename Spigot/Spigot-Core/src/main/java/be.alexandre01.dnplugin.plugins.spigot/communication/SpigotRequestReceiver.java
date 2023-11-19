@@ -84,7 +84,7 @@ public class SpigotRequestReceiver extends ClientReceiver {
                     RemoteBundle remoteBundle = networkBaseAPI.getBundles().get(bundlePath);
                     networkBaseAPI.getBundles().put(bundlePath,remoteBundle);
                     BaseExecutor service = new BaseExecutor(nums[0],mods,isStarted,remoteBundle);
-                    remoteBundle.getRemoteServices().put(serverName,service);
+                    remoteBundle.getRemoteExecutors().put(serverName,service);
                     networkBaseAPI.getServices().put(nums[0],service);
                 }
                 if(isStarted){

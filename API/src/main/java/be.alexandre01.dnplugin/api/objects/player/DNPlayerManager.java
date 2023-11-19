@@ -42,6 +42,6 @@ public class DNPlayerManager {
         removePlayerFromServer(dnPlayer);
         dnPlayer.updateServer(dnServer);
         addPlayerFromServer(dnPlayer);
-        dnPlayer.getUniversalPlayer().getPlayerUpdates().forEach(playerUpdateServer -> playerUpdateServer.onPlayerUpdateServer(dnPlayer.getUniversalPlayer()));
+        dnPlayer.getUniversalPlayer().getPlayerUpdates().forEach(playerUpdateServer -> playerUpdateServer.onPlayerUpdateServer(dnPlayer.getUniversalPlayer(),dnServer));
     }
 }

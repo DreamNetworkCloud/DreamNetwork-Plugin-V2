@@ -13,7 +13,6 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
@@ -21,23 +20,41 @@ public class DNServer extends RemoteClient {
     private final Collection<DNPlayer> players = new ArrayList<>();
     private final RemoteExecutor remoteExecutor;
     private final int id;
+    @Getter(AccessLevel.NONE) private final int indexingId;
     private final NetworkBaseAPI networkBaseAPI = NetworkBaseAPI.getInstance();
     private final RequestManager requestManager = new RequestManager(this);
     private final DataManager dataManager = new DataManager(this);
-    @Getter(AccessLevel.NONE) private final String customName;
+    @Getter(AccessLevel.NONE) private final String visibleName;
 
 
 
-    public DNServer(String name, String customName,int id, RemoteExecutor remoteExecutor){
+    public DNServer(String name, String visibleName,int id, RemoteExecutor remoteExecutor){
         super(name+"-"+id);
         this.id = id;
-        this.customName = customName;
+        if(visibleName == null){
+            this.visibleName = name;
+            this.indexingId = id;
+        }else{
+            String[] split = visibleName.split("-");
+            String last = split[split.length-1];
+            this.visibleName = visibleName.substring(0,visibleName.length()-last.length()-1);
+            this.indexingId = Integer.parseInt(last);
+        }
+
         this.remoteExecutor = remoteExecutor;
     }
 
 
-    public Optional<String> getVisibleName() {
-        return Optional.ofNullable(customName);
+    public String getVisibleFullName() {
+        return visibleName +"-"+id;
+    }
+
+    public String getVisibleName() {
+        return visibleName;
+    }
+
+    public Integer getVisibleId() {
+        return id;
     }
 
     @Deprecated
@@ -111,7 +128,4 @@ public class DNServer extends RemoteClient {
         networkBaseAPI.getClientHandler().writeAndFlush(packet.getMessage(),future);
         return packet;
     }
-
-
-
 }
