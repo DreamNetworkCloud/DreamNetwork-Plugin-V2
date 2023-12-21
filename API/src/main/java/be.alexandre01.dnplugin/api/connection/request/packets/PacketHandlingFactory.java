@@ -109,7 +109,7 @@ public class PacketHandlingFactory {
                         key += packetCast.key();
                     }else {
                         if(!parameter.isNamePresent()){
-                            System.out.println("Parameter name not present");
+                            System.out.println("Parameter name not present ... Check your compilation method");
                             throw new RuntimeException("Parameter name not present");
                         }
                         key += parameter.getName();

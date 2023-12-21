@@ -56,7 +56,7 @@ public class ImplAPI extends NetworkBaseAPI implements DNSpigotAPI {
     @Override
     public BukkitPlayer getUniversalPlayer(String name) {
         if(dnPlayerManager.getDnPlayersByName().containsKey(name)){
-            return (BukkitPlayer) dnPlayerManager.getDnPlayersByName().get(name).getUniversalPlayer();
+            return (BukkitPlayer) dnPlayerManager.getDnPlayersByName().get(name);
         }
         return null;
     }

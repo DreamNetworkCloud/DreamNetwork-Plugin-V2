@@ -16,6 +16,7 @@ public class PlayerServerListener {
 
     @Subscribe
     public void onSwitch(ServerConnectedEvent event){
+
         dnVelocity.getPlayerManagement().updatePlayer(event.getPlayer(),event.getServer());
     }
 

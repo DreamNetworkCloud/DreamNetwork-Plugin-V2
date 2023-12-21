@@ -10,26 +10,25 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class BukkitPlayer extends DNServerPlayer {
 
     Player player;
 
-    @Override
-    public void setup(DNServer dnServer, DNPlayer dnPlayer) {
-        this.currentServer = dnServer;
-        updateServer(dnServer);
-    }
 
-    public BukkitPlayer() {
+    public BukkitPlayer(String name, UUID uuid, DNServer dnServer,int id) {
+        super(name, uuid, dnServer,id);
+
         getPlayerUpdates().add(new PlayerUpdateServer() {
             @Override
-            public void onPlayerUpdateServer(UniversalPlayer player,DNServer newServer){
+            public void onPlayerUpdateServer(DNServer newServer){
                 currentServer = newServer;
                 updateServer(newServer);
             }
         });
+        updateServer(dnServer);
     }
 
 
@@ -53,15 +52,7 @@ public class BukkitPlayer extends DNServerPlayer {
         NetworkBaseAPI.getInstance().getRequestManager().sendRequest(RequestType.PROXY_PLAYER_INSTRUCTION,0,message,getName());
     }
 
-    @Override
-    public String getName() {
-        return dnPlayer.getName();
-    }
 
-    @Override
-    public UUID getUniqueId() {
-        return dnPlayer.getUniqueId();
-    }
 
     @Override
     public void kickPlayer(String reason) {

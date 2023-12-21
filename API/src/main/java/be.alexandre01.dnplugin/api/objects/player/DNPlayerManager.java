@@ -1,6 +1,7 @@
 package be.alexandre01.dnplugin.api.objects.player;
 
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
+import be.alexandre01.dnplugin.api.universal.player.UniversalPlayer;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -14,18 +15,16 @@ public class DNPlayerManager {
         dnPlayer.getServer().getRemoteExecutor().getPlayers().add(dnPlayer);
         dnPlayers.put(dnPlayer.getId(), dnPlayer);
         dnPlayersByName.put(dnPlayer.getName(), dnPlayer);
-        dnPlayer.getUniversalPlayer().getPlayerJoin().forEach(playerJoinListener -> {
-            playerJoinListener.onPlayerJoin(dnPlayer.getUniversalPlayer());
-        });
+        if(dnPlayer instanceof UniversalPlayer)
+            ((UniversalPlayer) dnPlayer).getPlayerJoin().forEach(UniversalPlayer.PlayerJoinListener::onPlayerJoin);
     }
 
     public void removePlayer(DNPlayer dnPlayer){
         removePlayerFromServer(dnPlayer);
         dnPlayers.remove(dnPlayer.getId());
         dnPlayersByName.remove(dnPlayer.getName());
-        dnPlayer.getUniversalPlayer().getPlayerQuit().forEach(playerQuitListener -> {
-            playerQuitListener.onPlayerQuit(dnPlayer.getUniversalPlayer());
-        });
+        if(dnPlayer instanceof UniversalPlayer)
+            ((UniversalPlayer) dnPlayer).getPlayerQuit().forEach(UniversalPlayer.PlayerQuitListener::onPlayerQuit);
     }
 
     private void removePlayerFromServer(DNPlayer dnPlayer){
@@ -42,6 +41,7 @@ public class DNPlayerManager {
         removePlayerFromServer(dnPlayer);
         dnPlayer.updateServer(dnServer);
         addPlayerFromServer(dnPlayer);
-        dnPlayer.getUniversalPlayer().getPlayerUpdates().forEach(playerUpdateServer -> playerUpdateServer.onPlayerUpdateServer(dnPlayer.getUniversalPlayer(),dnServer));
+        if(dnPlayer instanceof UniversalPlayer)
+            ((UniversalPlayer) dnPlayer).getPlayerUpdates().forEach(playerUpdateServer -> playerUpdateServer.onPlayerUpdateServer(dnServer));
     }
 }

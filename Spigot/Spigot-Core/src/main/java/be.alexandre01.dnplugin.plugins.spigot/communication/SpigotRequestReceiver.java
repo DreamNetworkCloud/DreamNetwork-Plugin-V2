@@ -164,7 +164,7 @@ public class SpigotRequestReceiver extends ClientReceiver {
                     if(playerName == null || dnServer == null)
                         return;
 
-                    dnPlayer = new DNPlayer(playerName, uuid, dnServer, id,new BukkitPlayer());
+                    dnPlayer = new BukkitPlayer(playerName, uuid, dnServer, id);
                     dnPlayerManager.addPlayer(dnPlayer);
 
                     NetworkJoinEvent event = new NetworkJoinEvent(dnPlayer.getServer(),dnPlayer);

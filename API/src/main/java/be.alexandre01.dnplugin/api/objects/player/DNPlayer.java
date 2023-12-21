@@ -2,45 +2,41 @@ package be.alexandre01.dnplugin.api.objects.player;
 
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import be.alexandre01.dnplugin.api.universal.player.UniversalPlayer;
+import lombok.AccessLevel;
 import lombok.Getter;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Getter
 public class DNPlayer extends RemoteHuman {
 
     private final String name;
-    private final UUID uuid;
+    @Getter(AccessLevel.NONE) private final UUID uuid;
 
     private final int id;
-    private final UniversalPlayer universalPlayer;
 
 
-    public DNPlayer(String name, DNServer dnServer, int id, UniversalPlayer universalPlayer){
-        super(dnServer);
-        this.name = name;
-        this.id = id;
-        this.universalPlayer = universalPlayer;
-        this.uuid = null;
-
-    }
-
-    public DNPlayer(String name, UUID uuid, DNServer dnServer, int id, UniversalPlayer universalPlayer){
+    public DNPlayer(String name, UUID uuid, DNServer dnServer, int id){
         super(dnServer);
         this.name = name;
         this.uuid = uuid;
         this.id = id;
-        this.universalPlayer = universalPlayer;
     }
 
-    public String getName(){
-        return name;
+    public Optional<UUID> getUniqueId(){
+        return Optional.ofNullable(uuid);
     }
 
-
-    public UUID getUniqueId(){
-        return uuid;
+    public UniversalPlayer cast(){
+        return cast(UniversalPlayer.class);
     }
 
-
+    public <T> T cast(Class<? extends T> clazz){
+        if(clazz.isInstance(this)){
+            return (T) this;
+        }else {
+            throw new UnsupportedOperationException("This player is not a "+clazz.getSimpleName());
+        }
+    }
 }

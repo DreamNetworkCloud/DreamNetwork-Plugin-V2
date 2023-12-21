@@ -7,29 +7,24 @@ import lombok.Getter;
 import java.util.*;
 
 @Getter
-public abstract class UniversalPlayer {
-    public Map<Integer,String> idToOperation = new HashMap<>();
-    private List<PlayerJoinListener> playerJoin = new ArrayList<>();
-    private List<PlayerQuitListener> playerQuit = new ArrayList<>();
-    private List<PlayerUpdateServer> playerUpdates = new ArrayList<>();
-    public DNServer currentServer;
-    public DNServer currentProxy;
-    public DNPlayer dnPlayer;
-    protected UniversalPlayer() {
+public abstract class UniversalPlayer extends DNPlayer {
+    private final Map<Integer,String> idToOperation = new HashMap<>();
+    private final List<PlayerJoinListener> playerJoin = new ArrayList<>();
+    private final List<PlayerQuitListener> playerQuit = new ArrayList<>();
+    private final List<PlayerUpdateServer> playerUpdates = new ArrayList<>();
+    protected DNServer currentServer;
+    protected DNServer currentProxy;
+    protected UniversalPlayer(String name, UUID uuid, DNServer dnServer, int id, boolean isProxy) {
+        super(name, uuid, dnServer, id);
+        this.currentServer = dnServer;
         idToOperation.put(0,"sendMessage");
         idToOperation.put(1,"kickPlayer");
         idToOperation.put(2,"sendTitle");
     }
 
-    public void setup(DNServer dnServer, DNPlayer dnPlayer){
-        this.currentServer = dnServer;
-        this.dnPlayer = dnPlayer;
-    }
 
     public abstract void sendMessage(String message);
-    public abstract String getName();
 
-    public abstract UUID getUniqueId();
     public abstract void kickPlayer(String reason);
 
     public abstract void sendTitle(String title, String subtitle, int fadeIn, int stay, int fadeOut);
@@ -40,14 +35,14 @@ public abstract class UniversalPlayer {
     public abstract <T> T castTo(Class<T> clazz);
 
     public static interface PlayerJoinListener{
-        void onPlayerJoin(UniversalPlayer player);
+        void onPlayerJoin();
     }
 
     public static interface PlayerQuitListener{
-        void onPlayerQuit(UniversalPlayer player);
+        void onPlayerQuit();
     }
 
     public static interface PlayerUpdateServer{
-        void onPlayerUpdateServer(UniversalPlayer player,DNServer newServer);
+        void onPlayerUpdateServer(DNServer newServer);
     }
 }
