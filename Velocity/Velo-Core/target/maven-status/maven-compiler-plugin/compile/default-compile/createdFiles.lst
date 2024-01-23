@@ -9,6 +9,7 @@ be\alexandre01\dnplugin\plugins\velocity\ImplAPI.class
 be\alexandre01\dnplugin\plugins\velocity\components\commands\Maintenance$1.class
 be\alexandre01\dnplugin\plugins\velocity\components\commands\TabList$Options.class
 be\alexandre01\dnplugin\plugins\velocity\utils\VelocityServersManager.class
+be\alexandre01\dnplugin\plugins\velocity\communication\VeloPlayerHandlerClass.class
 be\alexandre01\dnplugin\plugins\velocity\listeners\PlayerServerListener.class
 be\alexandre01\dnplugin\plugins\velocity\communication\generated\VelocityGeneratedRequest.class
 be\alexandre01\dnplugin\plugins\velocity\utils\mapper\MapperOfVelocityPlayer.class
@@ -16,6 +17,7 @@ be\alexandre01\dnplugin\plugins\velocity\PlayerTabList.class
 be\alexandre01\dnplugin\plugins\velocity\communication\objects\ProxyExecutor.class
 be\alexandre01\dnplugin\plugins\velocity\components\commands\TabList$1.class
 be\alexandre01\dnplugin\plugins\velocity\communication\VelocityRequestReceiver.class
+be\alexandre01\dnplugin\plugins\velocity\communication\interceptors\NettyPipelineInterceptor.class
 be\alexandre01\dnplugin\plugins\velocity\DNVelocity.class
 be\alexandre01\dnplugin\plugins\velocity\DNVelocity$1.class
 be\alexandre01\dnplugin\plugins\velocity\components\listeners\ServerPingListener.class

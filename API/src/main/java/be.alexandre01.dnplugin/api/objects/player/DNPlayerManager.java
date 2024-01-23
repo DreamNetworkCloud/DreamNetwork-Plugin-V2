@@ -7,24 +7,22 @@ import lombok.Getter;
 import java.util.HashMap;
 
 public class DNPlayerManager {
-    @Getter private final HashMap<Integer, DNPlayer> dnPlayers = new HashMap<>();
-    @Getter private final HashMap<String, DNPlayer> dnPlayersByName = new HashMap<>();
+    @Getter private final HashMap<Integer, UniversalPlayer> dnPlayers = new HashMap<>();
+    @Getter private final HashMap<String, UniversalPlayer> dnPlayersByName = new HashMap<>();
 
-    public void addPlayer(DNPlayer dnPlayer){
+    public void addPlayer(UniversalPlayer dnPlayer){
         dnPlayer.getServer().getPlayers().add(dnPlayer);
         dnPlayer.getServer().getRemoteExecutor().getPlayers().add(dnPlayer);
         dnPlayers.put(dnPlayer.getId(), dnPlayer);
         dnPlayersByName.put(dnPlayer.getName(), dnPlayer);
-        if(dnPlayer instanceof UniversalPlayer)
-            ((UniversalPlayer) dnPlayer).getPlayerJoin().forEach(UniversalPlayer.PlayerJoinListener::onPlayerJoin);
+        ((UniversalPlayer) dnPlayer).getPlayerJoin().forEach(UniversalPlayer.PlayerJoinListener::onPlayerJoin);
     }
 
-    public void removePlayer(DNPlayer dnPlayer){
+    public void removePlayer(UniversalPlayer dnPlayer){
         removePlayerFromServer(dnPlayer);
         dnPlayers.remove(dnPlayer.getId());
         dnPlayersByName.remove(dnPlayer.getName());
-        if(dnPlayer instanceof UniversalPlayer)
-            ((UniversalPlayer) dnPlayer).getPlayerQuit().forEach(UniversalPlayer.PlayerQuitListener::onPlayerQuit);
+        ((UniversalPlayer) dnPlayer).getPlayerQuit().forEach(UniversalPlayer.PlayerQuitListener::onPlayerQuit);
     }
 
     private void removePlayerFromServer(DNPlayer dnPlayer){
@@ -32,16 +30,15 @@ public class DNPlayerManager {
         dnPlayer.getServer().getRemoteExecutor().getPlayers().remove(dnPlayer);
     }
 
-    public void addPlayerFromServer(DNPlayer dnPlayer){
+    public void addPlayerFromServer(UniversalPlayer dnPlayer){
         dnPlayer.getServer().getPlayers().add(dnPlayer);
         dnPlayer.getServer().getRemoteExecutor().getPlayers().add(dnPlayer);
     }
 
-    public void updatePlayer(DNPlayer dnPlayer,DNServer dnServer){
+    public void updatePlayer(UniversalPlayer dnPlayer,DNServer dnServer){
         removePlayerFromServer(dnPlayer);
         dnPlayer.updateServer(dnServer);
         addPlayerFromServer(dnPlayer);
-        if(dnPlayer instanceof UniversalPlayer)
-            ((UniversalPlayer) dnPlayer).getPlayerUpdates().forEach(playerUpdateServer -> playerUpdateServer.onPlayerUpdateServer(dnServer));
+        ((UniversalPlayer) dnPlayer).getPlayerUpdates().forEach(playerUpdateServer -> playerUpdateServer.onPlayerUpdateServer(dnServer));
     }
 }

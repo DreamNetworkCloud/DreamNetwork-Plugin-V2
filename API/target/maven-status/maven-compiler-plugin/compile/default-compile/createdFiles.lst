@@ -14,13 +14,13 @@ be\alexandre01\dnplugin\api\connection\request\CustomRequestInfo.class
 be\alexandre01\dnplugin\api\utils\ASCII.class
 be\alexandre01\dnplugin\api\connection\IClientHandler.class
 be\alexandre01\dnplugin\api\universal\player\proxy\DNProxyPlayer.class
-be\alexandre01\dnplugin\api\universal\player\server\DNServerPlayer.class
 be\alexandre01\dnplugin\api\utils\files\CopyFiles.class
 be\alexandre01\dnplugin\api\connection\request\packets\RequestHandlerChecker$RequestHandlerCheckerBuilder.class
 be\alexandre01\dnplugin\api\universal\player\UniversalPlayer.class
 be\alexandre01\dnplugin\api\utils\files\messages\MessagesManager.class
 be\alexandre01\dnplugin\api\utils\messages\mapper\MapperOfDNServer.class
 be\alexandre01\dnplugin\api\connection\request\channels\AskedData.class
+be\alexandre01\dnplugin\api\universal\player\proxy\communication\PlayerRequestHandler.class
 be\alexandre01\dnplugin\api\utils\files\tablist\TabListYAML.class
 be\alexandre01\dnplugin\api\utils\messages\Message$3.class
 be\alexandre01\dnplugin\api\objects\player\DNPlayer.class
@@ -35,6 +35,7 @@ be\alexandre01\dnplugin\api\connection\request\packets\ClassFinder.class
 be\alexandre01\dnplugin\api\connection\request\RequestInfo.class
 be\alexandre01\dnplugin\api\utils\files\yaml\Ignore.class
 be\alexandre01\dnplugin\api\connection\request\datas\RemoteData$1.class
+be\alexandre01\dnplugin\api\universal\player\proxy\communication\PlayerRequests.class
 be\alexandre01\dnplugin\api\connection\request\packets\PacketHandler.class
 be\alexandre01\dnplugin\api\utils\Config$1.class
 be\alexandre01\dnplugin\api\utils\colors\Colors.class
@@ -61,6 +62,7 @@ be\alexandre01\dnplugin\api\connection\request\generated\DefaultGeneratedRequest
 be\alexandre01\dnplugin\api\connection\request\channels\AskedData$1.class
 be\alexandre01\dnplugin\api\connection\request\packets\PacketHandlerChecker.class
 be\alexandre01\dnplugin\api\connection\request\RequestBuilder.class
+be\alexandre01\dnplugin\api\universal\player\proxy\communication\PlayerHandlerClass.class
 be\alexandre01\dnplugin\api\NetworkBaseAPI$1.class
 be\alexandre01\dnplugin\api\connection\request\TaskHandler.class
 be\alexandre01\dnplugin\api\connection\request\packets\PacketHandlerParameter.class

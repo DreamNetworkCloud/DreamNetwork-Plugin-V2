@@ -165,6 +165,8 @@ public class Message extends LinkedHashMap<String, Object> {
                 value = gsonBuilder.create().toJson(value,valueType);
             }
         }
+
+
         super.put(prefix + id, value);
         return this;
     }
@@ -304,6 +306,7 @@ public class Message extends LinkedHashMap<String, Object> {
         }
         if (value instanceof String) {
             try {
+
                 return jacksonMapper.readValue((String) value, type);
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);

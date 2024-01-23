@@ -21,6 +21,7 @@ import be.alexandre01.dnplugin.api.utils.Config;
 import be.alexandre01.dnplugin.api.utils.files.YAMLManager;
 import be.alexandre01.dnplugin.api.utils.files.messages.MessagesManager;
 import be.alexandre01.dnplugin.api.utils.files.network.NetworkYAML;
+import be.alexandre01.dnplugin.plugins.bungeecord.utils.mapper.MapperOfBungeeChatComponent;
 import be.alexandre01.dnplugin.plugins.bungeecord.utils.mapper.MapperOfBungeePlayer;
 import lombok.Getter;
 import lombok.Setter;
@@ -98,7 +99,8 @@ public class DNBungee extends Plugin {
 
 
         Message.getDefaultMapper().addMapper(
-                new MapperOfBungeePlayer()
+                new MapperOfBungeePlayer(),
+                new MapperOfBungeeChatComponent()
         );
 
         /*if(!configuration.contains("network.lobby")){

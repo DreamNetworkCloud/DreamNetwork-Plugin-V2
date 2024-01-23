@@ -5,6 +5,7 @@ import be.alexandre01.dnplugin.api.connection.request.*;
 import be.alexandre01.dnplugin.api.connection.request.datas.DataManager;
 import be.alexandre01.dnplugin.api.objects.RemoteExecutor;
 import be.alexandre01.dnplugin.api.objects.player.DNPlayer;
+import be.alexandre01.dnplugin.api.universal.player.UniversalPlayer;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
@@ -17,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Getter
 public class DNServer extends RemoteClient {
-    private final Collection<DNPlayer> players = new ArrayList<>();
+    private final Collection<UniversalPlayer> players = new ArrayList<>();
     private final RemoteExecutor remoteExecutor;
     private final int id;
     @Getter(AccessLevel.NONE) private final int indexingId;

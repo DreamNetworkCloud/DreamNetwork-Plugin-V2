@@ -9,6 +9,7 @@ import be.alexandre01.dnplugin.api.objects.player.DNPlayerManager;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import be.alexandre01.dnplugin.api.connection.request.RequestType;
 import be.alexandre01.dnplugin.api.connection.request.communication.ClientReceiver;
+import be.alexandre01.dnplugin.api.universal.player.UniversalPlayer;
 import be.alexandre01.dnplugin.api.utils.messages.Message;
 import be.alexandre01.dnplugin.plugins.spigot.api.communication.MessageReceivedEvent;
 import be.alexandre01.dnplugin.plugins.spigot.communication.objects.BaseExecutor;
@@ -116,7 +117,7 @@ public class SpigotRequestReceiver extends ClientReceiver {
             List<String> upPlayers =  (List<String>) message.getList("P");
             System.out.println(upPlayers);
             for(String p : upPlayers){
-                DNPlayer dnPlayer = null;
+                UniversalPlayer dnPlayer = null;
                 Integer id = null;
                 DNServer dnServer = null;
                 String playerName = null;
@@ -189,7 +190,7 @@ public class SpigotRequestReceiver extends ClientReceiver {
             System.out.println("Removing players");
             List<Integer> unPlayers =  (List<Integer>) message.get("P");
             for(Integer id : unPlayers){
-                DNPlayer dnPlayer = dnPlayerManager.getDnPlayers().get(id);
+                UniversalPlayer dnPlayer = dnPlayerManager.getDnPlayers().get(id);
                 dnPlayerManager.removePlayer(dnPlayer);
                 Bukkit.getScheduler().scheduleSyncDelayedTask(DNSpigot.getInstance(),()->{
                     NetworkDisconnectEvent event = new NetworkDisconnectEvent(dnPlayer.getServer(),dnPlayer);

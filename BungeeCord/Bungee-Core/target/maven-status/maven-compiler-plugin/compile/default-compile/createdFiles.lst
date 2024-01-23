@@ -7,6 +7,7 @@ be\alexandre01\dnplugin\plugins\bungeecord\components\TablistCustomizer$1.class
 be\alexandre01\dnplugin\plugins\bungeecord\components\commands\Maintenance$1.class
 be\alexandre01\dnplugin\plugins\bungeecord\DNBungee.class
 be\alexandre01\dnplugin\plugins\bungeecord\PlayerTabList.class
+be\alexandre01\dnplugin\plugins\bungeecord\communication\BungeePlayerHandlerClass.class
 be\alexandre01\dnplugin\plugins\bungeecord\ImplAPI.class
 be\alexandre01\dnplugin\plugins\bungeecord\communication\BungeeRequestReceiver.class
 be\alexandre01\dnplugin\plugins\bungeecord\utils\mapper\MapperOfBungeePlayer.class

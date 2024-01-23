@@ -37,6 +37,7 @@ public abstract class NetworkBaseAPI extends NetCore{
 
     private boolean isInit = false;
     private final ArrayList<RequestType> requestTypes = new ArrayList<>();
+    @Getter
     private static NetworkBaseAPI instance;
     @Getter private final PacketHandlingFactory packetFactory = new PacketHandlingFactory();
 
@@ -51,9 +52,6 @@ public abstract class NetworkBaseAPI extends NetCore{
     protected final List<Consumer<NetworkBaseAPI>> consumerList = new ArrayList<>();
 
 
-    public static NetworkBaseAPI getInstance() {
-        return instance;
-    }
     public NetworkBaseAPI(){
         super();
         instance = this;
@@ -62,7 +60,11 @@ public abstract class NetworkBaseAPI extends NetCore{
                 new MapperOfDNServer(),
                 new MapperOfDate()
         );
+    }
 
+    @Deprecated
+    public Optional<RemoteExecutor> getMainProxy(){
+        return services.values().stream().filter(remoteExecutor -> remoteExecutor.getRemoteBundle().isProxy()).findFirst();
     }
 
 
