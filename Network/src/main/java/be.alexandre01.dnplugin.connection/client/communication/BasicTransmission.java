@@ -115,12 +115,9 @@ public class BasicTransmission extends ClientReceiver {
         ChannelPacket receivedPacket = new ChannelPacket(message);
 
             if(message.hasChannel()){
-                System.out.println("Message from channel "+message.getChannel());
                 DNChannel dnChannel = NetworkBaseAPI.getInstance().getChannelManager().getChannel(message.getChannel());
-                System.out.println("Channel => ?"+ dnChannel);
                 if(dnChannel != null){
                     if(!dnChannel.getDnChannelInterceptors().isEmpty()){
-                        System.out.println("Interceptors => "+ dnChannel.getDnChannelInterceptors());
                         for (DNChannelInterceptor dnChannelInterceptor : dnChannel.getDnChannelInterceptors()){
                             dnChannelInterceptor.received(receivedPacket);
                         }

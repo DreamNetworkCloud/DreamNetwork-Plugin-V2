@@ -41,7 +41,6 @@ public class ProxyExecutor extends RemoteExecutor {
     }
     public void createServer(String serverName,int id,String customName){
         DNServer dnServer = new DNServer(serverName,customName,id,this);
-        System.out.println("Create Server " + serverName+"-"+id);
         servers.put(id,dnServer);
 
         if(!isStarted())
@@ -49,7 +48,6 @@ public class ProxyExecutor extends RemoteExecutor {
     }
 
     public void removeServer(String serverName){
-        System.out.println(serverName);
         String[] numSearch = serverName.split("-");
         int id = Integer.parseInt(numSearch[numSearch.length-1]);
         removeServer(id);

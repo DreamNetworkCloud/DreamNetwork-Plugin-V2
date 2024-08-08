@@ -32,8 +32,6 @@ public class VelocityServersManager implements DNVelocityServersManager {
             }
             ServerInfo info = new ServerInfo(viewName,new InetSocketAddress(ip,port));//ProxyServer.getInstance().constructServerInfo(processName,new InetSocketAddress(ip,port) , "", false);
             RegisteredServer server = DNVelocity.getInstance().getServer().registerServer(info);
-            System.out.println(DNVelocity.getInstance().getServer().getConfiguration().getServers().entrySet());
-            System.out.println(info.getAddress().getHostString());
        //     DNVelocity.getInstance().getServer().getConfiguration().getServers().put(processName,info.getAddress().getHostString()+":"+info.getAddress().getPort());
             servers.add(viewName);
             ProxyExecutor proxyService;

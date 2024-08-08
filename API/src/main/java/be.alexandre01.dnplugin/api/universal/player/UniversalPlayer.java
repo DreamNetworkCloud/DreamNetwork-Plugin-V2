@@ -20,6 +20,7 @@ public abstract class UniversalPlayer extends DNPlayer {
         idToOperation.put(0,"sendMessage");
         idToOperation.put(1,"kickPlayer");
         idToOperation.put(2,"sendTitle");
+
     }
 
 

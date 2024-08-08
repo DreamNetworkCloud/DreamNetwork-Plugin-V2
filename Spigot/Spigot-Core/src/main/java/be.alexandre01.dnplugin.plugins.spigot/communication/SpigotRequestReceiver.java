@@ -100,7 +100,6 @@ public class SpigotRequestReceiver extends ClientReceiver {
         });
 
         addRequestInterceptor(RequestType.SERVER_REMOVE_SERVERS,(message, ctx) -> {
-            System.out.println(message.toString());
             List<String> rServers = (List<String>) message.getList("SERVERS");
             if(rServers.size() > 0){
                 for(String servers : rServers){
@@ -115,7 +114,6 @@ public class SpigotRequestReceiver extends ClientReceiver {
 
         addRequestInterceptor(RequestType.SERVER_UPDATE_PLAYERS,(message, ctx) ->  {
             List<String> upPlayers =  (List<String>) message.getList("P");
-            System.out.println(upPlayers);
             for(String p : upPlayers){
                 UniversalPlayer dnPlayer = null;
                 Integer id = null;
@@ -127,7 +125,6 @@ public class SpigotRequestReceiver extends ClientReceiver {
                 String[] split = p.split(";");
 
                 for (int i = 0; i < split.length; i++) {
-                    System.out.println(split[i]);
                     if(i == 0) {
                         id = Integer.parseInt(split[i]);
                         if (dnPlayerManager.getDnPlayers().containsKey(id)) {

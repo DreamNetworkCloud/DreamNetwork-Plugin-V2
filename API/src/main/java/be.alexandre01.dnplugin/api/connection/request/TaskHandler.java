@@ -59,10 +59,8 @@ public abstract class TaskHandler {
     public void onCustom(String custom){}
 
     public void destroy() {
-        System.out.println("Destroy "+ MID);
         DNCallback.getCurrentId().remove(MID);
         NetworkBaseAPI.getInstance().getClientHandler().getCallbackManager().removeCallback(MID,this);
-
     }
 
     public enum TaskType{

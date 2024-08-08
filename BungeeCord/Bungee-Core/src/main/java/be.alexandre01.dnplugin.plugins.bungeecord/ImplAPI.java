@@ -107,7 +107,6 @@ public class ImplAPI extends NetworkBaseAPI implements DNBungeeAPI {
     @Override
     public void callServiceAttachedEvent() {
         isAttached = true;
-        System.out.println("CALLING ATTACHED EVENT");
         CompletableFuture.runAsync(() -> {
             new ArrayList<>(consumerList).forEach(runnable -> {
                 runnable.accept(this);

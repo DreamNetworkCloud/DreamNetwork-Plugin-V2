@@ -74,7 +74,6 @@ public class RedirectConnection implements Listener {
     @EventHandler
     public void onPlayerConnect(PostLoginEvent event) {
         if(dnBungee.getConfiguration().isConnexionOnLobby()){
-            System.out.println("[DNBungee] Redirecting player to lobby server");
             pending.add(event.getPlayer().getUniqueId());
         }
     }
@@ -133,7 +132,10 @@ public class RedirectConnection implements Listener {
             for(int i = 0; i < event.getKickReasonComponent().length; i++){
                 baseComponents[i+1] = event.getKickReasonComponent()[i];
             }
-            event.getPlayer().sendMessage(baseComponents);
+
+            if(event.getPlayer() != null || event.getPlayer().isConnected() || event.getCancelServer() != null){
+                event.getPlayer().sendMessage(baseComponents);
+            }
 
             event.setCancelled(true);
             event.setCancelServer(s);

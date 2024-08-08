@@ -53,14 +53,11 @@ public class BungeeRequestReceiver extends ClientReceiver {
             System.out.println("Registering channel");
             String channelName = message.getString("CHANNEL");
             LinkedHashMap<String,Object> map = (LinkedHashMap<String, Object>) message.get("MAP");
-            System.out.println("Données ! > "+map);
-            System.out.println("Nom du channel ! > "+ channelName);
             dnBungeeAPI.getChannelManager().getChannel(channelName).callRegisterEvent(map);
         });
         addRequestInterceptor(RequestType.CORE_REGISTER_CHANNELS_INFOS,(message, ctx) -> {
             List<String> channels = message.getList("CHANNELS",String.class);
             for(String channel : channels){
-                System.out.println("New Channel = "+channel);
                 if(dnBungeeAPI.getChannelManager().hasChannel(channel)){
                     continue;
                 }
@@ -72,7 +69,6 @@ public class BungeeRequestReceiver extends ClientReceiver {
 
     @Override
     protected boolean preReader(Message message, ChannelHandlerContext ctx) {
-        System.out.println(message.toString());
         return true;
     }
 }

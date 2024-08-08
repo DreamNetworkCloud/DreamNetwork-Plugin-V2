@@ -21,6 +21,7 @@ import be.alexandre01.dnplugin.plugins.spigot.utils.mapper.MapperOfLocation;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;

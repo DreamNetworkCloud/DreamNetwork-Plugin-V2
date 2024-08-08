@@ -72,7 +72,6 @@ public class VelocityRequestReceiver extends ClientReceiver {
 
     @Override
     protected boolean preReader(Message message, ChannelHandlerContext ctx) {
-        System.out.println(message.toString());
         return true;
     }
 }

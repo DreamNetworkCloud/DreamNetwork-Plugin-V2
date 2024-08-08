@@ -468,7 +468,6 @@ public class Message extends LinkedHashMap<String, Object> {
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         Type token = TypeToken.getParameterized(List.class, tClass).getType();
-        System.out.println(token.getTypeName());
         JavaType type = jsonMapper.getTypeFactory().
                 constructCollectionType(List.class, tClass);
         ArrayList<T> list = null;
@@ -560,9 +559,7 @@ public class Message extends LinkedHashMap<String, Object> {
 
     public String toString() {
         try {
-            String json = jacksonMapper.writeValueAsString(this);
-            System.out.println(json);
-            return json;
+            return jacksonMapper.writeValueAsString(this);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

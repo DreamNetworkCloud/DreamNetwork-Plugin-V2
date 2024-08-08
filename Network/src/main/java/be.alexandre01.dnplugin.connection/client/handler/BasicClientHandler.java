@@ -42,7 +42,6 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter implements 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         this.channel = ctx.channel();
-        System.out.println("Channel active");
 
         if(!queue.isEmpty()){
             taskQueue();
@@ -89,7 +88,6 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter implements 
         try {
             Message message = Message.createFromJsonString(s_to_decode);
             if(reloadResponses){
-                System.out.println("Reload responses");
                 tempResponses.clear();
                 tempResponses.addAll(responses);
                 reloadResponses = false;
@@ -99,11 +97,6 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter implements 
             if(!responses.isEmpty()){
                 for (ClientReceiver iBasicClientReceiver : tempResponses) {
                     try {
-                        if(iBasicClientReceiver.getClass().getDeclaringClass() != null){
-                            if(iBasicClientReceiver.getClass().getDeclaringClass().getDeclaredMethod("onResponse",Message.class,ChannelHandlerContext.class).getDeclaringClass() != null){
-                                System.out.println(iBasicClientReceiver.getClass().getDeclaringClass().getDeclaredMethod("onResponse",Message.class,ChannelHandlerContext.class).getDeclaringClass().getSimpleName());
-                            }
-                        }
                         iBasicClientReceiver.onAutoReceive(message, ctx);
                     } catch (Exception e) {
                         e.printStackTrace();
