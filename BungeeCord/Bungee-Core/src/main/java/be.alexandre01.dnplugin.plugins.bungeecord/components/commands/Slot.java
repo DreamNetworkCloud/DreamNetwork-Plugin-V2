@@ -2,6 +2,7 @@ package be.alexandre01.dnplugin.plugins.bungeecord.components.commands;
 
 import be.alexandre01.dnplugin.plugins.bungeecord.DNBungee;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Command;
 
 public class Slot extends Command {
@@ -23,18 +24,17 @@ public class Slot extends Command {
             sendHelp(sender);
             return;
         }
-        dnBungee.slot = i;
 
-        dnBungee.configuration.set("network.slot",i);
+        dnBungee.getConfiguration().setSlots(i);
         dnBungee.saveConfig();
 
-        sender.sendMessage("§aVous venez de changer le nombre de slot à "+ i);
+        sender.sendMessage(new TextComponent("§aVous venez de changer le nombre de slot à "+ i));
     }
 
     public void sendHelp(CommandSender sender){
-        sender.sendMessage("§6Slot System:");
-        sender.sendMessage("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*");
-        sender.sendMessage("§e - §9/slot [Nombre]");
-        sender.sendMessage("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*");
+        sender.sendMessage(new TextComponent("§6Slot System:"));
+        sender.sendMessage(new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*"));
+        sender.sendMessage(new TextComponent("§e - §9/slot [Nombre]"));
+        sender.sendMessage(new TextComponent("§8§m*------§7§m------§7§m-§b§m-----------§7§m-§7§m------§8§m------*"));
     }
 }

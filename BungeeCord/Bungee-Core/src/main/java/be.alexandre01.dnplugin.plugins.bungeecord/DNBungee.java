@@ -1,34 +1,37 @@
 package be.alexandre01.dnplugin.plugins.bungeecord;
 
+import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.IBasicClient;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
-import be.alexandre01.dnplugin.api.request.RequestFile;
-import be.alexandre01.dnplugin.api.request.RequestManager;
-import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
+import be.alexandre01.dnplugin.api.connection.request.RequestFile;
+import be.alexandre01.dnplugin.api.connection.request.RequestManager;
+import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
 import be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeAPI;
 import be.alexandre01.dnplugin.plugins.bungeecord.components.TablistCustomizer;
 import be.alexandre01.dnplugin.plugins.bungeecord.components.commands.Maintenance;
 import be.alexandre01.dnplugin.plugins.bungeecord.components.commands.Slot;
-import be.alexandre01.dnplugin.plugins.bungeecord.components.listeners.MOTD;
+import be.alexandre01.dnplugin.plugins.bungeecord.components.commands.TabList;
 import be.alexandre01.dnplugin.plugins.bungeecord.listeners.PlayerServerListener;
 import be.alexandre01.dnplugin.plugins.bungeecord.listeners.RedirectConnection;
+import be.alexandre01.dnplugin.plugins.bungeecord.components.listeners.ServerPingListener;
 import be.alexandre01.dnplugin.plugins.bungeecord.objects.PlayerManagement;
-import be.alexandre01.dnplugin.plugins.bungeecord.utils.BungeeText;
-import be.alexandre01.dnplugin.utils.ASCII;
-import be.alexandre01.dnplugin.utils.Config;
+import be.alexandre01.dnplugin.api.utils.ASCII;
+import be.alexandre01.dnplugin.api.utils.Config;
+import be.alexandre01.dnplugin.api.utils.files.YAMLManager;
+import be.alexandre01.dnplugin.api.utils.files.messages.MessagesManager;
+import be.alexandre01.dnplugin.api.utils.files.network.NetworkYAML;
+import be.alexandre01.dnplugin.plugins.bungeecord.utils.mapper.MapperOfBungeeChatComponent;
+import be.alexandre01.dnplugin.plugins.bungeecord.utils.mapper.MapperOfBungeePlayer;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ListenerInfo;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.config.Configuration;
-import net.md_5.bungee.config.ConfigurationProvider;
-import net.md_5.bungee.config.YamlConfiguration;
 import org.bstats.bungeecord.Metrics;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter
@@ -43,37 +46,42 @@ public class DNBungee extends Plugin {
     private int port;
     private RequestManager requestManager;
     public File file;
-    public Configuration configuration;
-    public int slot = -2;
-    public boolean isMaintenance;
+    //public Configuration configuration;
+    public YAMLManager yamlManager;
+    public NetworkYAML configuration;
+    public MessagesManager messagesManager;
+    public PlayerTabList playerTabList;
+
+    //public int slot = -2;
+    //public boolean isMaintenance;
     public boolean cancelKick;
-    public String kickServerRedirection = null;
-    public List<String> allowedPlayer;
-    public String lobby;
-    public boolean logoStatus;
-    public boolean autoSendPlayer;
-    public boolean connexionOnLobby;
-    public int maxPerLobby;
+    //public String kickServerRedirection = null;
+    //public List<String> allowedPlayer;
+    //public String lobby;
+    //public boolean logoStatus;
+    //public boolean autoSendPlayer;
+    //public boolean connexionOnLobby;
+    //public int maxPerLobby;
 
     public TablistCustomizer tablistCustomizer;
     @Getter private final PlayerManagement playerManagement = new PlayerManagement();
-    private BungeeText bungeeText;
+    //private BungeeText bungeeText;
 
     @Override
     public void onEnable(){
         instance = this;
         //INIT defaultBungeeText
-        new BungeeText(true).init();
+        /*new BungeeText(true).init();
         bungeeText = new BungeeText(false);
         bungeeText.init();
         System.out.println(bungeeText.messages.values());
         System.out.println(bungeeText.messages.keySet());
         System.out.println(getMessage("connect.noLobby"));
-        System.out.println(getMessage("connect.test"));
+        System.out.println(getMessage("connect.test"));*/
         //port = 25565;
         port = getProxy().getConfig().getListeners().stream().findFirst().get().getHost().getPort();
         loadConfig();
-        allowedPlayer = new ArrayList<>();
+        //allowedPlayer = new ArrayList<>();
         if(!getProxy().getConfig().getListeners().isEmpty()){
             ListenerInfo listenerInfo = getProxy().getConfig().getListeners().stream().findFirst().get();
             port = listenerInfo.getHost().getPort();
@@ -85,10 +93,17 @@ public class DNBungee extends Plugin {
 
         type = "BUNGEE";
 
-         tablistCustomizer = new TablistCustomizer();
+        //tablistCustomizer = new TablistCustomizer();
+        playerTabList = new PlayerTabList();
+        playerTabList.start();
 
 
-        if(!configuration.contains("network.lobby")){
+        Message.getDefaultMapper().addMapper(
+                new MapperOfBungeePlayer(),
+                new MapperOfBungeeChatComponent()
+        );
+
+        /*if(!configuration.contains("network.lobby")){
             configuration.set("network.lobby","main/lobby");
             saveConfig();
         }
@@ -151,7 +166,7 @@ public class DNBungee extends Plugin {
         autoSendPlayer = configuration.getBoolean("network.players.autoSend");
         for(String string : configuration.getStringList("network.allowed-players-maintenance")){
             allowedPlayer.add(string.toLowerCase());
-        }
+        }*/
 
 
 
@@ -162,25 +177,30 @@ public class DNBungee extends Plugin {
 
         System.out.println("\n");
 
-        if(configuration.contains("network.slot")){
+        /*if(configuration.contains("network.slot")){
             slot = configuration.getInt("network.slot");
-        }
+        }*/
 
         api = new ImplAPI(this);
 
 
 
         getProxy().getPluginManager().registerListener(this,new RedirectConnection());
-        if(autoSendPlayer)
+        if(configuration.isAutoSendPlayers()){
+            System.out.println("AutoSendPlayers is enabled");
             getProxy().getPluginManager().registerListener(this,new PlayerServerListener());
-        MOTD motd = new MOTD();
+        }
+
+        /*MOTD motd = new MOTD();
         if(motd.isActivated())
-            getProxy().getPluginManager().registerListener(this,motd);
+            getProxy().getPluginManager().registerListener(this,motd);*/
+        getProxy().getPluginManager().registerListener(this, new ServerPingListener());
 
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Maintenance("maintenance"));
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Slot("slot"));
+        ProxyServer.getInstance().getPluginManager().registerCommand(this, new TabList("tablist"));
         this.dnChannelManager = new DNChannelManager();
-        this.requestManager = new RequestManager();
+        this.requestManager = new RequestManager(api);
 
         RequestFile requestFile = new RequestFile();
         requestFile.loadFile(  Config.getPath(ProxyServer.getInstance().getPluginsFolder() + "/DreamNetwork/requests.dream"));
@@ -192,12 +212,11 @@ public class DNBungee extends Plugin {
             return;
         }
 
-
     }
 
     @Override
     public void onDisable(){
-        DNBungeeAPI.getInstance().getClientHandler().getChannel().close();
+        //DNBungeeAPI.getInstance().getClientHandler().getChannel().close();
     }
 
     public void loadConfig(){
@@ -206,7 +225,7 @@ public class DNBungee extends Plugin {
             theDir.mkdirs();
         }
 
-        file = new File(ProxyServer.getInstance().getPluginsFolder(), "/DreamNetwork/network.yml");
+        /*file = new File(ProxyServer.getInstance().getPluginsFolder(), "/DreamNetwork/network.yml");
         try{
             if(!file.exists()){
                 file.createNewFile();
@@ -218,25 +237,63 @@ public class DNBungee extends Plugin {
             configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
+        yamlManager = new YAMLManager(getProxy().getPluginsFolder().getPath() + "/DreamNetwork", "PROXY");
 
+        //Test t = new Test("bonjour.yml");
+        //t.setBonjour("Coucou");
+        //t.loading();
+        //t.save();
+
+        configuration = yamlManager.getNetwork();
+        messagesManager = yamlManager.getMessagesManager();
     }
 
     public void saveConfig(){
-        try{
+        /*try{
             ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, file);
         }catch (IOException e){
             e.printStackTrace();
+        }*/
+        yamlManager.saveNetwork();
+    }
+
+
+    public String getMessage(String path, ProxiedPlayer player) {
+        String msg = messagesManager.getString(path);
+        if(msg == null){
+            return "";
+        }
+        msg = msg.replace("%player%", player.getName())
+                .replace("%ping%", String.valueOf(player.getPing()))
+                .replace("%max%", String.valueOf(getConfiguration().getSlots()))
+                .replace("%online%", String.valueOf(getProxy().getPlayers().size()));
+        List<String> generals = messagesManager.getPaths("general");
+
+        if(generals != null) {
+            for (String p : generals) {
+                String[] cut = p.split("\\.");
+                msg = msg.replace("%" + cut[cut.length - 1] + "%", messagesManager.getString(p));
+            }
+        }
+
+       return msg.replace("&", "§");
+        //return bungeeText.getMessage(path);
+    }
+
+    private String completeMessagePart(String part, ProxiedPlayer player){
+        switch (part){
+            case "player":
+                return player.getName();
+            case "ping":
+                return String.valueOf(player.getPing());
+            default:
+                return (messagesManager.getString(part) != null ? messagesManager.getString(part) : part);
         }
     }
 
-
-    public String getMessage(String path) {
-        return bungeeText.getMessage(path);
-    }
-
-    public String getMessage(String path,Object... objects) {
+    /*public String getMessage(String path,Object... objects) {
         return bungeeText.getMessage(path,objects);
-    }
+    }*/
 }

@@ -2,18 +2,18 @@ package be.alexandre01.dnplugin.plugins.bungeecord;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
-import be.alexandre01.dnplugin.api.objects.player.DNPlayerManager;
-import be.alexandre01.dnplugin.api.objects.server.DNServer;
-import be.alexandre01.dnplugin.api.request.RequestManager;
-import be.alexandre01.dnplugin.api.request.RequestType;
-import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
+import be.alexandre01.dnplugin.api.connection.request.RequestManager;
+import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
+import be.alexandre01.dnplugin.api.universal.player.UniversalPlayer;
 import be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeAPI;
 import be.alexandre01.dnplugin.plugins.bungeecord.api.DNBungeeServersManager;
-import be.alexandre01.dnplugin.plugins.bungeecord.communication.BungeeRequestResponse;
+import be.alexandre01.dnplugin.plugins.bungeecord.communication.BungeeRequestReceiver;
 import be.alexandre01.dnplugin.plugins.bungeecord.communication.generated.BungeeGeneratedRequest;
 import be.alexandre01.dnplugin.plugins.bungeecord.utils.BungeeServersManager;
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
 public class ImplAPI extends NetworkBaseAPI implements DNBungeeAPI {
@@ -22,9 +22,13 @@ public class ImplAPI extends NetworkBaseAPI implements DNBungeeAPI {
     @Getter
     DNBungeeServersManager dnBungeeServersManager;
 
+    boolean isManagingConnections = true;
+
     String serverName;
     int id;
     String processName = null;
+
+
     public ImplAPI(DNBungee dnBungee){
         this.dnBungee = dnBungee;
         this.dnBungeeServersManager = new BungeeServersManager(this);
@@ -42,6 +46,11 @@ public class ImplAPI extends NetworkBaseAPI implements DNBungeeAPI {
     @Override
     public String getProcessName() {
         return processName;
+    }
+
+    @Override
+    public UniversalPlayer getUniversalPlayer(String name) {
+        return null;
     }
 
     @Override
@@ -79,6 +88,8 @@ public class ImplAPI extends NetworkBaseAPI implements DNBungeeAPI {
         return Logger.getGlobal();
     }
 
+
+
     @Override
     public RequestManager getRequestManager() {
         return dnBungee.getRequestManager();
@@ -94,20 +105,36 @@ public class ImplAPI extends NetworkBaseAPI implements DNBungeeAPI {
         dnBungee.setRequestManager(requestManager);
     }
     @Override
-    public void callServerAttachedEvent() {
-
+    public void callServiceAttachedEvent() {
+        isAttached = true;
+        CompletableFuture.runAsync(() -> {
+            new ArrayList<>(consumerList).forEach(runnable -> {
+                runnable.accept(this);
+                consumerList.remove(runnable);
+            });
+        });
     }
 
     @Override
     public void setClientHandler(IClientHandler basicClientHandler) {
         this.basicClientHandler = basicClientHandler;
         getRequestManager().setClientHandler(basicClientHandler);
-        basicClientHandler.getResponses().add(new BungeeRequestResponse());
+        basicClientHandler.addResponse(new BungeeRequestReceiver());
         getRequestManager().getRequestBuilder().addRequestBuilder(new BungeeGeneratedRequest());
     }
 
     @Override
     public void shutdownProcess() {
         dnBungee.getProxy().stop();
+    }
+
+
+    @Override
+    public void isManagingConnections(boolean isManagingConnections) {
+        this.isManagingConnections = isManagingConnections;
+    }
+    @Override
+    public boolean isManagingConnections() {
+        return isManagingConnections;
     }
 }

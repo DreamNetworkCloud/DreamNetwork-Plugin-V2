@@ -10,8 +10,5 @@ public class SpongeRequestReponse extends ClientResponse {
         addRequestInterceptor(RequestType.SPIGOT_EXECUTE_COMMAND,(message, ctx) -> {
             Sponge.getCommandManager().process(Sponge.getServer().getConsole(), message.getString("CMD"));
         });
-        addRequestInterceptor(RequestType.CORE_STOP_SERVER,(message, ctx) -> {
-            Sponge.getServer().shutdown();
-        });
     }
 }

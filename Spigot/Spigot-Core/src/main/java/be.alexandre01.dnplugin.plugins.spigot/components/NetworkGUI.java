@@ -1,6 +1,6 @@
 package be.alexandre01.dnplugin.plugins.spigot.components;
 
-import be.alexandre01.dnplugin.api.objects.RemoteService;
+import be.alexandre01.dnplugin.api.objects.RemoteExecutor;
 import be.alexandre01.dnplugin.plugins.spigot.DNSpigot;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,20 +47,20 @@ public abstract class NetworkGUI {
     public void open(Player player){
         new GUIPlayerData(player, this);
     }
-    private static ItemStack generateItemFromServers(RemoteService remoteService){
+    private static ItemStack generateItemFromServers(RemoteExecutor remoteExecutor){
         ItemStack it = new ItemStack(Material.GLASS);
         ItemMeta im = it.getItemMeta();
 
-        im.setDisplayName("§6§l" + remoteService.getName());
+        im.setDisplayName("§6§l" + remoteExecutor.getName());
         //set lore status of the removeservice
         String online = "§aOnline";
         List<String> lore = new ArrayList<>();
 
-        if(remoteService.isStarted()){
+        if(remoteExecutor.isStarted()){
             //GREEN DATA ITEMSTASK
             it.getData().setData((byte) 5);
-            if(remoteService.getServers().size() > 1){
-                online += " (" + remoteService.getServers().size() + ")";
+            if(remoteExecutor.getServers().size() > 1){
+                online += " (" + remoteExecutor.getServers().size() + ")";
             }
         }else {
             online = "§cOffline";
@@ -69,9 +69,9 @@ public abstract class NetworkGUI {
         }
         lore.add("§7Status: "+ online);
 
-        lore.add("§7Type: " + remoteService.getMods().name());
+        lore.add("§7Type: " + remoteExecutor.getMods().name());
         if(DNSpigot.getAPI().hasAlreadyPlayerRefreshed()) {
-            lore.add("§7Players: " + remoteService.getPlayers().size());
+            lore.add("§7Players: " + remoteExecutor.getPlayers().size());
         }
 
         it.setItemMeta(im);

@@ -4,7 +4,7 @@ motd:
   custom-version-message: "&4[&e1.8&c+&4] &e(%online%&c/&e%max%)" #Type none to let it blank
   auto-slot-increment: false
   content:
-    line-1: "              &e&l✯ §9§lDreamNetwork §e§l✯ §f§n§l"
+    line-1: "              &e&l✯ §9§lDreamNetwork §e§l✯ §f"
     line-2: "     §e▅▆▇ §6§lBest Network System ▇▆▅"
   version-hover:
     line-1: "&7&m--------------------"

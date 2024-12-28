@@ -3,10 +3,9 @@ package be.alexandre01.dnplugin.plugins.velocity.utils;
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.objects.RemoteBundle;
 import be.alexandre01.dnplugin.plugins.velocity.DNVelocity;
-import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityAPI;
 import be.alexandre01.dnplugin.plugins.velocity.api.DNVelocityServersManager;
-import be.alexandre01.dnplugin.plugins.velocity.communication.objects.ProxyService;
-import be.alexandre01.dnplugin.utils.Mods;
+import be.alexandre01.dnplugin.plugins.velocity.communication.objects.ProxyExecutor;
+import be.alexandre01.dnplugin.api.utils.Mods;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.velocitypowered.api.proxy.server.ServerInfo;
 import lombok.Getter;
@@ -25,18 +24,20 @@ public class VelocityServersManager implements DNVelocityServersManager {
     }
 
     @Override
-    public void registerServer(String processName, String ip, int port, Mods mods){
+    public void registerServer(String processName, String customName,String ip, int port, Mods mods){
         try {
-            ServerInfo info = new ServerInfo(processName,new InetSocketAddress(ip,port));//ProxyServer.getInstance().constructServerInfo(processName,new InetSocketAddress(ip,port) , "", false);
+            String viewName = processName;
+            if(customName != null){
+                viewName = customName;
+            }
+            ServerInfo info = new ServerInfo(viewName,new InetSocketAddress(ip,port));//ProxyServer.getInstance().constructServerInfo(processName,new InetSocketAddress(ip,port) , "", false);
             RegisteredServer server = DNVelocity.getInstance().getServer().registerServer(info);
-            System.out.println(DNVelocity.getInstance().getServer().getConfiguration().getServers().entrySet());
-            System.out.println(info.getAddress().getHostString());
        //     DNVelocity.getInstance().getServer().getConfiguration().getServers().put(processName,info.getAddress().getHostString()+":"+info.getAddress().getPort());
-            servers.add(processName);
-            ProxyService proxyService;
+            servers.add(viewName);
+            ProxyExecutor proxyService;
             String name = processName.split("-")[0];
             int id = Integer.parseInt(processName.split("-")[1]);
-            if(networkBaseAPI.getServices().isEmpty()){
+            if(networkBaseAPI.getServices().isEmpty() && DNVelocity.getInstance().getCoreTemp() != null){
                 DNVelocity.getInstance().getServer().unregisterServer(DNVelocity.getInstance().getCoreTemp());
             }
             String[] splitPath = name.split("/");
@@ -47,8 +48,8 @@ public class VelocityServersManager implements DNVelocityServersManager {
                 networkBaseAPI.getBundles().put(bundlePath,new RemoteBundle(bundlePath,false));
             }
             RemoteBundle remoteBundle = networkBaseAPI.getBundles().get(bundlePath);
-            networkBaseAPI.getServices().put(name,proxyService = new ProxyService(name, mods,true,remoteBundle));
-            proxyService.createServer(name,id);
+            networkBaseAPI.getServices().put(name,proxyService = new ProxyExecutor(name, mods,true,remoteBundle));
+            proxyService.createServer(name,id,customName);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -59,7 +60,8 @@ public class VelocityServersManager implements DNVelocityServersManager {
     public void unregisterServer(String finalname){
         Optional<RegisteredServer> server = DNVelocity.getInstance().getServer().getServer(finalname);
         if(!server.isPresent())return;
-        if(networkBaseAPI.getServices().size() == 1){
+        networkBaseAPI.getServices().remove(finalname);
+        if(networkBaseAPI.getServices().isEmpty() && DNVelocity.getInstance().getCoreTemp() != null){
             DNVelocity.getInstance().getServer().registerServer(DNVelocity.getInstance().getCoreTemp());
             return;
         }

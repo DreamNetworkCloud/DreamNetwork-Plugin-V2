@@ -1,7 +1,7 @@
 package be.alexandre01.dnplugin.plugins.velocity.communication.generated;
 
-import be.alexandre01.dnplugin.api.request.RequestBuilder;
-import be.alexandre01.dnplugin.api.request.RequestType;
+import be.alexandre01.dnplugin.api.connection.request.RequestBuilder;
+import be.alexandre01.dnplugin.api.connection.request.RequestType;
 
 public class VelocityGeneratedRequest extends RequestBuilder {
     public VelocityGeneratedRequest(){

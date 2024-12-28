@@ -3,17 +3,25 @@ package be.alexandre01.dnplugin.plugins.spigot;
 import be.alexandre01.dnplugin.api.connection.IBasicClient;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
-import be.alexandre01.dnplugin.api.request.RequestFile;
-import be.alexandre01.dnplugin.api.request.RequestManager;
-import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
-import be.alexandre01.dnplugin.plugins.spigot.command.NetworkCommand;
+import be.alexandre01.dnplugin.api.connection.request.RequestFile;
+import be.alexandre01.dnplugin.api.connection.request.RequestManager;
+import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
+import be.alexandre01.dnplugin.plugins.spigot.commands.NetworkCommand;
+import be.alexandre01.dnplugin.plugins.spigot.commands.StatsCommand;
 import be.alexandre01.dnplugin.plugins.spigot.listeners.ReloadListener;
+import be.alexandre01.dnplugin.plugins.spigot.listeners.RestartListener;
+import be.alexandre01.dnplugin.plugins.spigot.listeners.TestDispatchListener;
 import be.alexandre01.dnplugin.plugins.spigot.utils.SpigotText;
-import be.alexandre01.dnplugin.utils.ASCII;
-import be.alexandre01.dnplugin.utils.Config;
+import be.alexandre01.dnplugin.api.utils.ASCII;
+import be.alexandre01.dnplugin.api.utils.Config;
+import be.alexandre01.dnplugin.plugins.spigot.utils.mapper.MapperOfBukkitOfflinePlayer;
+import be.alexandre01.dnplugin.plugins.spigot.utils.mapper.MapperOfBukkitPlayer;
+import be.alexandre01.dnplugin.plugins.spigot.utils.mapper.MapperOfLocation;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
@@ -64,7 +72,7 @@ public class DNSpigot extends JavaPlugin{
         api = new ImplAPI(this);
 
 
-        this.requestManager = new RequestManager();
+        this.requestManager = new RequestManager(api);
         this.dnChannelManager = new DNChannelManager();
 
         RequestFile requestFile = new RequestFile();
@@ -77,14 +85,21 @@ public class DNSpigot extends JavaPlugin{
         }
 
         registerCommand("network",new NetworkCommand("network"));
+        registerCommand("dnstats",new StatsCommand("dnstats"));
         getServer().getPluginManager().registerEvents(new ReloadListener(),this);
+        getServer().getPluginManager().registerEvents(new RestartListener(),this);
+        //getServer().getPluginManager().registerEvents(new TestDispatchListener(),this);
         //getServer().getPluginManager().registerEvents(new TestChannelListener(),this);
 
         //Register BungeeCord Channel
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
+        Message.getDefaultMapper().addMapper(
+                new MapperOfBukkitPlayer(),
+                new MapperOfBukkitOfflinePlayer(),
+                new MapperOfLocation()
+        );
     }
-
     @Override
     public void onDisable(){
         if(isReloading){
@@ -94,15 +109,10 @@ public class DNSpigot extends JavaPlugin{
                 getMessage("server.shutdown");
                 player.kickPlayer("Le serveur est entrain de s'éteindre.");
             }
-            getAPI().getClientHandler().getChannel().close();
+           // getAPI().getClientHandler().getChannel().close();
         }
 
     }
-
-
-
-
-
 
     public void registerCommand(String commandName, Command commandClass){
         try{

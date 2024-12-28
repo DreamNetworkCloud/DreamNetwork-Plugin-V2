@@ -2,21 +2,24 @@ package be.alexandre01.dnplugin.plugins.spigot;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
+import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
 import be.alexandre01.dnplugin.api.objects.player.DNPlayerManager;
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
-import be.alexandre01.dnplugin.api.request.RequestManager;
-import be.alexandre01.dnplugin.api.request.RequestType;
-import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
+import be.alexandre01.dnplugin.api.connection.request.RequestManager;
+import be.alexandre01.dnplugin.api.connection.request.RequestType;
 import be.alexandre01.dnplugin.plugins.spigot.api.DNSpigotAPI;
 import be.alexandre01.dnplugin.plugins.spigot.api.events.server.ServerAttachedEvent;
-import be.alexandre01.dnplugin.plugins.spigot.communication.SpigotRequestResponse;
+import be.alexandre01.dnplugin.plugins.spigot.communication.SpigotRequestReceiver;
 import be.alexandre01.dnplugin.plugins.spigot.communication.generated.SpigotGeneratedRequest;
+import be.alexandre01.dnplugin.plugins.spigot.communication.objects.BukkitPlayer;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
 public class ImplAPI extends NetworkBaseAPI implements DNSpigotAPI {
@@ -48,6 +51,14 @@ public class ImplAPI extends NetworkBaseAPI implements DNSpigotAPI {
     @Override
     public String getProcessName() {
         return processName;
+    }
+
+    @Override
+    public BukkitPlayer getUniversalPlayer(String name) {
+        if(dnPlayerManager.getDnPlayersByName().containsKey(name)){
+            return (BukkitPlayer) dnPlayerManager.getDnPlayersByName().get(name);
+        }
+        return null;
     }
 
     @Override
@@ -95,25 +106,28 @@ public class ImplAPI extends NetworkBaseAPI implements DNSpigotAPI {
         return dnSpigot.getDnChannelManager();
     }
 
-    @Override
-    public void setRequestManager(RequestManager requestManager) {
-
-    }
 
     @Override
     public void setClientHandler(IClientHandler basicClientHandler) {
         this.iClientHandler = basicClientHandler;
         getRequestManager().setClientHandler(basicClientHandler);
-        basicClientHandler.getResponses().add(new SpigotRequestResponse());
+        basicClientHandler.addResponse(new SpigotRequestReceiver());
         getRequestManager().getRequestBuilder().addRequestBuilder(new SpigotGeneratedRequest());
     }
 
     @Override
-    public void callServerAttachedEvent() {
+    public void callServiceAttachedEvent() {
         System.out.println(DNSpigot.getInstance().getMessage("console.events.attached"));
         ServerAttachedEvent serverAttachedEvent = new ServerAttachedEvent();
         Bukkit.getScheduler().scheduleSyncDelayedTask(DNSpigot.getInstance(), () -> {
             DNSpigot.getInstance().getServer().getPluginManager().callEvent(serverAttachedEvent);
+        });
+        isAttached = true;
+        CompletableFuture.runAsync(() -> {
+            new ArrayList<>(consumerList).forEach(runnable -> {
+                runnable.accept(this);
+                consumerList.remove(runnable);
+            });
         });
     }
 
@@ -157,7 +171,7 @@ public class ImplAPI extends NetworkBaseAPI implements DNSpigotAPI {
 
     @Override
     public void sendPlayerTo(Player player, DNServer dnServer){
-        sendPlayerTo(player,dnServer.getFullName());
+        sendPlayerTo(player,dnServer.getName());
     }
 
 

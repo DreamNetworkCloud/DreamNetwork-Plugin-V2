@@ -1,9 +1,8 @@
 package be.alexandre01.dnplugin.plugins.spigot.utils;
 
 import be.alexandre01.dnplugin.plugins.spigot.DNSpigot;
-import be.alexandre01.dnplugin.utils.Config;
-import be.alexandre01.dnplugin.utils.files.SearchText;
-import org.apache.commons.io.IOUtils;
+import be.alexandre01.dnplugin.api.utils.Config;
+import be.alexandre01.dnplugin.api.utils.files.SearchText;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -62,8 +61,13 @@ public class SpigotText extends SearchText {
                 InputStream i = SpigotText.class.getResourceAsStream("/config/spigot/messages.yml");
                 OutputStream o = new FileOutputStream(file);
                 assert i != null;
-                IOUtils.copy(i, o);
-                IOUtils.closeQuietly(i);
+                byte[] buf = new byte[1024];
+                int len;
+                while((len=i.read(buf))>0){
+                    o.write(buf,0,len);
+                }
+                o.close();
+                i.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }

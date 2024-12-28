@@ -1,11 +1,11 @@
 package be.alexandre01.dnplugin.plugins.bungeecord.utils;
 
-import be.alexandre01.dnplugin.utils.files.SearchText;
+import be.alexandre01.dnplugin.api.utils.files.SearchText;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
-import org.apache.commons.io.IOUtils;
+
 
 import java.io.*;
 import java.util.HashSet;
@@ -71,8 +71,13 @@ public class BungeeText extends SearchText {
                 file.createNewFile();
                 InputStream i = BungeeText.class.getResourceAsStream("/config/bungeecord/messages.yml");
                 OutputStream o = new FileOutputStream(file);
-                IOUtils.copy(i, o);
-                IOUtils.closeQuietly(i);
+                byte[] buf = new byte[1024];
+                int len;
+                while((len=i.read(buf))>0){
+                    o.write(buf,0,len);
+                }
+                o.close();
+                i.close();
             }
         }catch (IOException e){
             e.printStackTrace();

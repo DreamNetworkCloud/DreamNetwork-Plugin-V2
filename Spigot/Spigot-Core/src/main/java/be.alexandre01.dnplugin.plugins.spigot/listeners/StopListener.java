@@ -2,7 +2,7 @@ package be.alexandre01.dnplugin.plugins.spigot.listeners;
 
 import be.alexandre01.dnplugin.api.objects.server.DNServer;
 import be.alexandre01.dnplugin.plugins.spigot.DNSpigot;
-import be.alexandre01.dnplugin.utils.Mods;
+import be.alexandre01.dnplugin.api.utils.Mods;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
@@ -32,7 +32,7 @@ public class StopListener implements Listener {
       System.out.println("Stopping server...");
       DNServer server = DNSpigot.getAPI().getCurrentServer();
       if (server != null) {
-        if (server.getRemoteService().getMods() == Mods.DYNAMIC) {
+        if (server.getRemoteExecutor().getMods() == Mods.DYNAMIC) {
           for (World world : Bukkit.getWorlds())
             world.setAutoSave(false); 
           Runtime.getRuntime().halt(0);

@@ -2,11 +2,12 @@ package be.alexandre01.dnplugin.connection.client.handler;
 
 import be.alexandre01.dnplugin.api.NetworkBaseAPI;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
-import be.alexandre01.dnplugin.api.request.RequestType;
+import be.alexandre01.dnplugin.api.connection.request.RequestType;
+import be.alexandre01.dnplugin.api.connection.request.packets.handler.PacketRequestConverter;
 import be.alexandre01.dnplugin.connection.client.BasicClient;
-import be.alexandre01.dnplugin.api.request.communication.ClientResponse;
+import be.alexandre01.dnplugin.api.connection.request.communication.ClientReceiver;
 import be.alexandre01.dnplugin.connection.client.communication.BasicTransmission;
-import be.alexandre01.dnplugin.utils.messages.Message;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -22,23 +23,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BasicClientHandler extends ChannelInboundHandlerAdapter implements IClientHandler {
-    @Getter private ArrayList<ClientResponse> responses = new ArrayList<>();
+    private final ArrayList<ClientReceiver> responses = new ArrayList<>();
+    private final ArrayList<ClientReceiver> tempResponses = new ArrayList<>();
+    boolean reloadResponses = false;
+    @Getter private final CallbackManager callbackManager;
     private HashMap<Message, GenericFutureListener<? extends Future<? super Void>>> queue = new HashMap<>();
     private BasicClient basicClient;
     @Getter @Setter private Channel channel;
 
     public BasicClientHandler(BasicClient basicClient){
         this.basicClient = basicClient;
+        callbackManager = new CallbackManager();
         responses.add(new BasicTransmission());
-
+        responses.add(new PacketRequestConverter());
         NetworkBaseAPI.getInstance().setClientHandler(this);
-
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         this.channel = ctx.channel();
-        System.out.println("Channel active");
 
         if(!queue.isEmpty()){
             taskQueue();
@@ -76,18 +79,25 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter implements 
 
         //TO DECODE STRING IF ENCODED AS AES
 
-        if(!Message.isJSONValid(s_to_decode))
-            return;
+       /* No need to check if json is valid if(!Message.isJSONValid(s_to_decode))
+            return;*/
 
 
         //System.out.println("TO message");
 
         try {
             Message message = Message.createFromJsonString(s_to_decode);
+            if(reloadResponses){
+                tempResponses.clear();
+                tempResponses.addAll(responses);
+                reloadResponses = false;
+            }
+            if(message == null) // New check of validity of JSON
+                return;
             if(!responses.isEmpty()){
-                for(ClientResponse iBasicClientResponse : responses){
+                for (ClientReceiver iBasicClientReceiver : tempResponses) {
                     try {
-                        iBasicClientResponse.onAutoResponse(message,ctx);
+                        iBasicClientReceiver.onAutoReceive(message, ctx);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -101,8 +111,6 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter implements 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("Channel inactive try to reconnect...");
-
-
     }
 
     @Override
@@ -138,5 +146,20 @@ public class BasicClientHandler extends ChannelInboundHandlerAdapter implements 
             return;
         }
         channel.writeAndFlush(buf).addListener(listener);
+    }
+
+    public void addResponse(ClientReceiver clientReceiver){
+        responses.add(clientReceiver);
+        reloadResponses = true;
+    }
+
+    public void removeResponse(ClientReceiver clientReceiver){
+        responses.remove(clientReceiver);
+        reloadResponses = true;
+    }
+
+    public ClientReceiver[] getResponses(){
+        // to collection
+        return responses.toArray(new ClientReceiver[0]);
     }
 }

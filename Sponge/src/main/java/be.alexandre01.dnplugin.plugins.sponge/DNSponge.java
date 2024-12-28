@@ -5,7 +5,7 @@ import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
 import be.alexandre01.dnplugin.connection.client.BasicClient;
 import be.alexandre01.dnplugin.connection.client.handler.BasicClientHandler;
 import be.alexandre01.dnplugin.plugins.sponge.api.DNSpongeAPI;
-import be.alexandre01.dnplugin.utils.ASCII;
+import be.alexandre01.dnplugin.api.utils.ASCII;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.logging.log4j.Logger;

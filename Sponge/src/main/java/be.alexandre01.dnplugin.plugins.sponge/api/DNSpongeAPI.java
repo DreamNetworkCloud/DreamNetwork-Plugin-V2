@@ -86,7 +86,7 @@ public class DNSpongeAPI extends NetworkBaseAPI {
     public void setBasicClientHandler(BasicClientHandler basicClientHandler) {
         this.basicClientHandler = basicClientHandler;
         getRequestManager().setBasicClientHandler(basicClientHandler);
-        basicClientHandler.getResponses().add(new SpongeRequestReponse());
+        basicClientHandler.addResponse(new SpongeRequestReponse());
     }
 
     @Override

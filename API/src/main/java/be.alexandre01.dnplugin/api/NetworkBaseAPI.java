@@ -1,39 +1,73 @@
 package be.alexandre01.dnplugin.api;
 
-import be.alexandre01.dnplugin.api.connection.IBasicClient;
 import be.alexandre01.dnplugin.api.connection.IClientHandler;
+import be.alexandre01.dnplugin.api.connection.request.*;
+import be.alexandre01.dnplugin.api.connection.request.communication.ReceiverManager;
+import be.alexandre01.dnplugin.api.connection.request.datas.DataManager;
+import be.alexandre01.dnplugin.api.connection.request.packets.PacketHandlingFactory;
 import be.alexandre01.dnplugin.api.objects.RemoteBundle;
-import be.alexandre01.dnplugin.api.objects.RemoteService;
-import be.alexandre01.dnplugin.api.request.CustomRequestInfo;
-import be.alexandre01.dnplugin.api.request.RequestManager;
-import be.alexandre01.dnplugin.api.request.RequestType;
-import be.alexandre01.dnplugin.api.request.channels.DNChannelManager;
-import be.alexandre01.dnplugin.api.request.communication.ResponseManager;
-import be.alexandre01.dnplugin.api.request.exception.IDNotFoundException;
+import be.alexandre01.dnplugin.api.objects.RemoteExecutor;
+import be.alexandre01.dnplugin.api.connection.request.channels.DNChannelManager;
+import be.alexandre01.dnplugin.api.connection.request.exception.IDNotFoundException;
+import be.alexandre01.dnplugin.api.objects.core.NetCore;
+import be.alexandre01.dnplugin.api.objects.server.DNServer;
+import be.alexandre01.dnplugin.api.objects.server.NetEntity;
+import be.alexandre01.dnplugin.api.universal.player.UniversalPlayer;
+import be.alexandre01.dnplugin.api.utils.messages.Message;
+import be.alexandre01.dnplugin.api.utils.messages.mapper.MapperOfDNServer;
+import be.alexandre01.dnplugin.api.utils.messages.mapper.MapperOfDate;
+import be.alexandre01.dnplugin.api.utils.messages.mapper.MapperOfRemoteExecutor;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 
-public abstract class NetworkBaseAPI {
-    @Getter @Setter private HashMap<String,RemoteService> services = new HashMap<>();
+public abstract class NetworkBaseAPI extends NetCore{
+    @Getter @Setter private HashMap<String, RemoteExecutor> services = new HashMap<>();
     @Getter @Setter private HashMap<String, RemoteBundle> bundles = new HashMap<>();
+    @Getter private final HashMap<String, Object> localDatas = new HashMap<>();
+    @Getter private final Multimap<String, NetEntity> dataSubscribers = ArrayListMultimap.create();
 
     private boolean isInit = false;
     private final ArrayList<RequestType> requestTypes = new ArrayList<>();
+    @Getter
     private static NetworkBaseAPI instance;
+    @Getter private final PacketHandlingFactory packetFactory = new PacketHandlingFactory();
 
-    public static NetworkBaseAPI getInstance() {
-        return instance;
-    }
+    @Getter private boolean isExternal = false;
+    @Setter private String connectionID = null;
+
+    // ConfigService configService = new ConfigService();
+
+    @Getter private final ReceiverManager receiverManager = new ReceiverManager(this);
+    @Getter private final DataManager dataManager = new DataManager(this);
+    protected boolean isAttached;
+    protected final List<Consumer<NetworkBaseAPI>> consumerList = new ArrayList<>();
+
+
     public NetworkBaseAPI(){
+        super();
         instance = this;
+        Message.getDefaultMapper().addMapper(
+                new MapperOfRemoteExecutor(),
+                new MapperOfDNServer(),
+                new MapperOfDate()
+        );
     }
 
-    private ResponseManager responseManager = new ResponseManager(this);
+    @Deprecated
+    public Optional<RemoteExecutor> getMainProxy(){
+        return services.values().stream().filter(remoteExecutor -> remoteExecutor.getRemoteBundle().isProxy()).findFirst();
+    }
+
+
 
     public void registerRequestType(String addonName, RequestType requestType){
         for (Field field : requestType.getClass().getFields()){
@@ -54,8 +88,24 @@ public abstract class NetworkBaseAPI {
         }
         requestTypes.add(requestType);
     }
-    public RemoteService getByName(String process){
-        return services.get(process);
+    public Optional<DNServer> getByName(String process,int id){
+        return Optional.ofNullable(services.get(process)).map(remoteExecutor -> remoteExecutor.getServers().get(id));
+    }
+
+    public Optional<DNServer> getByFullName(String process){
+        try {
+            String[] split = process.split("-");
+            if(split.length == 2){
+                return getByName(split[0],Integer.parseInt(split[1]));
+            }
+        }catch (Exception e) {
+            return Optional.empty();
+        }
+        return Optional.empty();
+    }
+
+    public Optional<RemoteExecutor> getByName(String process){
+        return Optional.ofNullable(services.get(process));
     }
 
     public RemoteBundle getBundleByName(String name){
@@ -67,6 +117,8 @@ public abstract class NetworkBaseAPI {
 
     public abstract String getProcessName();
 
+
+    public abstract UniversalPlayer getUniversalPlayer(String name);
     public abstract void setProcessName(String processName);
 
 
@@ -86,52 +138,126 @@ public abstract class NetworkBaseAPI {
 
     public abstract DNChannelManager getChannelManager();
 
-    public abstract void setRequestManager(RequestManager requestManager);
 
     public abstract IClientHandler getClientHandler();
-
-    public ResponseManager getResponseManager(){
-        return responseManager;
-    }
 
 
     public abstract void setClientHandler(IClientHandler basicClientHandler);
 
-    public abstract void callServerAttachedEvent();
+    public abstract void callServiceAttachedEvent();
 
     public abstract void shutdownProcess();
 
     @Deprecated
     public boolean initConnection(){
-        //check if class be.alexandre01.dnplugin.connection.BaseClient exist
+
         if(isInit){
             throw new RuntimeException("Connection already initialized");
         }
-
-        Class<?> clazz = null;
-        try {
-            clazz = Class.forName("be.alexandre01.dnplugin.connection.client.BasicClient");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        if(!DNNetworkUtilities.getInstance().initConnection().isPresent()){
             return false;
         }
-        Object o;
-        try {
-             o = clazz.newInstance();
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+        isInit = true;
+        return true;
+    }
+
+    public boolean isSpigot(){
+        if(getInfo().startsWith("SPIGOT")){
+            return true;
         }
-        if(o instanceof IBasicClient){
-            IBasicClient basicClient = (IBasicClient) o;
-            Thread thread = new Thread(basicClient);
-            thread.start();
-            return isInit = true;
+        return false;
+    }
+
+    public boolean isBungee(){
+        if(getInfo().startsWith("BUNGEE")){
+            return true;
         }
-        throw new RuntimeException("Class be.alexandre01.dnplugin.connection.client.BasicClient not found or castable");
+        return false;
+    }
+
+    public boolean isVelocity(){
+        if(getInfo().startsWith("VELOCITY")){
+            return true;
+        }
+        return false;
+    }
+
+    public Optional<String> getConnectionID(){
+        return Optional.ofNullable(connectionID);
+    }
+
+    @Override
+    public Packet writeAndFlush(Message message) {
+        return writeAndFlush(message, null);
+    }
+
+    @Override
+    public Packet writeAndFlush(Message message, GenericFutureListener<? extends Future<? super Void>> listener) {
+        getClientHandler().writeAndFlush(message,listener);
+        return new Packet() {
+            @Override
+            public Message getMessage() {
+                return message;
+            }
+
+            @Override
+            public String getProvider() {
+                return getProcessName();
+            }
+
+            @Override
+            public NetEntity getReceiver() {
+                return NetworkBaseAPI.this;
+            }
+        };
+    }
+    @Override
+    public Packet dispatch(Packet packet) {
+        getClientHandler().writeAndFlush(packet.getMessage());
+        return packet;
+    }
+
+    @Override
+    public Packet dispatch(Packet packet, GenericFutureListener<? extends Future<? super Void>> future) {
+        getClientHandler().writeAndFlush(packet.getMessage(),future);
+        return packet;
+    }
+
+    public void restartCurrentServer() {
+        System.out.println("Restarting "+ getProcessName());
+        NetworkBaseAPI.getInstance().getRequestManager().getRequest(RequestType.CORE_RESTART_SERVER,getProcessName()).dispatch();
     }
 
 
+    public void onInitialise(Consumer<NetworkBaseAPI> consumer) {
+        System.out.println("Initialise called");
+        if(isAttached){
+            System.out.println("Initialise already attached");
+            consumer.accept(this);
+        }else{
+            System.out.println("Initialise not yet attached");
+            consumerList.add(consumer);
+        }
+    }
+
+    public void setLocalData(String key, Object data){
+        if(localDatas.containsKey(key)){
+            if(!localDatas.get(key).getClass().isAssignableFrom(data.getClass()))
+                throw new RuntimeException("Data "+ key + "already set with a different type ("+ localDatas.get(key).getClass().getSimpleName() +")");
+        }
+
+        localDatas.put(key,data);
+        for (NetEntity netEntity : dataSubscribers.get(key)) {
+            netEntity.getRequestManager().sendRequest(RequestType.UNIVERSAL_SEND_DATA,key,data);
+        }
+    }
+
+    public Object getLocalData(String key){
+        return localDatas.get(key);
+    }
+
+    public <T> T getLocalData(String key, Class<T> tClass){
+        return (T) localDatas.get(key);
+    }
 
 }

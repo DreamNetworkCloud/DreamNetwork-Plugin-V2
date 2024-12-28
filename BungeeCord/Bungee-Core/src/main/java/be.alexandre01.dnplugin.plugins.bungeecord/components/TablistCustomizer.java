@@ -2,7 +2,7 @@ package be.alexandre01.dnplugin.plugins.bungeecord.components;
 
 import be.alexandre01.dnplugin.plugins.bungeecord.DNBungee;
 import be.alexandre01.dnplugin.plugins.bungeecord.utils.BaseComponentBuilder;
-import be.alexandre01.dnplugin.utils.Config;
+import be.alexandre01.dnplugin.api.utils.Config;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
