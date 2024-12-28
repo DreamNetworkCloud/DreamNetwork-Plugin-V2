@@ -1,0 +1,3 @@
+# This is the V2 of the DreamNetwork Plugin.
+### This version is archived and the V3 (NEO) is currently in development...
+### See you soon !
